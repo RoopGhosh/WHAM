@@ -17,6 +17,7 @@ public class User {
 	private Date _dob;
 	private String _gender;
 	private List<String> _areaOfInterest = new ArrayList<String>();
+	private List<String> _dislikes = new ArrayList<String>();
 	
 	public String getFirstName() {
 		return _firstName;
@@ -87,5 +88,12 @@ public class User {
 	}
 	public void setAreaOfInterest(List<String> _areaOfInterest) {
 		this._areaOfInterest = _areaOfInterest;
+	}
+	
+	public List<String> getDislikes() {
+		return _dislikes;
+	}
+	public void setDislikes(List<String> _dislikes) {
+		this._dislikes = _dislikes;
 	}	
 }
