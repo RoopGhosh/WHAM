@@ -33,4 +33,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>WebContent/java-json-schema.jar</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Downloads/java-json-schema.jar/java-json-schema.jar</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
