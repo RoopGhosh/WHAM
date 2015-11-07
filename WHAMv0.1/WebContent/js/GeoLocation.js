@@ -13,7 +13,10 @@ var options = {
 
 function success(pos) {
   var crd = pos.coords;
-
+  var outString = "index.jsp?latitude=" + crd.latitude
+  outString += "&longitude=" + crd.longitude
+  location.href = outString
+  
   console.log('Your current position is:');
   console.log('Latitude : ' + crd.latitude);
   console.log('Longitude: ' + crd.longitude);
@@ -22,6 +25,7 @@ function success(pos) {
 function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
 };
+
 function getLocation() {
     navigator.geolocation.getCurrentPosition(success, error, options);
 }

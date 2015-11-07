@@ -7,6 +7,16 @@
 <script src="js/GeoLocation.js"></script>
 <title>WHAM - Home</title>
 </head>
-<body onload = "getLocation()">
+<body>
+<%
+try{
+double latitude = Double.parseDouble(request.getParameter("latitude"));
+double longitude = Double.parseDouble(request.getParameter("longitude"));
+}
+catch(Exception e)
+{
+	response.sendRedirect("geolocator.html");
+}
+%>
 </body>
 </html>
