@@ -1,8 +1,8 @@
 package edu.neu.cs5500.Jerks.business;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.*;
+import java.util.*;
+import edu.neu.cs5500.Jerks.definitions.*;
 
 /* Author: Sandeep Ramamoorthy
  * Creation Date: 11/02/2015 6:00 AM EST
@@ -10,8 +10,8 @@ import java.util.Date;
  * */
 public class EventManager {
 
-	public String urlBuilder_EventBrite(float latitude, float longitude, String searchAddress, String searchEvent, String price,
-			java.util.Date date, String[] categories)
+	private String urlBuilder_EventBrite(double latitude, double longitude, String searchAddress, String searchEvent, String price,
+			Date date, String[] categories)
 	{
 		String baseURLEventBrite= "https://www.eventbriteapi.com/v3/events/search/?";
 		baseURLEventBrite = baseURLEventBrite.concat("q="+searchEvent);
@@ -37,8 +37,8 @@ public class EventManager {
 		return baseURLEventBrite;
 	}
 	
-	public String urlBuilder_EventFul(float latitude, float longitude, String searchAddress, String searchEvent, String price,
-			java.util.Date date, String[] categories)
+	private String urlBuilder_EventFul(double latitude, double longitude, String searchAddress, String searchEvent, String price,
+			Date date, String[] categories)
 	{
 		String baseURLEventFul= "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV";
 		baseURLEventFul = baseURLEventFul.concat("&q="+searchEvent);
@@ -59,8 +59,14 @@ public class EventManager {
 		System.out.println(baseURLEventFul);
 		return baseURLEventFul;
 	}
-	//public ArrayList<Event> apiCalls(String)
-	//Remove placeholder
+	
+	//TODO: Karthik and Roop to modify the below method
+	public List<Event> fetchEvents(double latitude, double longitude, String searchAddress, String searchEvent, String price,
+			Date date, String[] categories)
+	{
+		List<Event> events = new ArrayList<Event>();
+		return events;
+	}
 	
 	public static void main (String args[])
 	{

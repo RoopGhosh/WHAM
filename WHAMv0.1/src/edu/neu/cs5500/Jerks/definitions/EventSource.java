@@ -6,7 +6,6 @@ package edu.neu.cs5500.Jerks.definitions;;
  * 				sources an event can be fetched from.
  * */
 public enum EventSource {
-	Facebook,
 	EventBrite,
 	EventFul,
 	WHAM
