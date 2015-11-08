@@ -38,7 +38,7 @@ public class EventfulAPICall {
 	public static void main(String[] args) throws IOException, JSONException, ParseException
 	{
 		EventfulAPICall obj = new EventfulAPICall();
-		String url = "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV&where=42.3601,-71.0589&within=10&date=Future&page_size=100&sort_order=popularity";
+		String url = "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV&where=42.3601,-71.0589&within=10&date=Future&page_size=50&sort_order=popularity";
 		
 		obj.getListofEventsFromJSON(url);
 	}
@@ -48,52 +48,40 @@ public class EventfulAPICall {
 		ArrayList<Event> LoEvents = new ArrayList<>();
 		
 		String jsontext = getJsontext(url);
-		//System.out.println(jsontext);
 		//creating jsonobject from text
 		JSONObject json = new JSONObject(jsontext);
-		int page_count = Integer.parseInt(json.get("page_count").toString());
-		if (page_count > 0) {
-			for (int j = 1; j <= page_count; j++) // now for no of page of results, we loop...
+		int total_items = Integer.parseInt(json.get("total_items").toString());
+		if (total_items > 0) {
+
+			org.json.JSONArray listings = json.getJSONObject("events").getJSONArray("event"); 
+			for (int i = 0; i < listings.length(); i++) // for every event in the array, retrieving the required materials.
 			{
-				url = url.concat("&page_number=" + j);
-				jsontext = getJsontext(url);
-				json = new JSONObject(jsontext);
-				org.json.JSONArray listings = json.getJSONObject("events").getJSONArray("event"); // getting the actual Events array.
-				System.out.println(j);
-				for (int i = 0; i < listings.length(); i++) // for every event in the array, retrieving the required materials.
-				{
-					JSONObject iterateObj = listings.getJSONObject(i);
-					Event event = new Event();
-					event.setId(iterateObj.get("id").toString());
-					event.setName(iterateObj.get("title").toString());
-					if(iterateObj.get("description").toString() == "null")
-						event.setDescription(event.getName());
-					else
-						event.setDescription(iterateObj.get("description").toString());					
-					Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(iterateObj.get("start_time").toString());
-					event.setDate(date);
-					event.setSource(EventSource.EventFul);
-					
-					Address address = new Address();
-					address.setAddressLine1(iterateObj.get("venue_name").toString());
-					address.setAddressLine2(iterateObj.get("venue_address").toString());
-					address.setCity(iterateObj.get("city_name").toString());
-					address.setState(iterateObj.get("region_name").toString());
-					address.setCountry(iterateObj.get("country_name").toString());
-					address.setZipCode(iterateObj.get("postal_code").toString());
-					address.setLatitude(Float.parseFloat(iterateObj.get("latitude").toString())); 
-					address.setLongitude(Float.parseFloat(iterateObj.get("longitude").toString()));					
-					event.setAddress(address);
-					
-					LoEvents.add(event);				
-				}
-				System.out.println(LoEvents.size());
+				JSONObject iterateObj = listings.getJSONObject(i);
+				Event event = new Event();
+				event.setId(iterateObj.get("id").toString());
+				event.setName(iterateObj.get("title").toString());
+				if (iterateObj.get("description").toString() == "null")
+					event.setDescription(event.getName());
+				else
+					event.setDescription(iterateObj.get("description").toString());
+				Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(iterateObj.get("start_time").toString());
+				event.setDate(date);
+				event.setSource(EventSource.EventFul);
+
+				Address address = new Address();
+				address.setAddressLine1(iterateObj.get("venue_name").toString());
+				address.setAddressLine2(iterateObj.get("venue_address").toString());
+				address.setCity(iterateObj.get("city_name").toString());
+				address.setState(iterateObj.get("region_name").toString());
+				address.setCountry(iterateObj.get("country_name").toString());
+				address.setZipCode(iterateObj.get("postal_code").toString());
+				address.setLatitude(Float.parseFloat(iterateObj.get("latitude").toString()));
+				address.setLongitude(Float.parseFloat(iterateObj.get("longitude").toString()));
+				event.setAddress(address);
+				LoEvents.add(event);	
 			}
 		}
 		System.out.println(LoEvents.size());
-		if(page_count == LoEvents.size())
-			System.out.println("Write on !!");
-		System.out.println("DONE!!");
 		return LoEvents;
 	}
 	
