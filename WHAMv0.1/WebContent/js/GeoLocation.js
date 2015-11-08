@@ -11,21 +11,24 @@ var options = {
   maximumAge: 0
 };
 
+var intialLocation = {
+		latitude: 42.3398198,
+		longitude: -71.0875516
+};
+
 function success(pos) {
   var crd = pos.coords;
-  var outString = "index.jsp?latitude=" + crd.latitude
-  outString += "&longitude=" + crd.longitude
-  location.href = outString
-  
-  console.log('Your current position is:');
   console.log('Latitude : ' + crd.latitude);
   console.log('Longitude: ' + crd.longitude);
+  intialLocation.latitude = crd.latitude;
+  intialLocation.longitude = crd.longitude;
 };
 
 function error(err) {
-  console.warn('ERROR(' + err.code + '): ' + err.message);
+  console.log('ERROR(' + err.code + '): ' + err.message);
 };
 
 function getLocation() {
     navigator.geolocation.getCurrentPosition(success, error, options);
+    return intialLocation;
 }
