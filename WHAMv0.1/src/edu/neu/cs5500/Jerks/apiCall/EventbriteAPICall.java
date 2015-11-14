@@ -23,7 +23,7 @@ import edu.neu.cs5500.Jerks.definitions.*;
 	CURRENTLY, event object is not described hence just parsing for the title text of each event */
 
 public class EventbriteAPICall {
-	private final int RESULTSIZE = 49;
+	
 	public String getJsontext(String url) throws IOException
 	{
 		URL neturl = new URL(url);
@@ -45,7 +45,7 @@ public class EventbriteAPICall {
 		//creating jsonobject from text
 		JSONObject json = new JSONObject(jsontext);
 		int page_size = hasPagination(json);
-		for(int j=1;j<page_size;j++) // now for no of page of results, we loop...
+		for(int j=0;j<page_size;j++) // now for no of page of results, we loop...
 		{
 			url = url.concat("&page="+j);
 			jsontext = getJsontext(url);
@@ -76,8 +76,6 @@ public class EventbriteAPICall {
 					ticket_price = (double) arr.getJSONObject(0).getJSONObject("cost").getDouble("value")/100;
 				events.add(makeEventObj(name,startDate,description,id,capacity,address,ticket_price,EventSource.EventBrite));
 			}
-			if(events.size()>RESULTSIZE)
-				break;
 		}
 		System.out.println(LoEvents.size());
 		if(Integer.parseInt(json.getJSONObject("pagination").get("page_count").toString()) == LoEvents.size())

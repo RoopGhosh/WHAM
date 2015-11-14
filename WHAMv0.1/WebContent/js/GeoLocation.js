@@ -22,6 +22,7 @@ function success(pos) {
   console.log('Longitude: ' + crd.longitude);
   intialLocation.latitude = crd.latitude;
   intialLocation.longitude = crd.longitude;
+  location.href = "index.jsp?latitude=" + crd.latitude + "&longitude=" + crd.longitude;
 };
 
 function error(err) {

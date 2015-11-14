@@ -4,15 +4,19 @@ import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script src="js/GeoLocation.js"></script>
-<title>WHAM - Home</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+	<script src="js/GeoLocation.js"></script>
+	<title>WHAM - Home</title>
+	<style>
+	</style>
 	<script>
 	function initialize()
-	{
+	{	
 	  var myCenter = new google.maps.LatLng(intialLocation.latitude, intialLocation.longitude);
 	  var mapProp = {
 	    center: myCenter,
-	    zoom:13,
+	    zoom:12,
 	    mapTypeId: google.maps.MapTypeId.ROADMAP
 	  };
 	  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
@@ -21,8 +25,14 @@ import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.
 	 		EventfulAPICall eventCall = new EventfulAPICall();
 	  		ArrayList<Event> listOfEvent = eventCall.getListofEventsFromJSON(url);
 	  		String jsonEvents = new Gson().toJson(listOfEvent);
-	  		System.out.println(jsonEvents); %>
+	  		System.out.println(jsonEvents); 
+	  		double latitude = Double.parseDouble(request.getParameter("latitude"));
+	  		double longitude = Double.parseDouble(request.getParameter("longitude"));
+	  		System.out.println(latitude);
+	  		System.out.println(longitude);
+	  		%>
 	 
+	  		
 	  		/* double latitude = 0.0f;
 	  		double longitude = 0.0f;
 			String searchAddress = null;
@@ -33,7 +43,11 @@ import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.
 			EventManager em = new EventManager();
 			List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date, categories); */
 			 
-			 
+		google.maps.event.addDomListener(window, "resize", function() {
+				   var center = map.getCenter();
+				   google.maps.event.trigger(map, "resize");
+				   map.setCenter(center); 
+				});
 	  
 	  var jsonEvents = <%=jsonEvents%>;
 	  console.log(jsonEvents);
@@ -55,9 +69,16 @@ import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.
 			      '</div>';
 			          infowindow.setContent(contentString);
 			          infowindow.open(map, marker);
+			          showEventDetails(jsonEvents[i]);
 			        }
 			      })(marker, i));
 		  }
+	  
+	  function showEventDetails(jsonEvents)
+	  {
+		  var print = '<p>'+jsonEvents._name+'</p>'
+		  eventDetails.innerHTML = print;
+	  }
 	  
 	 }
 	
@@ -73,6 +94,43 @@ import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.
 
 </head>
 <body>
-	<div id="googleMap" style="width:100vw;height:100vh;"></div>
+	<div class="container">
+		<div class="rows">
+			<div class="col-md-12">
+				<div class="navbar-header">
+                	<a class="navbar-brand" href="#">Project name</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ><a href="#/home">Logout</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                    	<div class="form-group">
+                    		 <input type="text" class="form-control" placeholder="Search">
+                    		 <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search">
+                    	</div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" class="form-control">
+                        </div>
+                        <button type="button" class="btn btn-success">Sign in</button>
+                         <button type="button" class="btn btn-success">Register</button>
+                    </form>
+                </div>
+			</div>
+		</div>
+		<div class="rows">
+			<div class="col-md-2">
+				<div id="eventDetails">
+				</div>
+			</div>
+			<div class="col-md-10">
+				<div id="googleMap" style="width:100vw;height:100vh;">
+				</div>   
+			</div>
+		</div>
+	</div>
 </body>
 </html>

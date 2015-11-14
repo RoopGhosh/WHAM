@@ -1,20 +1,15 @@
 package edu.neu.cs5500.Jerks.business;
 
-import java.io.IOException;
 import java.text.*;
 import java.util.*;
-
-import org.json.JSONException;
-
 import edu.neu.cs5500.Jerks.definitions.*;
-import edu.neu.cs5500.Jerks.apiCall.EventbriteAPICall;
-import edu.neu.cs5500.Jerks.apiCall.EventfulAPICall;
 
 /* Author: Sandeep Ramamoorthy
  * Creation Date: 11/02/2015 6:00 AM EST
  * Description: All business logic related to events goes into this class 
  * */
 public class EventManager {
+
 	private String urlBuilder_EventBrite(double latitude, double longitude, String searchAddress, String searchEvent, String price,
 			Date date, String[] categories)
 	{
@@ -49,8 +44,6 @@ public class EventManager {
 		baseURLEventFul = baseURLEventFul.concat("&q="+searchEvent);
 		if(searchAddress!="")
 			baseURLEventFul = baseURLEventFul.concat("&l="+searchAddress);
-		else
-			baseURLEventFul = baseURLEventFul.concat("&l="+String.valueOf(latitude)+","+String.valueOf(longitude));
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		Date currdate = new Date();
 		String currStrDate= dateFormat.format(currdate);
@@ -62,7 +55,7 @@ public class EventManager {
 		if(arrStr.length()>2)
 			arrStr = arrStr.substring(0, arrStr.length()-2);
 		baseURLEventFul = baseURLEventFul.concat("&c="+arrStr);
-		baseURLEventFul = baseURLEventFul.concat("&sort_order=distance&within=5&units=miles&include=price&page_size=50");
+		baseURLEventFul = baseURLEventFul.concat("&sort_order=distance&json_request_id=50&within=5&units=miles&include=price");
 		System.out.println(baseURLEventFul);
 		return baseURLEventFul;
 	}
@@ -71,29 +64,15 @@ public class EventManager {
 	public List<Event> fetchEvents(double latitude, double longitude, String searchAddress, String searchEvent, String price,
 			Date date, String[] categories)
 	{
-		EventManager eventManager = new EventManager();
 		List<Event> events = new ArrayList<Event>();
-		EventbriteAPICall eventBrite = new EventbriteAPICall();
-		EventfulAPICall eventful = new EventfulAPICall();
-		String baseURLEventBrite = eventManager.urlBuilder_EventBrite(latitude, longitude, searchAddress, searchEvent, price, date, categories);
-		String baseURLEventful = eventManager.urlBuilder_EventFul(latitude, longitude, searchAddress, searchEvent, price, date, categories);
-		try {
-			events.addAll( eventBrite.getListofEventsFromJSON(baseURLEventBrite));
-			events.addAll(eventful.getListofEventsFromJSON(baseURLEventful));
-			return events;
-		} catch (NumberFormatException | IOException | ParseException | JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return events;
 	}
 	
-	public static void main(String args[])
+	public static void main (String args[])
 	{
 		EventManager em = new EventManager();
 		Date date = new Date();
 		String[] arr = {};
-		List<Event> events = em.fetchEvents(23.0f, 23.0f, "boston", "", "free", date, arr);
-		System.out.println(events.size());
+		em.urlBuilder_EventFul(23.0f, 23.0f, "boston", "", "free", date, arr);
 	}
 }

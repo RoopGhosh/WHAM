@@ -83,6 +83,12 @@ public class EventfulAPICall {
 		}
 		System.out.println(LoEvents.size());
 		return LoEvents;
-	}	
+	}
 	
+	public static int hasPagination(JSONObject json) throws NumberFormatException, JSONException {
+		int page_count= 1;
+		if(json.has("page_count")) // checking if the page has pagination tag to summarize the returns
+			page_count =Integer.parseInt(json.get("page_count").toString());
+		return page_count;
+	}
 }
