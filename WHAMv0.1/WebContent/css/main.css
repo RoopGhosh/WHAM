@@ -1,0 +1,71 @@
+body, html {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+.main {
+	height: calc(100vh - 50px);
+}
+
+.sidebar {
+	float: left;
+	min-width: 300px;
+	max-width: 300px;
+	margin-top: 50px;
+	overflow:
+}
+
+.eventDetails {
+	height:100%;
+	max-height: calc(100vh - 50px);
+	width: 100%;
+	overflow-y:auto;
+}
+
+.googleMap {
+	float: right;
+	/*300px is the header height*/
+	height: calc(100vh - 50px);
+	/*300px is the side bar width + 18px added by google maps*/
+	width: calc(100vw - 318px);
+	margin: 0;
+	padding: 0;
+	
+	
+	
+	/*Scroll Bar effects */
+	/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,0,0,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4); 
+}
+/*Scroll Bar effects End */
+}
+
+.footer {
+	height: 50px;
+	width: 100vw;
+	background: #101010;
+	position: absolute;
+	bottom: 0;
+	background: #101010;
+}
