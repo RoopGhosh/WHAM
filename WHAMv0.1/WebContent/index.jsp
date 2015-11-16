@@ -5,41 +5,42 @@
 <html>
 <head>
 <%
-	/* Sandeep: Uncomment this part to fetch events from server.
+	String jsonEvents = null;
+	double latitude = 0.0f;
+	double longitude = 0.0f;
+	String searchAddress = null;
+	String searchEvent = null; 
+	String price = null;
+	Date date = null;
+	String[] categories = null;
 	try
-	{
-		double latitude = 0.0f;
-		double longitude = 0.0f;
-		String searchAddress = null;
-		String searchEvent = null; 
-		String price = null;
-		Date date = null;
-		String[] categories = null;
+	{		
 		latitude = Double.parseDouble(request.getParameter("latitude"));
 		longitude = Double.parseDouble(request.getParameter("longitude"));
 		EventManager em = new EventManager();
 		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date, categories); 
-		String jsonEvents = new Gson().toJson(events);
+		jsonEvents = new Gson().toJson(events);
+		System.out.println(jsonEvents);
 	}
 	catch(Exception e) {
 		response.sendRedirect("geolocator.html");
 	}
-	*/
-	String url = "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV&where=42.3601,-71.0589&within=10&date=Future&page_size=50&sort_order=distance";
-	EventfulAPICall eventCall = new EventfulAPICall();
-	ArrayList<Event> listOfEvent = eventCall.getListofEventsFromJSON(url);
-	String jsonEvents = new Gson().toJson(listOfEvent);
-	System.out.println(jsonEvents);
-	double latitude = Double.parseDouble(request.getParameter("latitude"));
-	double longitude = Double.parseDouble(request.getParameter("longitude"));
+	
+	/* Subbed events code. uncomment if you want to test the maps. */
+	
+// 	String url = "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV&where=42.3601,-71.0589&within=10&date=Future&page_size=50&sort_order=distance";
+// 	EventfulAPICall eventCall = new EventfulAPICall();
+// 	ArrayList<Event> listOfEvent = eventCall.getListofEventsFromJSON(url);
+// 	String jsonEvents = new Gson().toJson(listOfEvent);
+// 	double latitude = Double.parseDouble(request.getParameter("latitude"));
+// 	double longitude = Double.parseDouble(request.getParameter("longitude"));
 %>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css">
-
+<link rel="icon" type="image/gif" href="img/favicon.GIF" />
 <script src="js/GeoLocation.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?key="></script>
 <script src="js/GoogleMaps.js"></script>
@@ -48,9 +49,7 @@
 <title>WHAM - Home</title>
 <script>
 	google.maps.event.addDomListener(window, 'load', function() {
-		initialize(
-<%=jsonEvents%>
-	);
+		initialize(<%=jsonEvents%>);
 	});
 
 	//Dynamicaly detect the window's size and resize the map
@@ -106,7 +105,7 @@
 				</div>
 		
 					<button type="button" class="btn btn-success navbar-btn">Sign in</button>
-					<button type="button" class="btn btn-success navbar-btn">Register</button>
+					<button type="button" class="btn btn-success navbar-btn" onclick="location.href='register.jsp'">Register</button>
 
 			</div>
 		</div>
@@ -116,7 +115,7 @@
 	<div class="main">
 		<div class="sidebar">
 			<div id="eventDetails" class="eventDetails">
-				<p id="name"></p>
+				<H3 id="name">Select an event to see its details...</H3>
 				<p id="description"></p>
 				<p id="more"></p>
 			</div>
@@ -124,9 +123,9 @@
 		<div id="googleMap" class="googleMap"></div>
 	</div>
 
-	<div class="footer">
-		<p class="text-muted">&copy; JeRKS</p>
-	</div>
+	<div class="footer">		
+		<p style="float:center">&copy; JeRKS (CS5500)</p>
+		<p style="float:right">CCIS - Northeastern University</p>
 	</div>
 
 </body>

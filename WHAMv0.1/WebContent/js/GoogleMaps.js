@@ -13,14 +13,12 @@ function initialize(jsonEvents) {
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(center);
 	});
-	console.log(jsonEvents);
 	var infowindow = new google.maps.InfoWindow();
 	for (var i = 0; i < jsonEvents.length; i++) {
 		var marker = new google.maps.Marker({
 			position : new google.maps.LatLng(jsonEvents[i]._address._latitude,
 					jsonEvents[i]._address._longitude),
 		});
-
 		marker.setMap(map);
 
 		google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -35,12 +33,14 @@ function initialize(jsonEvents) {
 		})(marker, i));
 	}
 
-	function showEventDetails(jsonEvents) {
+	function showEventDetails(jsonEvent) {
 		var nameTag = document.getElementById("name");
 		var descriptionTag = document.getElementById("description");
-		var moreTag = document.getElementById("more");
-		var eventName = '<p>' + jsonEvents._name + '</p>';
-		nameTag.innerHTML = '<b>Name </b>:' + jsonEvents._name;
-		descriptionTag.innerHTML = '<b>Description</b>:' + jsonEvents._description;
+		var moreTag = document.getElementById("more");	
+		nameTag.innerHTML = jsonEvent._name;
+		descriptionTag.innerHTML = jsonEvent._description;
+		// Store the event details in the browser's local storage for retrieving the event in eventDetails page.  
+		localStorage.setItem(jsonEvent._id, jsonEvent);
+		moreTag.innerHTML = '<b><a href="eventDetails.jsp?id='+jsonEvent._id+'"> More Details >> </a></b>'; 
 	}
 }
