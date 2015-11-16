@@ -78,7 +78,9 @@ public class EventfulAPICall {
 				address.setLatitude(Float.parseFloat(iterateObj.get("latitude").toString()));
 				address.setLongitude(Float.parseFloat(iterateObj.get("longitude").toString()));
 				event.setAddress(address);
-				LoEvents.add(event);	
+				LoEvents.add(event);
+				if(LoEvents.size()>50)
+					return LoEvents; // escaping here
 			}
 		}
 		System.out.println(LoEvents.size());

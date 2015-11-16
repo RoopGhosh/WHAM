@@ -24,6 +24,7 @@ import edu.neu.cs5500.Jerks.definitions.*;
 
 public class EventbriteAPICall {
 	
+	
 	public String getJsontext(String url) throws IOException
 	{
 		URL neturl = new URL(url);
@@ -75,6 +76,8 @@ public class EventbriteAPICall {
 				if( arr.length()>0 && !arr.getJSONObject(0).getBoolean("free") && arr.getJSONObject(0).has("cost"))
 					ticket_price = (double) arr.getJSONObject(0).getJSONObject("cost").getDouble("value")/100;
 				events.add(makeEventObj(name,startDate,description,id,capacity,address,ticket_price,EventSource.EventBrite));
+				if(events.size()>50)
+					return events;   // escaping here ...
 			}
 		}
 		System.out.println(LoEvents.size());

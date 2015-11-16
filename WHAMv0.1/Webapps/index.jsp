@@ -8,11 +8,11 @@
 	String jsonEvents = null;
 	double latitude = 0.0f;
 	double longitude = 0.0f;
-	String searchAddress = null;
-	String searchEvent = null; 
-	String price = null;
-	Date date = null;
-	String[] categories = null;
+	String searchAddress = "";
+	String searchEvent = ""; 
+	String price = "";
+	Date date = new Date();
+	String[] categories = new String[1];
 	try
 	{		
 		latitude = Double.parseDouble(request.getParameter("latitude"));
@@ -20,7 +20,7 @@
 		EventManager em = new EventManager();
 		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date, categories); 
 		jsonEvents = new Gson().toJson(events);
-		System.out.println(jsonEvents);
+		//System.out.println(jsonEvents);
 	}
 	catch(Exception e) {
 		response.sendRedirect("geolocator.html");
