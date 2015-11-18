@@ -39,12 +39,13 @@ public class EventbriteAPICall {
 	{
 		ArrayList<Event> events = new ArrayList<>();
 		url = updateURL(url);
+		System.out.println(url);
 		String jsontext = getJsontext(url);
 		//System.out.println(jsontext);
 		//creating jsonobject from text
 		JSONObject json = new JSONObject(jsontext);
 		int page_size = hasPagination(json);
-		for(int j=1;j<page_size+1;j++) // now for no of page of results, we loop...
+		for(int j=0;j<page_size;j++) // now for no of page of results, we loop...
 		{
 			url = url.concat("&page="+j);
 			jsontext = getJsontext(url);

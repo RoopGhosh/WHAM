@@ -18,7 +18,9 @@
 	String searchAddress = "";
 	String searchEvent = ""; 
 	String price = "";
-	Date date = new Date();
+	Calendar c = Calendar.getInstance(); // starts with today's date and time
+	c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
+	Date date = c.getTime(); // gets modified time
 	String[] categories = new String[0];
 	try
 	{		
