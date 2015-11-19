@@ -73,11 +73,10 @@ public class EventManager {
 		EventfulAPICall eventful = new EventfulAPICall();
 		String baseURLEventBrite = urlBuilder_EventBrite(latitude, longitude, searchAddress, searchEvent, price, date, categories);
 		String baseURLEventful = urlBuilder_EventFul(latitude, longitude, searchAddress, searchEvent, price, date, categories);
-		try {
-			System.out.println("String 1 "+ baseURLEventBrite);			
+		try {			
 			events = eventBrite.getListofEventsFromJSON(baseURLEventBrite);
-			System.out.println("String 2 " + baseURLEventful);
 			events.addAll(eventful.getListofEventsFromJSON(baseURLEventful));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

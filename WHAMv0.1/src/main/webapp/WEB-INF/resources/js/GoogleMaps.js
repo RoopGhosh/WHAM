@@ -1,6 +1,5 @@
-function initialize(jsonEvents) {
-	var myCenter = new google.maps.LatLng(intialLocation.latitude,
-			intialLocation.longitude);
+function initialize(jsonEvents, latitude, longitude) {
+	var myCenter = new google.maps.LatLng(latitude, longitude);
 	var mapProp = {
 		center : myCenter,
 		zoom : 12,
@@ -41,6 +40,12 @@ function initialize(jsonEvents) {
 		descriptionTag.innerHTML = jsonEvent._description;
 		// Store the event details in the browser's local storage for retrieving the event in eventDetails page.  
 		localStorage.setItem(jsonEvent._id, jsonEvent);
-		moreTag.innerHTML = '<b><a href="eventDetails.jsp?id='+jsonEvent._id+'"> More Details >> </a></b>'; 
+		
+		//Get the root URL and append the eventDetails
+		//Note: The link is broke. we need to edit the spring controller
+		//        to make it work.
+		var parentUrl = encodeURIComponent(window.location.href),
+	    eventDetailUrl = window.location.origin+ '/eventDetails.jsp?id='+jsonEvent._id;		
+		moreTag.innerHTML = '<b><a href="'+eventDetailUrl+'"> More Details >> </a></b>'; 
 	}
 }

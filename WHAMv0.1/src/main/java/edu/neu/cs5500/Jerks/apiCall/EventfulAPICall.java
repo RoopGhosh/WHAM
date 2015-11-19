@@ -36,14 +36,6 @@ public class EventfulAPICall {
 		return jsontext;
 	}
 	
-//	public static void main(String[] args) throws IOException, JSONException, ParseException
-//	{
-//		EventfulAPICall obj = new EventfulAPICall();
-//		String url = "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV&where=42.3601,-71.0589&within=10&date=Future&page_size=50&sort_order=popularity";
-//		
-//		obj.getListofEventsFromJSON(url);
-//	}
-//	
 	public ArrayList<Event> getListofEventsFromJSON(String url) throws IOException, JSONException, ParseException
 	{
 		ArrayList<Event> LoEvents = new ArrayList<>();		
@@ -81,7 +73,7 @@ public class EventfulAPICall {
 				LoEvents.add(event);
 			}
 		}
-		System.out.println("EventFul Events:"  +LoEvents.size());
 		return LoEvents;
 	}
+
 }

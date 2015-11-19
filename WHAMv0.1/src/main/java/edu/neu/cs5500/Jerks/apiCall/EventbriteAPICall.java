@@ -7,7 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.jar.JarException;
 
 import org.json.JSONException;
@@ -23,8 +22,9 @@ import edu.neu.cs5500.Jerks.definitions.*;
 	CURRENTLY, event object is not described hence just parsing for the title text of each event */
 
 public class EventbriteAPICall {
-	private final int RESULTSIZE = 49;
-	public String getJsontext(String url) throws IOException
+	
+	
+	private String getJsontext(String url) throws IOException
 	{
 		URL neturl = new URL(url);
 		BufferedReader br = new BufferedReader(new InputStreamReader(neturl.openStream()));
@@ -32,6 +32,7 @@ public class EventbriteAPICall {
 		String temp;
 		while((temp=br.readLine())!=null)
 			jsontext = jsontext.concat(temp);
+		br.close();
 		return jsontext;
 	}
 	
@@ -39,37 +40,29 @@ public class EventbriteAPICall {
 	{
 		ArrayList<Event> events = new ArrayList<>();
 		url = updateURL(url);
-		System.out.println(url);
 		String jsontext = getJsontext(url);
-		//System.out.println(jsontext);
-		//creating jsonobject from text
 		JSONObject json = new JSONObject(jsontext);
-		int page_size = hasPagination(json);
-		for(int j=0;j<page_size;j++) // now for no of page of results, we loop...
+		int page_count = hasPagination(json);
+		for(int j= 1; j <= page_count; j++) // now for no of page of results, we loop...
 		{
 			url = url.concat("&page="+j);
+			url.replace("&page="+(j-1), "");
 			jsontext = getJsontext(url);
-			if(j>0)
-				json = new JSONObject(jsontext);
+			json = new JSONObject(jsontext);
 			org.json.JSONArray listings = json.getJSONArray("events"); // getting the actual Events array.
-			//System.out.println(j);
-			for(int i=0;i<listings.length() || events.size()<50 ;i++) // for every event in the array, retrving the required materials.
+			for(int i=0; i< listings.length(); i++) // for every event in the array, retrieving the required materials.
 			{
 				JSONObject iterateObj = listings.getJSONObject(i);
-				JSONObject temp = iterateObj.getJSONObject("name"); // just getting the "name" for the time being.
-				String name = temp.toString().split("text")[1].split(",")[0].replaceAll("\"", "");
-				temp = iterateObj.getJSONObject("start");
-				String startDate = temp.toString().split("local")[1].split(",")[0].replaceAll("\"", "").replaceAll(":", "");
-				temp = iterateObj.getJSONObject("description");
-				String description = temp.toString().split("text")[1].split(",")[0].replaceAll("\"", "");
+				String name = iterateObj.getJSONObject("name").getString("text");
+				String startDate = iterateObj.getJSONObject("start").getString("local");
+				String description = iterateObj.getJSONObject("description").getString("html");
 				if(iterateObj.has("vanity_url"))
 						description = description.concat(iterateObj.getString("vanity_url"));
 				String id  = iterateObj.get("id").toString();
 				int capacity = (int) iterateObj.get("capacity");
-				temp = iterateObj.getJSONObject("venue").getJSONObject("address");
-				Address address = getAddressFromVenue(temp);
+				JSONObject addressObj = iterateObj.getJSONObject("venue").getJSONObject("address");
+				Address address = getAddressFromVenue(addressObj);
 				org.json.JSONArray arr = iterateObj.getJSONArray("ticket_classes");
-				//System.out.println(id);
 				double ticket_price =0;	
 				/*temp = arr.getJSONObject(0);
 				temp = temp.getJSONObject("cost");*/
@@ -77,16 +70,13 @@ public class EventbriteAPICall {
 					ticket_price = (double) arr.getJSONObject(0).getJSONObject("cost").getDouble("value")/100;
 				events.add(makeEventObj(name,startDate,description,id,capacity,address,ticket_price,EventSource.EventBrite));
 			}
-			if(events.size()>RESULTSIZE)
+			if(events.size() > 50)
 				break;
 		}
-		if(Integer.parseInt(json.getJSONObject("pagination").get("page_count").toString()) == events.size())
-			System.out.println("Write on !!");
-		System.out.println("DONE!!" + events.size());
 		return events;
 	}
 	
-	public Event makeEventObj(String name,String startDate,String description,String id,int capacity,Address address,double ticket_price,EventSource eventbrite) throws ParseException
+	private Event makeEventObj(String name,String startDate,String description,String id,int capacity,Address address,double ticket_price,EventSource eventbrite) throws ParseException
 	{
 		Event event = new Event();
 		event.setName(name);
@@ -101,7 +91,7 @@ public class EventbriteAPICall {
 		return event;
 	}
 	
-	public Address getAddressFromVenue(JSONObject temp) throws JSONException
+	private Address getAddressFromVenue(JSONObject temp) throws JSONException
 	{
 		Address address = new Address();
 		address.setAddressLine1(temp.getString("address_1"));
@@ -115,23 +105,24 @@ public class EventbriteAPICall {
 		return address;
 	}
 	
-	public static void main(String args[]) throws IOException, JSONException, ParseException
-	{
-		EventbriteAPICall obj = new EventbriteAPICall();
-		System.out.println("Enter the url you want to retrive with your key");
-		Scanner s = new Scanner(System.in);
-		String url = s.nextLine();
-		s.close();
-		obj.getListofEventsFromJSON(url);
-	}
-	public int hasPagination(JSONObject json) throws NumberFormatException, JSONException {
-		int page_size= 1;
+//	public static void main(String args[]) throws IOException, JSONException, ParseException
+//	{
+//		EventbriteAPICall obj = new EventbriteAPICall();
+//		System.out.println("Enter the url you want to retrive with your key");
+//		Scanner s = new Scanner(System.in);
+//		String url = s.nextLine();
+//		s.close();
+//		obj.getListofEventsFromJSON(url);
+//	}
+	
+	private int hasPagination(JSONObject json) throws NumberFormatException, JSONException {
+		int page_count= 1;
 		if(json.has("pagination")) // checking if the page has pagination tag to summarize the returns
-			page_size =Integer.parseInt(json.getJSONObject("pagination").get("page_count").toString());
-		return page_size;
+			page_count =Integer.parseInt(json.getJSONObject("pagination").get("page_count").toString());
+		return page_count;
 	}
 	
-	public String updateURL(String url)
+	private String updateURL(String url)
 	{
 		final String KEY = "NI22KJTJHZUPJKYDVEUZ";
 		if(!url.contains("&token"))
@@ -140,8 +131,6 @@ public class EventbriteAPICall {
 			url = url.concat("&format=json");
 		if(!url.contains("&expand"))
 			url = url.concat("&expand=venue,ticket_classes");
-		if(!url.contains("&page"))
-			url = url.concat("&page=1");
 		return url;
 	}
 }

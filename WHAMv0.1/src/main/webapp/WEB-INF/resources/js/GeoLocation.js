@@ -11,22 +11,21 @@ var options = {
   maximumAge: 0
 };
 
-var intialLocation = {
-		latitude: 42.3398198,
-		longitude: -71.0875516
-};
-
 function success(pos) {
   var crd = pos.coords;
-  console.log('Latitude : ' + crd.latitude);
-  console.log('Longitude: ' + crd.longitude);
-  intialLocation.latitude = crd.latitude;
-  intialLocation.longitude = crd.longitude;
   location.href = "index" +"/"+ crd.latitude  +"/"+ crd.longitude;
 };
 
+/* Author: Sandeep
+ * Date: 11/19/2015
+ * The error will be because of two reasons.
+ * 	1) user blocks location detection
+ * 	2) Browser doesn't support location detection
+ * In such times,return Boston's latitude & longitude*/
 function error(err) {
-  console.log('ERROR(' + err.code + '): ' + err.message);
+ var bostonLat = 42.3132882;
+ var bostonLong = -71.1972408;
+ location.href = "index" +"/"+ bostonLat  +"/"+ bostonLong;
 };
 
 function getLocation() {

@@ -39,15 +39,6 @@
 	catch(Exception e) {
 		response.sendRedirect("geolocator");
 	}
-	
-	/* Subbed events code. uncomment if you want to test the maps. */
-	
-// 	String url = "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV&where=42.3601,-71.0589&within=10&date=Future&page_size=50&sort_order=distance";
-// 	EventfulAPICall eventCall = new EventfulAPICall();
-// 	ArrayList<Event> listOfEvent = eventCall.getListofEventsFromJSON(url);
-// 	String jsonEvents = new Gson().toJson(listOfEvent);
-// 	double latitude = Double.parseDouble(request.getParameter("latitude"));
-// 	double longitude = Double.parseDouble(request.getParameter("longitude"));
 %>
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
@@ -63,7 +54,7 @@
 <title>WHAM - Home</title>
 <script>
 	google.maps.event.addDomListener(window, 'load', function() {
-		initialize(<%=jsonEvents%>);
+		initialize(<%=jsonEvents%>, <%=latitude%>, <%=longitude%>);
 	});
 
 	//Dynamicaly detect the window's size and resize the map
