@@ -38,7 +38,7 @@ public class EventbriteAPICall {
 	
 	public ArrayList<Event> getListofEventsFromJSON(String url) throws IOException, JarException, ParseException, NumberFormatException, JSONException
 	{
-		ArrayList<Event> events = new ArrayList<>();
+		ArrayList<Event> events = new ArrayList<Event>();
 		url = updateURL(url);		
 		int currentPage = 1;
 		int totalPage = 1;
