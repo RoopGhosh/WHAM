@@ -38,7 +38,7 @@ public class EventfulAPICall {
 	
 	public ArrayList<Event> getListofEventsFromJSON(String url) throws IOException, JSONException, ParseException
 	{
-		ArrayList<Event> LoEvents = new ArrayList<>();		
+		ArrayList<Event> LoEvents = new ArrayList<Event>();		
 		String jsontext = getJsontext(url);
 		//creating jsonobject from text
 		JSONObject json = new JSONObject(jsontext);
