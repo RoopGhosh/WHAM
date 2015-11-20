@@ -70,7 +70,7 @@ public class EventfulAPICall {
 				address.setLatitude(Float.parseFloat(iterateObj.get("latitude").toString()));
 				address.setLongitude(Float.parseFloat(iterateObj.get("longitude").toString()));
 				event.setAddress(address);
-				LoEvents.add(event);
+				LoEvents.add(event);				
 			}
 		}
 		return LoEvents;

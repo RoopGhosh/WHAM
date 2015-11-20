@@ -21,20 +21,17 @@
 	Calendar c = Calendar.getInstance(); // starts with today's date and time
 	c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
 	Date date = c.getTime(); // gets modified time
-	String[] categories = new String[0];
+	
+	// Remove hardcoded categories & dislikes
+	String[] categories = {"food", "science"};
+	String[] dislikes = {"music", "boston", "cheese"};
 	try
-	{		
-		System.out.println("hello in try block " + request.getAttribute("longitude"));
+	{	
 		latitude = (Double)request.getAttribute("latitude");
 		longitude =(Double) request.getAttribute("longitude");
-		System.out.println("in lati "+latitude);
-		System.out.println("in longi "+longitude);
 		EventManager em = new EventManager();
-		System.out.println("1");
-		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date, categories); 
-		System.out.println("2");
+		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date, categories, dislikes);
 		jsonEvents = new Gson().toJson(events);
-		System.out.println(jsonEvents);
 	}
 	catch(Exception e) {
 		response.sendRedirect("geolocator");

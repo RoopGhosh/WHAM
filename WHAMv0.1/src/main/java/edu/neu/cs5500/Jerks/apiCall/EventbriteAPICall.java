@@ -39,16 +39,16 @@ public class EventbriteAPICall {
 	public ArrayList<Event> getListofEventsFromJSON(String url) throws IOException, JarException, ParseException, NumberFormatException, JSONException
 	{
 		ArrayList<Event> events = new ArrayList<>();
-		url = updateURL(url);
-		String jsontext = getJsontext(url);
-		JSONObject json = new JSONObject(jsontext);
-		int page_count = hasPagination(json);
-		for(int j= 1; j <= page_count; j++) // now for no of page of results, we loop...
+		url = updateURL(url);		
+		int currentPage = 1;
+		int totalPage = 1;
+		while(currentPage <= totalPage)
 		{
-			url = url.concat("&page="+j);
-			url.replace("&page="+(j-1), "");
-			jsontext = getJsontext(url);
-			json = new JSONObject(jsontext);
+			url = url.concat("&page="+currentPage);			
+			url.replace("&page="+(currentPage-1), "");
+			String jsontext = getJsontext(url);					
+			JSONObject json = new JSONObject(jsontext);
+			totalPage =  hasPagination(json);	
 			org.json.JSONArray listings = json.getJSONArray("events"); // getting the actual Events array.
 			for(int i=0; i< listings.length(); i++) // for every event in the array, retrieving the required materials.
 			{
@@ -64,15 +64,15 @@ public class EventbriteAPICall {
 				Address address = getAddressFromVenue(addressObj);
 				org.json.JSONArray arr = iterateObj.getJSONArray("ticket_classes");
 				double ticket_price =0;	
-				/*temp = arr.getJSONObject(0);
-				temp = temp.getJSONObject("cost");*/
 				if( arr.length()>0 && !arr.getJSONObject(0).getBoolean("free") && arr.getJSONObject(0).has("cost"))
 					ticket_price = (double) arr.getJSONObject(0).getJSONObject("cost").getDouble("value")/100;
 				events.add(makeEventObj(name,startDate,description,id,capacity,address,ticket_price,EventSource.EventBrite));
-			}
+			}			
 			if(events.size() > 50)
 				break;
+			currentPage++;
 		}
+
 		return events;
 	}
 	
@@ -104,16 +104,6 @@ public class EventbriteAPICall {
 		address.setLongitude(Float.parseFloat(temp.getString("longitude")));
 		return address;
 	}
-	
-//	public static void main(String args[]) throws IOException, JSONException, ParseException
-//	{
-//		EventbriteAPICall obj = new EventbriteAPICall();
-//		System.out.println("Enter the url you want to retrive with your key");
-//		Scanner s = new Scanner(System.in);
-//		String url = s.nextLine();
-//		s.close();
-//		obj.getListofEventsFromJSON(url);
-//	}
 	
 	private int hasPagination(JSONObject json) throws NumberFormatException, JSONException {
 		int page_count= 1;
