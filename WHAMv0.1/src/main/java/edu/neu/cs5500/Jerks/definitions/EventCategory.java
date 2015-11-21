@@ -1,5 +1,4 @@
 package edu.neu.cs5500.Jerks.definitions;
-import java.lang.*;
 
 /* Author: Sandeep Ramamoorthy
  * Creation Date: 11/19/2015 4:30 AM EST
