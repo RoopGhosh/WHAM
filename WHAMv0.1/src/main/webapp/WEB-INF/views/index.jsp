@@ -11,6 +11,7 @@
 	<spring:url value="/resources/css/main.css" var="MainCSS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
 	<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
+	<spring:url value="/resources/js/Login.js" var="Login" />
 <%	
 	String jsonEvents = "";
 	double latitude = 0.0f;
@@ -46,8 +47,10 @@
 <script src="${GeoLocator}"></script>
 <script src="http://maps.googleapis.com/maps/api/js?key="></script>
 <script src="${GoogleMaps}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script src="${BootStrap}"></script>
+<script src="${Login}"></script>
 <title>WHAM - Home</title>
 <script>
 	google.maps.event.addDomListener(window, 'load', function() {
@@ -61,15 +64,15 @@
 	});
 </script>
 </head>
-<body>
-	<div class="container-fluid">
+<body ng-app="whamApp">
+	<div class="container-fluid" ng-controller="currentUser">
 		<!-- Header Start -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand" rel="home" href="#">WHAM</a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">Howdy User!<span
+						data-toggle="dropdown"><label ng-model="loggedInUser">{{loggedInUser}}</label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left">&nbsp;</span></a>
 						<ul class="dropdown-menu">
 							<li><a href="#">Create Event<span
@@ -105,10 +108,12 @@
 						</div>
 					</form>
 				</div>
-		
-					<button type="button" class="btn btn-success navbar-btn">Sign in</button>
-					<button type="button" class="btn btn-success navbar-btn" onclick="location.href='register.jsp'">Register</button>
-
+				<div class="form-group" ng-show="loginShow" ng-model="loginShow">
+					<input type="text" class="col-xs-1" placeholder="Username" ng-model="username" >
+					<input type="text" class="col-xs-1" placeholder="Password" ng-model="password" >
+					<button type="button" class="btn btn-success navbar-btn"  ng-click="login()">Sign in</button>
+					<button type="button" class="btn btn-success navbar-btn" onclick="location.href='register'" value="">Regsiter</button>
+				</div>
 			</div>
 		</div>
 	</div>
