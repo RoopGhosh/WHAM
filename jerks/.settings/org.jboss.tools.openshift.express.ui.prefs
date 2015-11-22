@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+org.jboss.tools.openshift.ApplicationId=564ffb5489f5cf55a8000084
+org.jboss.tools.openshift.ApplicationName=jerks
+org.jboss.tools.openshift.Connection=https\://ramamoorthy.s%40husky.neu.edu@openshift.redhat.com
+org.jboss.tools.openshift.DeployFolder=webapps
+org.jboss.tools.openshift.Domain=cs5500
+org.jboss.tools.openshift.RemoteName=origin
