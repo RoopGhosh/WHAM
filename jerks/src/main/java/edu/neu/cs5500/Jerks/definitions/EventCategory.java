@@ -6,7 +6,6 @@ import java.lang.*;
  * Description: Enumeration containing the list of Eventful category Ids as names 
  * 				and Eventbrite category Ids as values
  * */
-@SuppressWarnings("unused")
 public enum EventCategory {
 	music (103),
 	food (110),

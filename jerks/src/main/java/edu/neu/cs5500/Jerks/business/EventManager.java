@@ -110,7 +110,6 @@ public class EventManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return events;
 	}
 	
