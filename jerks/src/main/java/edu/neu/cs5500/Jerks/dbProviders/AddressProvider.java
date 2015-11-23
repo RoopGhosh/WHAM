@@ -9,6 +9,10 @@ import javax.persistence.Query;
 
 import edu.neu.cs5500.Jerks.definitions.*;
 
+/* Author: Karthik Chandranna
+ * Creation Date: 11/02/2015 6:04 AM EST
+ * Description: All address related database calls and methods goes into this class 
+ * */
 public class AddressProvider {
 
 	EntityManagerFactory factory = Persistence.createEntityManagerFactory("WHAMv0.1");
@@ -34,9 +38,9 @@ public class AddressProvider {
 
 		em.getTransaction().begin();
 		Query query = em.createQuery("select a from Address a");
-		List<Address> address = (List<Address>)query.getResultList();
+		List<Address> addresses = (List<Address>)query.getResultList();
 		em.getTransaction().commit();
-		return address;
+		return addresses;
 	}
 
 

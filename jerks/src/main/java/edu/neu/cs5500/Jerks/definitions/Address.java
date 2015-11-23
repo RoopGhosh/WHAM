@@ -22,6 +22,7 @@ public class Address {
 	private float latitude;
 	private float longitude;
 	
+	// Getters and Setters for AddressID
 	public int getAddressId() {
 		return addressId;
 	}
@@ -110,6 +111,7 @@ public class Address {
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
 	}
+	
 	@Override
 	public String toString() {
 		return "Address [addressId=" + addressId + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2
