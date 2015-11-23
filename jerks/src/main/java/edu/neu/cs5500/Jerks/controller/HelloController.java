@@ -24,21 +24,33 @@ public class HelloController {
 			return "geolocator";
 		}
 	}
-	@RequestMapping(value = "/login/{uname}", method = RequestMethod.GET)
-	public String register (@PathVariable("uname") String a,ModelMap model)
+	
+	@RequestMapping(value = "/login/{username}/{password}", method = RequestMethod.GET)
+	public String login (@PathVariable("username") String a,@PathVariable("password") String b,ModelMap model)
 	{
-		System.out.println("hello : " + a);
-		model.put("uname", a);
-		return "index";
+		try{
+		System.out.println("hello from login: " + a);
+		model.put("username", a);
+		model.put("password", b);
+		return "redirect:index";
+		}
+		catch(Exception e)
+		{
+			System.out.println("Url error");
+			return "redirect:index";
+		}
 	}
+	
 	@RequestMapping(value = {"/geolocator","/index", "/index/"}, method = RequestMethod.GET)
 	public String geolocator (ModelMap model)
 	{
+		System.out.println("Hello from geolocator");
 		return "geolocator";
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String defaultMethod ()
 	{
+		System.out.println("Hello from geolocator");
 		return "geolocator";
 	}
 	/*@RequestMapping(value = "/resources/**")
