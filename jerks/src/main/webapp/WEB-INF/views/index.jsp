@@ -33,6 +33,7 @@
 		EventManager em = new EventManager();
 		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date, categories, dislikes);
 		jsonEvents = new Gson().toJson(events);
+		System.out.println("Json events"+jsonEvents);
 	}
 	catch(Exception e) {
 		response.sendRedirect("geolocator");

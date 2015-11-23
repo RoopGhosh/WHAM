@@ -30,5 +30,4 @@ function error(err) {
 
 function getLocation() {
     navigator.geolocation.getCurrentPosition(success, error, options);
-    return intialLocation;
 }
