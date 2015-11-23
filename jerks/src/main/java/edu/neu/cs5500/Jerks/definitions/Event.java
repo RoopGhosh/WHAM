@@ -2,100 +2,144 @@ package edu.neu.cs5500.Jerks.definitions;
 
 import java.util.*;
 
-/* Author: Sandeep Ramamoorthy
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/* Author: Karthik Chandranna
  * Creation Date: 11/01/2015 6:49 PM EST
  * Description: Event info object definition
  * */
+
+@Entity
+@Table
 public class Event {
 	
-	private String _id;
-	private String _name;
-	private Date _date;
-	private Address _address; 
-	private String _description;
-	private double _ticketPrice;
-	private short _minAgeLimit;
-	private double _rating;
-	private int _remainingTickets;
-	private EventSource _source;
+	@Id
+	private String eventId;
+	private String name;
+	@Temporal(TemporalType.DATE)
+	private Date date;
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="ADDRESSID")
+	private Address address; 
+	private String description;
+	private double ticketPrice;
+	private int minAgeLimit;
+	private double rating;
+	private int remainingTickets;
+	private EventSource source;
+	
+	public Event(){
+		
+	}
+	
+	public Event(String name, Date date, Address address, String description, double ticketPrice, int minAgeLimit,
+			double rating, int remainingTickets, EventSource source) {
+		
+		this.eventId =  (new Date()).toString();
+		this.name = name;
+		this.date = date;
+		this.address = address;
+		this.description = description;
+		this.ticketPrice = ticketPrice;
+		this.minAgeLimit = minAgeLimit;
+		this.rating = rating;
+		this.remainingTickets = remainingTickets;
+		this.source = source;
+	}
 	
 	//Getters and Setters for Id
-	public String getId() {
-		return _id;
+	public String getEventId() {
+		return eventId;
 	}
-	public void setId(String _id) {
-		this._id = _id;
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
 	}
 	
 	//Getters and Setters for Name
 	public String getName() {
-		return _name;
+		return name;
 	}
-	public void setName(String _name) {
-		this._name = _name;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	//Getters and Setters for Date
 	public Date getDate() {
-		return _date;
+		return date;
 	}
-	public void setDate(Date _date) {
-		this._date = _date;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 	//Getters and Setters for Address
 	public Address getAddress() {
-		return _address;
+		return address;
 	}
-	public void setAddress(Address _address) {
-		this._address = _address;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	
 	//Getters and Setters for Description
 	public String getDescription() {
-		return _description;
+		return description;
 	}
-	public void setDescription(String _description) {
-		this._description = _description;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	//Getters and Setters for minimum age limit
-	public short getMinAgeLimit() {
-		return _minAgeLimit;
+	public int getMinAgeLimit() {
+		return minAgeLimit;
 	}
-	public void setMinAgeLimit(short _minAgeLimit) {
-		this._minAgeLimit = _minAgeLimit;
+	public void setMinAgeLimit(int minAgeLimit) {
+		this.minAgeLimit = minAgeLimit;
 	}
 	
 	//Getters and Setters for ticket price in US dollars
 	public double getTicketPrice() {
-		return _ticketPrice;
+		return ticketPrice;
 	}
-	public void setTicketPrice(double _ticketPrice) {
-		this._ticketPrice = _ticketPrice;
+	public void setTicketPrice(double ticketPrice) {
+		this.ticketPrice = ticketPrice;
 	}
 	
 	//Getters and Setters for event rating
 	public double getRating() {
-		return _rating;
+		return rating;
 	}
-	public void setRating(double _rating) {
-		this._rating = _rating;
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 	
 	//Getters and Setters for remaining tickets
 	public int getRemainingTickets() {
-		return _remainingTickets;	
+		return remainingTickets;	
 	}
-	public void setRemainingTickets(int _remainingTickets) {
-		this._remainingTickets = _remainingTickets;
+	public void setRemainingTickets(int remainingTickets) {
+		this.remainingTickets = remainingTickets;
 	}
 	
 	//Getters and Setters for event source
 	public EventSource getSource() {
-		return _source;
+		return source;
 	}
-	public void setSource(EventSource _source) {
-		this._source = _source;
+	public void setSource(EventSource source) {
+		this.source = source;
+	}
+
+	@Override
+	public String toString() {
+		return "Event [eventId=" + eventId + ", name=" + name + ", date=" + date + ", address=" + address + ", description="
+				+ description + ", ticketPrice=" + ticketPrice + ", minAgeLimit=" + minAgeLimit + ", rating=" + rating
+				+ ", remainingTickets=" + remainingTickets + ", source=" + source + "]";
 	}	
+	
 }

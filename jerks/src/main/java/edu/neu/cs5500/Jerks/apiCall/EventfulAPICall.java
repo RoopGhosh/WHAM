@@ -50,7 +50,7 @@ public class EventfulAPICall {
 			{
 				JSONObject iterateObj = listings.getJSONObject(i);
 				Event event = new Event();
-				event.setId(iterateObj.get("id").toString());
+				event.setEventId(iterateObj.get("id").toString());
 				event.setName(iterateObj.get("title").toString());
 				if (iterateObj.get("description").toString() == "null")
 					event.setDescription(event.getName());

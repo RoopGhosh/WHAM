@@ -90,7 +90,7 @@ public class UserProvider {
 		List<String> disLikes = new ArrayList<>();
 		disLikes.add(EventCategory.politics_activism.toString());
 		disLikes.add(EventCategory.religion_spirituality.toString());
-		User newUser = new User("brucewayne2@batman.movie", "Bruce", "Wayne", "pwd1234", address, "6179991111", new GregorianCalendar(1990, Calendar.MARCH, 11).getTime(), "M", areaOfInterest, disLikes);
+		User newUser = new User("brucewayne5@batman.movie", "Bruce", "Wayne", "pwd1234", address, "6179991111", new GregorianCalendar(1990, Calendar.MARCH, 11).getTime(), "M", areaOfInterest, disLikes);
 		User user = dao.createUser(newUser);
 		System.out.println(user.toString());
 		

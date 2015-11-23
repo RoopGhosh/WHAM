@@ -84,7 +84,7 @@ public class EventbriteAPICall {
 		event.setDate(date);
 		event.setDescription(description);
 		event.setAddress(address);
-		event.setId(id);
+		event.setEventId(id);
 		event.setRemainingTickets(capacity);
 		event.setTicketPrice(ticket_price);
 		return event;
