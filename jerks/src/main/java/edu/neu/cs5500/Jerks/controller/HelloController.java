@@ -24,18 +24,16 @@ public class HelloController {
 			return "geolocator";
 		}
 	}
-	
-	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register (ModelMap model)
+	@RequestMapping(value = "/login/{uname}", method = RequestMethod.GET)
+	public String register (@PathVariable("uname") String a,ModelMap model)
 	{
-		model.addAttribute("message", "Hello spring web mvc");
-		return "register";
+		System.out.println("hello : " + a);
+		model.put("uname", a);
+		return "index";
 	}
 	@RequestMapping(value = {"/geolocator","/index", "/index/"}, method = RequestMethod.GET)
 	public String geolocator (ModelMap model)
 	{
-		model.addAttribute("message", "Hello spring web mvc");
 		return "geolocator";
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
