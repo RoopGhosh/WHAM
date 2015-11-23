@@ -25,11 +25,11 @@ app.controller('currentUser', function ($scope) {
     ];
 	
 	$scope.login = function () {
-		
+
 		var validUser = false;
 		var uname = $scope.username;
 		var pass = $scope.password;
-		
+		/*
 		for (var u in users) {
 				if(users[u].username === uname && users[u].password === pass)
 					{
@@ -45,7 +45,9 @@ app.controller('currentUser', function ($scope) {
 				$scope.password = "";
 				$scope.loggedInUser = "Please login again"; 
 			}
-		
+		*/
+		var url = document.URL; 
+		location.href = "http://localhost:8080/jerks" + "/login" +"/"+ uname + "/" + pass;
 	}
 	
 	
