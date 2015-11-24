@@ -8,6 +8,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import edu.neu.cs5500.Jerks.definitions.*;
+import edu.neu.cs5500.Jerks.resources.test.TestRandom;
 
 /* Author: Karthik Chandranna
  * Creation Date: 11/02/2015 6:04 AM EST
@@ -57,12 +58,14 @@ public class AddressProvider {
 
 	
 	public static void main(String[] args) {
+		
+		TestRandom rand = new TestRandom();
 		AddressProvider dao = new AddressProvider();
-		Address newAddress = new Address("500 Boylston", "Apt 16", "Boston", "MA", "US", "02115", 42.337f, -71.072f);		
+		Address newAddress = new Address(rand.nextAlphaNumStr(10), rand.nextAlphaNumStr(5), rand.nextStr(5), rand.nextStr(2), rand.nextStr(2), rand.nextNum(5), rand.nextFloat(2,3), rand.nextFloat(2,3));		
 		Address address = dao.createAddress(newAddress);
 		System.out.println(address.toString());
 		
-		address.setAddressLine1("360 Huntington");
+		address.setAddressLine1(rand.nextAlphaNumStr(10));
 		address = dao.updateAddress(address.getAddressId(), address);
 		System.out.println(address.toString());
 		
