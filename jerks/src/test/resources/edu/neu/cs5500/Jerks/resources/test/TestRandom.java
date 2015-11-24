@@ -3,6 +3,10 @@ package edu.neu.cs5500.Jerks.resources.test;
 
 import java.util.Random;
 
+/* Author: Karthik Chandranna
+ * Creation Date: 11/23/2015 9:07 PM EST
+ * Description: Random generators
+ * */
 public class TestRandom extends Random{
 	
 	private static final long serialVersionUID = 1L;

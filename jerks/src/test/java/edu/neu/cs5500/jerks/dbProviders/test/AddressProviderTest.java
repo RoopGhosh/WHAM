@@ -12,7 +12,6 @@ public class AddressProviderTest {
 	
 	@Test()
 	public void testCreateAddressBasic(){
-		//Address addr = new Address("address line 1", "address Line 2","boston", "MA", "US", "02115", 42.337f, -71.072f);
 		Address addr = new Address(rand.nextAlphaNumStr(10), rand.nextAlphaNumStr(5), rand.nextStr(5), rand.nextStr(2), rand.nextStr(2), rand.nextNum(5), rand.nextFloat(2,3), rand.nextFloat(2,3));
 		AddressProvider addrDao = new AddressProvider();
 		Address newAddr = addrDao.createAddress(addr);
