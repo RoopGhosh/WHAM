@@ -118,5 +118,19 @@ public class Address {
 				+ ", city=" + city + ", state=" + state + ", country=" + country + ", zipCode=" + zipCode
 				+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
 	}	
+	
+	public Address clone() {
+		Address clone = new Address();
+		clone.addressId = this.addressId;
+		clone.addressLine1 = this.addressLine1;
+		clone.addressLine2 = this.addressLine2;
+		clone.city = this.city;
+		clone.state = this.state;
+		clone.country = this.country;
+		clone.zipCode = this.zipCode;
+		clone.latitude = this.latitude;
+		clone.longitude = this.longitude;
+		return clone;
+	}
 
 }

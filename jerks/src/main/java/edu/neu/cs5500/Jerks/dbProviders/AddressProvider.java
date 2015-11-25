@@ -25,12 +25,11 @@ public class AddressProvider {
 	}
 
 
-	public Address createAddress(Address address)
+	public void createAddress(Address address)
 	{
 		em.getTransaction().begin();
 		em.persist(address);
 		em.getTransaction().commit();
-		return address;
 	}
 
 	
@@ -53,7 +52,7 @@ public class AddressProvider {
 			em.merge(address);
 		}
 		em.getTransaction().commit();
-		return address;
+		return a;
 	}
 
 	
@@ -61,8 +60,8 @@ public class AddressProvider {
 		
 		TestRandom rand = new TestRandom();
 		AddressProvider dao = new AddressProvider();
-		Address newAddress = new Address(rand.nextAlphaNumStr(10), rand.nextAlphaNumStr(5), rand.nextStr(5), rand.nextStr(2), rand.nextStr(2), rand.nextNum(5), rand.nextFloat(2,3), rand.nextFloat(2,3));		
-		Address address = dao.createAddress(newAddress);
+		Address address = new Address(rand.nextAlphaNumStr(10), rand.nextAlphaNumStr(5), rand.nextStr(5), rand.nextStr(2), rand.nextStr(2), rand.nextNum(5), rand.nextFloat(2,3), rand.nextFloat(2,3));		
+		dao.createAddress(address);
 		System.out.println(address.toString());
 		
 		address.setAddressLine1(rand.nextAlphaNumStr(10));
