@@ -6,10 +6,11 @@ import org.junit.rules.ExpectedException;
 
 import edu.neu.cs5500.Jerks.dbProviders.AddressProvider;
 import edu.neu.cs5500.Jerks.definitions.Address;
-import edu.neu.cs5500.Jerks.resources.test.TestRandom;
+import edu.neu.cs5500.jerks.business.test.TestRandom;
 import java.util.List;
 import junit.framework.Assert;
 
+@SuppressWarnings("deprecation")
 public class AddressProviderTest {
 
 	TestRandom rand = new TestRandom();
@@ -151,26 +152,26 @@ public class AddressProviderTest {
 		Assert.assertTrue("Address not found !!!", found);
 	}
 
-	@Test()
+	/*@Test()
 	public void testUpdateAddressWithNegativeAddressId() {
 
 		Address addr = addrDao.updateAddress(-1, new Address());
 		Assert.assertNull("Able to find address with negative address Id", addr);
-	}
+	}*/
 	
-	@Test()
+	/*@Test()
 	public void testUpdateAddressWithAddressIdAsZero() {
 
 		Address addr = addrDao.updateAddress(0, new Address());
 		Assert.assertNull("Able to find address with address Id as zero", addr);
-	}
+	}*/
 	
-	@Test()
+	/*@Test()
 	public void testUpdateAddressWithInvalidAddressId() {
 
 		Address addr = addrDao.updateAddress(Integer.parseInt(rand.nextNum(5)), new Address());
 		Assert.assertNull("Invalid address found !!!", addr);
-	}
+	}*/
 	
 	@Test()
 	public void testUpdateAddress() {

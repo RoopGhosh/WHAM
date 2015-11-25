@@ -1,12 +1,9 @@
 package edu.neu.cs5500.jerks.TS1;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Test;
-import org.junit.internal.matchers.CombinableMatcher;
 
-import edu.neu.cs5500.jerks.*;
 public class TestJUnit1 {
 
 	@Test

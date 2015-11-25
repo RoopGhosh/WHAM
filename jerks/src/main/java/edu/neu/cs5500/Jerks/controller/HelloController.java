@@ -5,6 +5,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HelloController {
@@ -15,29 +16,13 @@ public class HelloController {
 		try{
 			Double latitude = (double) Double.parseDouble(a);
 			Double longitude = (double) Double.parseDouble(b);
-			System.out.println("hello "+ latitude + " " + longitude );
 			model.put("latitude", latitude);
 			model.put("longitude", longitude);
 			return "index";
 		}
 		catch(Exception e) {
+			System.out.println("From controller catch block");
 			return "geolocator";
-		}
-	}
-	
-	@RequestMapping(value = "/login/{username}/{password}", method = RequestMethod.GET)
-	public String login (@PathVariable("username") String a,@PathVariable("password") String b,ModelMap model)
-	{
-		try{
-		System.out.println("hello from login: " + a);
-		model.put("username", a);
-		model.put("password", b);
-		return "redirect:index";
-		}
-		catch(Exception e)
-		{
-			System.out.println("Url error");
-			return "redirect:index";
 		}
 	}
 	
@@ -47,15 +32,35 @@ public class HelloController {
 		System.out.println("Hello from geolocator");
 		return "geolocator";
 	}
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String b (@RequestParam("username") String username, @RequestParam("password") String password,
+			@RequestParam("latitude") String latitude,
+			@RequestParam("longitude") String longitude,   ModelMap model)
+	{
+		model.put("username", username);
+		model.put("password", password);
+		model.put("latitude", latitude);
+		model.put("longitude", longitude);
+		return "index";
+	}
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String defaultMethod ()
 	{
-		System.out.println("Hello from geolocator");
+		System.out.println("Hello from default");
 		return "geolocator";
+	}
+	
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String register()
+	{
+		System.out.println("Hello from default");
+		return "register";
 	}
 	/*@RequestMapping(value = "/resources/**")
 	   public String redirect() {
 	     System.out.println();
 	      return "redirect:/resources/**";
 	   }*/
+
 }

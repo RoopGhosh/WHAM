@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/context http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="WHAMv0.1">
+<context-param>
+        <param-name>driver</param-name>
+        <param-value>com.mysql.jdbc.Driver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>url</param-name>
+        <param-value>jdbc:mysql://127.7.32.130:3306/jerks</param-value>
+    </context-param>
+    <context-param>
+        <param-name>user</param-name>
+        <param-value>admin6IViBwq</param-value>
+    </context-param>
+    <context-param>
+        <param-name>password</param-name>
+        <param-value>RKzjAiKiCd9N</param-value>
+    </context-param>
+    </persistence-unit>
+    </persistence>

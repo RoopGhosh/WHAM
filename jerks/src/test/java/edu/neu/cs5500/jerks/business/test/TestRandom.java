@@ -1,4 +1,4 @@
-package edu.neu.cs5500.Jerks.resources.test;
+package edu.neu.cs5500.jerks.business.test;
 
 
 import java.util.Random;
@@ -12,7 +12,7 @@ public class TestRandom extends Random{
 	private static final long serialVersionUID = 1L;
 	private static final String ALPHA_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final String NUMBERS = "0123456789";
-    private static final String ALPHA_NUMERIC = ALPHA_CHARS + NUMBERS;	
+    private static final String ALPHA_NUMERIC = ALPHA_CHARS + NUMBERS;
 	
 	public char nextChar(final String string) {
         return string.charAt(nextInt(string.length()));

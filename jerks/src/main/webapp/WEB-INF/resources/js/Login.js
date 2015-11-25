@@ -46,8 +46,9 @@ app.controller('currentUser', function ($scope) {
 				$scope.loggedInUser = "Please login again"; 
 			}
 		*/
-		var url = document.URL; 
-		location.href = "http://localhost:8080/jerks" + "/login" +"/"+ uname + "/" + pass;
+		//var url = document.URL; 
+		console.out("Hello from login.js");
+		location.href = "/login" +"/"+ uname + "/" + pass ;
 	}
 	
 	
