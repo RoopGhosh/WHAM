@@ -1,4 +1,4 @@
-package edu.neu.cs5500.jerks.dbProviders.test;
+/*package edu.neu.cs5500.jerks.dbProviders.test;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import edu.neu.cs5500.jerks.business.test.TestRandom;
 import java.util.List;
 import junit.framework.Assert;
 
+@SuppressWarnings("deprecation")
 public class AddressProviderTest {
 
 	TestRandom rand = new TestRandom();
@@ -184,7 +185,7 @@ public class AddressProviderTest {
 		assertAddress(addr, clone);
 	}
 
-	static void assertAddress(Address expected, Address actual) {
+	private void assertAddress(Address expected, Address actual) {
 
 		Assert.assertEquals("The addressId is incorrect!!!", expected.getAddressId(), actual.getAddressId());
 		Assert.assertEquals("The addressLine1 is incorrect!!!", expected.getAddressLine1(), actual.getAddressLine1());
@@ -198,3 +199,4 @@ public class AddressProviderTest {
 	}
 
 }
+*/

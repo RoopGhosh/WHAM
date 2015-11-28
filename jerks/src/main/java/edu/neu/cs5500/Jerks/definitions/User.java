@@ -23,15 +23,15 @@ public class User {
 	@Id
 	private String email;
 	private String firstName;
-	private String lastName;
+	private String lastName;	
 	private String password;
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ADDRESSID")
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="ADDRESSID")
 	private Address address;
 	private String phoneNumber;
 	@Temporal(TemporalType.DATE)
 	private Date dob;
-	private String gender;
+	private String gender;	
 	private String areaOfInterest;
 	private String disLikes;
 
@@ -41,7 +41,7 @@ public class User {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
+	}	
 
 	public String getLastName() {
 		return lastName;
@@ -49,7 +49,7 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
+	}	
 
 	public String getEmail() {
 		return email;
@@ -57,7 +57,7 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
+	}	
 
 	public String getPassword() {
 		return password;
@@ -65,7 +65,7 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
+	}	
 
 	public Address getAddress() {
 		return address;
@@ -73,7 +73,7 @@ public class User {
 
 	public void setAddress(Address address) {
 		this.address = address;
-	}
+	}	
 
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -81,7 +81,7 @@ public class User {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
+	}	
 
 	public Date getDOB() {
 		return dob;
@@ -100,33 +100,30 @@ public class User {
 	}
 
 	public List<String> getAreaOfInterest() {
-		if (areaOfInterest != null)
-			return Arrays.asList(areaOfInterest.split("|"));
-		return null;
+		return Arrays.asList(areaOfInterest.split("|"));
 	}
-
+	
 	public void setAreaOfInterest(List<String> areaOfInterest) {
 		Iterator<String> it = areaOfInterest.iterator();
 		String str = "";
-		while (it.hasNext()) {
+		while(it.hasNext())
+		{
 			str = str.concat(it.next() + "|");
 		}
-		this.areaOfInterest = str.substring(0, str.length() - 1);
+		this.areaOfInterest = str.substring(0, str.length()-1);
 	}
 
 	public List<String> getDislikes() {
-		if (disLikes != null)
-			return Arrays.asList(disLikes.split("|"));
-		return null;
+		return Arrays.asList(disLikes.split("|"));
 	}
-
 	public void setDislikes(List<String> dislikes) {
 		Iterator<String> it = dislikes.iterator();
 		String str = "";
-		while (it.hasNext()) {
+		while(it.hasNext())
+		{
 			str = str.concat(it.next() + "|");
 		}
-		this.disLikes = str.substring(0, str.length() - 1);
+		this.disLikes = str.substring(0, str.length()-1);
 	}
 
 	public User() {
@@ -144,47 +141,27 @@ public class User {
 		this.phoneNumber = phoneNumber;
 		this.dob = dob;
 		this.gender = gender;
-		String str;
-		if (areaOfInterest != null) {
-			Iterator<String> it = areaOfInterest.iterator();
-			str = "";
-			while (it.hasNext()) {
-				str = str.concat(it.next() + "|");
-			}
-			this.areaOfInterest = str.substring(0, str.length() - 1);
-		} else
-			this.areaOfInterest = null;
-
-		if (disLikes != null) {
-			Iterator<String> it1 = areaOfInterest.iterator();
-			String str1 = "";
-			while (it1.hasNext()) {
-				str1 = str1.concat(it1.next() + "|");
-			}
-			this.disLikes = str1.substring(0, str1.length() - 1);
-		} else
-			this.disLikes = null;
+		Iterator<String> it = areaOfInterest.iterator();
+		String str = "";
+		while(it.hasNext())
+		{
+			str = str.concat(it.next() + "|");
+		}
+		this.areaOfInterest = str.substring(0, str.length()-1);
+		
+		Iterator<String> it1 = areaOfInterest.iterator();
+		String str1 = "";
+		while(it1.hasNext())
+		{
+			str1 = str1.concat(it1.next() + "|");
+		}
+		this.disLikes = str1.substring(0, str1.length()-1);
 	}
 
 	@Override
 	public String toString() {
-		return "User [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
-				+ ", address=" + address + ", phoneNumber=" + phoneNumber + ", dob=" + dob + ", gender=" + gender
-				+ ", areaOfInterest=" + areaOfInterest + ", dislikes=" + disLikes + "]";
-	}
-
-	public User clone() {
-		User clone = new User();
-		clone.email = this.email;
-		clone.firstName = this.firstName;
-		clone.lastName = this.lastName;
-		clone.password = this.password;
-		clone.address = this.address;
-		clone.phoneNumber = this.phoneNumber;
-		clone.dob = this.dob;
-		clone.gender = this.gender;
-		clone.areaOfInterest = this.areaOfInterest;
-		clone.disLikes = this.disLikes;
-		return clone;
-	}
+		return "User [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", password=" + password + ", address=" + address + ", phoneNumber=" + phoneNumber + ", dob=" + dob
+				+ ", gender=" + gender + ", areaOfInterest=" + areaOfInterest + ", dislikes=" + disLikes + "]";
+	}	
 }

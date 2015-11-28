@@ -1,5 +1,5 @@
 function initialize(jsonEvents, latitude, longitude) {
-	console.log(jsonEvents);
+	console.log('Hello from intialize'+longitude);
 	var myCenter = new google.maps.LatLng(latitude, longitude);
 	var mapProp = {
 		center : myCenter,
@@ -30,26 +30,10 @@ function initialize(jsonEvents, latitude, longitude) {
 						+ jsonEvents[i].name + '</div>' + '</div>';
 				infowindow.setContent(contentString);
 				infowindow.open(map, marker);
-				showEventDetails(jsonEvents[i]);
+				showEventDetails(jsonEvents[i], latitude, longitude);
 			}
 		})(marker, i));
 	}
-
-	function showEventDetails(jsonEvent) {
-		var nameTag = document.getElementById("name");
-		var descriptionTag = document.getElementById("description");
-		var moreTag = document.getElementById("more");	
-		nameTag.innerHTML = jsonEvent.name;
-		descriptionTag.innerHTML = jsonEvent.description;
-		// Store the event details in the browser's local storage for retrieving the event in eventDetails page.  
-		localStorage.setItem(jsonEvent.id, jsonEvent);
-		
-		//Get the root URL and append the eventDetails
-		//Note: The link is broke. we need to edit the spring controller
-		//        to make it work.
-		var parentUrl = encodeURIComponent(window.location.href),
-	    eventDetailUrl = window.location.origin+ '/eventDetails.jsp?id='+jsonEvent.id;		
-		moreTag.innerHTML = '<b><a href="'+eventDetailUrl+'"> More Details >> </a></b>'; 
-	}
 	
 }
+

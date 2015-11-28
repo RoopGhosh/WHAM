@@ -6,16 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/* Author: Karthik Chandranna
- * Creation Date: 11/23/2015 9:07 PM EST
- * Description: Address class
- * */
 @Entity
 @Table
 public class Address {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 		
 	private int addressId;
 	private String addressLine1;
 	private String addressLine2;
@@ -25,12 +21,11 @@ public class Address {
 	private String zipCode;
 	private float latitude;
 	private float longitude;
-
+	
 	// Getters and Setters for AddressID
 	public int getAddressId() {
 		return addressId;
 	}
-
 	public void setAddressId(int addressId) {
 		this.addressId = addressId;
 	}
@@ -39,7 +34,6 @@ public class Address {
 	public String getAddressLine1() {
 		return addressLine1;
 	}
-
 	public void setAddressLine1(String addressLine1) {
 		this.addressLine1 = addressLine1;
 	}
@@ -48,40 +42,37 @@ public class Address {
 	public String getAddressLine2() {
 		return addressLine2;
 	}
-
 	public void setAddressLine2(String addressLine2) {
 		this.addressLine2 = addressLine2;
 	}
 
-	// Getters and Setters for city
+	//Getters and Setters for city
 	public String getCity() {
 		return city;
 	}
-
 	public void setCity(String city) {
 		this.city = city;
 	}
 
-	// Getters and Setters for state
+	//Getters and Setters for state
 	public String getState() {
 		return state;
 	}
-
 	public void setState(String state) {
 		this.state = state;
 	}
 
-	// Getters and Setters for country
+	//Getters and Setters for country
 	public String getCountry() {
 		return country;
 	}
 
-	public Address() {
+	public Address(){
 
 	}
 
-	public Address(String addressLine1, String addressLine2, String city, String state, String country, String zipCode,
-			float latitude, float longitude) {
+	public Address( String addressLine1, String addressLine2, String city, String state, String country,
+			String zipCode, float latitude, float longitude) {
 
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
@@ -95,42 +86,39 @@ public class Address {
 
 	public void setCountry(String country) {
 		this.country = country;
-	}
+	}	
 
-	// Getters and Setters for Zip Code
+	//Getters and Setters for Zip Code
 	public String getZipCode() {
 		return zipCode;
 	}
-
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 
-	// Getters and Setters for Latitude
+	//Getters and Setters for Latitude
 	public float getLatitude() {
 		return latitude;
 	}
-
 	public void setLatitude(float latitude) {
 		this.latitude = latitude;
 	}
 
-	// Getters and Setters for Longitude
+	//Getters and Setters for Longitude
 	public float getLongitude() {
 		return longitude;
 	}
-
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Address [addressId=" + addressId + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2
 				+ ", city=" + city + ", state=" + state + ", country=" + country + ", zipCode=" + zipCode
 				+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
-	}
-
+	}	
+	
 	public Address clone() {
 		Address clone = new Address();
 		clone.addressId = this.addressId;

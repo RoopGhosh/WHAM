@@ -2,7 +2,7 @@
 <%@page import="org.springframework.ui.Model"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
-	import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.neu.cs5500.Jerks.dbProviders.*, edu.neu.cs5500.Jerks.business.*, com.google.gson.Gson ,java.util.*"%>
+	import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*,java.io.*,java.util.*,java.text.*, edu.neu.cs5500.Jerks.dbProviders.*, edu.neu.cs5500.Jerks.business.*, com.google.gson.Gson ,java.util.*"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
@@ -27,21 +27,87 @@
 	// Remove hardcoded categories & dislikes
 	String[] categories = {"food", "science"};
 	String[] dislikes = {"music", "boston", "cheese"};
+	UserProvider userDao = new UserProvider();
+	User user = null;
+	String emailFordetails = "Howdy User!";
+	try
+	{
+		String firstName = request.getParameter("firstName");
+		System.out.println("Index regsiter: "+request.getParameter("firstName"));
+		String lastName = request.getParameter("lastName");
+		System.out.println("Index regsiter: "+request.getParameter("lastName"));
+		String email = request.getParameter("email");
+		System.out.println("Index regsiter: "+request.getParameter("email"));
+		String password = request.getParameter("password");
+		System.out.println("Index regsiter: "+request.getParameter("password"));
+		String addrLine1 = request.getParameter("addrLine1");
+		System.out.println("Index regsiter: "+request.getParameter("addrLine1"));
+		String addrLine2 = request.getParameter("addrLine2");
+		System.out.println("Index regsiter: "+request.getParameter("addrLine2"));
+		String city = request.getParameter("city");
+		System.out.println("Index regsiter: "+request.getParameter("city"));
+		String state = request.getParameter("state");
+		System.out.println("Index regsiter: "+request.getParameter("state"));
+		String zipCode = request.getParameter("zipCode");
+		System.out.println("Index regsiter: "+request.getParameter("zipCode"));
+		String[] category = request.getParameterValues("category");
+		List<String> categories1 = Arrays.asList(category); 
+		System.out.println("Index regsiter: "+categories1);
+		System.out.println("Index regsiter: "+category);
+		//System.out.println("Index regsiter: "+request.getParameter("date"));
+		System.out.println("Index regsiter: "+request.getParameter("gender"));
+		String gender = request.getParameter("gender");
+		System.out.println("Index regsiter: "+request.getParameter("phoneNumber"));
+		String phoneNumber = request.getParameter("phoneNumber");
+		latitude = Float.parseFloat(request.getParameter("latitude"));
+		longitude = Float.parseFloat(request.getParameter("longitude"));
+		System.out.println("Index regsiter: "+request.getParameter("latitude"));
+		System.out.println("Index regsiter: "+request.getParameter("longitude"));
+		float lat = Float.parseFloat(request.getParameter("latitude"));
+		float longi = Float.parseFloat(request.getParameter("longitude"));
+		Address addr = new Address(addrLine1, addrLine2,city,state,"US", zipCode,lat,longi);
+		Date date1 = new Date();
+		List<String> dislikes1 = Arrays.asList(dislikes);
+		
+		user = new User(email,firstName,lastName,password,addr,phoneNumber,
+				date1,gender,categories1,dislikes1);
+		
+		User registeredUser = userDao.createUser(user);
+		
+		if(registeredUser != null)
+		{
+			System.out.println("User created successfully");
+			emailFordetails = user.getEmail();
+		}
+		else
+		{
+			System.out.println("User created unsuccessfully");
+		}
+		
+	}
+	catch(Exception e)
+	{
+		System.out.println("Could not register user");
+	}
+	
 	try
 	{	
 		System.out.println("From index try block");
-		String s = String.valueOf(request.getAttribute("longitude"));
-		String s1 = String.valueOf(request.getAttribute("latitude"));
-		latitude = Double.parseDouble(s1);
-		longitude = Double.parseDouble(s);
+		String strLati = String.valueOf(request.getAttribute("latitude"));
+		String strLongi = String.valueOf(request.getAttribute("longitude"));
+		session.setAttribute("latitude",strLati);
+		session.setAttribute("longitude",strLongi);
+		latitude = Double.parseDouble(strLati);
+		longitude = Double.parseDouble(strLongi);
 		try
 		{
 			
 			String username = (String)request.getAttribute("username");
 			String password = (String)request.getAttribute("password");
+			
+			
 			System.out.println("Password from url: "+password);
-			UserProvider userDao = new UserProvider();
-			User user = userDao.findByEmail(username);
+			user = userDao.findByEmail(username);
 			if(user != null)
 			{
 				String passCheck = user.getPassword();
@@ -51,6 +117,7 @@
 				{
 					session.setAttribute("username", user.getEmail());
 					session.setAttribute("password", user.getPassword());
+					emailFordetails = user.getEmail();
 					System.out.println("Valid Password");
 					loginMessage = user.getFirstName();
 				}
@@ -80,6 +147,9 @@
 		System.out.println("From index catch block");
 		response.sendRedirect("geolocator");
 	}
+	
+	
+	
 %>
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
@@ -104,6 +174,46 @@
 		var currentWidth = $('.main').width();
 		$("#googleMap").width(currentWidth - 300); // 300px is the sidebar width
 	});
+	
+	<%
+	%>
+	
+	function showEventDetails(jsonEvent, latitude, longitude) {
+		console.log(jsonEvent);
+		
+		
+		var nameTag = document.getElementById("name");
+		var descriptionTag = document.getElementById("description");
+		var moreTag = document.getElementById("more");	
+		nameTag.innerHTML = jsonEvent.name;
+		descriptionTag.innerHTML = jsonEvent.description;
+		localStorage.setItem(jsonEvent.id, jsonEvent);
+		var parentUrl = encodeURIComponent(window.location.href),
+	    eventDetailUrl = window.location.origin+ '/eventDetails.jsp?id='+jsonEvent.id;	
+		var form = '<form action="/eventDetails" method="POST">';
+		form += '<input type="hidden" name="latitude" value='+latitude +'>';
+		form +='<input type="hidden" name="longitude" value='+longitude +'>';
+		form +='<input type="hidden" name="addressLine1" value='+jsonEvent.address.addressLine1 +'>';
+		form +='<input type="hidden" name="addressLine2" value='+jsonEvent.address.addressLine2 +'>';
+		form +='<input type="hidden" name="city" value='+jsonEvent.address.city +'>';
+		form +='<input type="hidden" name="eventLatitude" value='+jsonEvent.address.latitude +'>';
+		form +='<input type="hidden" name="eventLongitude" value='+jsonEvent.address.longitude +'>';
+		form +='<input type="hidden" name="state" value='+jsonEvent.address.state +'>';
+		form +='<input type="hidden" name="zipCode" value='+jsonEvent.address.zipCode +'>';
+		form +='<input type="hidden" name="date" value='+jsonEvent.date+'>';
+		form +='<input type="hidden" name="description" value='+jsonEvent.description+'>';
+		form +='<input type="hidden" name="eventId" value='+jsonEvent.eventId+'>';
+		form +='<input type="hidden" name="minAgeLimit" value='+jsonEvent.minAgeLimit+'>';
+		form +='<input type="hidden" name="name" value='+jsonEvent.name+'>';
+		form +='<input type="hidden" name="rating" value='+jsonEvent.rating+'>';
+		form +='<input type="hidden" name="remainingTickets" value='+jsonEvent.remainingTickets+'>';
+		form +='<input type="hidden" name="ticketPrice" value='+jsonEvent.ticketPrice+'>';
+		form +='<input type="hidden" name="username" value="<%=emailFordetails%>">';
+		form+='<input type="submit" value="More Details">';
+		form += '</form>';
+		moreTag.innerHTML = form; 
+	}
+	
 </script>
 </head>
 <body>
@@ -161,7 +271,11 @@
 						<input type ="hidden"  name="longitude" value ="${longitude}"> 
 						<button type="submit" class="btn btn-success navbar-btn">Sign in</button>
 					</form>
-					<button type="button" class="btn btn-success navbar-btn" onclick="location.href='/register'" value="">Register</button>
+					<form action="/register">
+					<button type="submit" class="btn btn-success navbar-btn"  value="">Register</button>
+					<input type ="hidden"  name="latitude" value = "${latitude}"> 
+					<input type ="hidden"  name="longitude" value ="${longitude}"> 
+					</form>
 				</div>
 			</div>
 		</div>

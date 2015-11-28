@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"
+    import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.neu.cs5500.Jerks.dbProviders.*, edu.neu.cs5500.Jerks.business.*, com.google.gson.Gson ,java.util.*"
+    %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -17,6 +19,53 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="register.js"></script>
+    <% 
+    String email="";
+	String firstName;
+	String lastName;	
+	String password="";
+ 	String addressLine1;
+	String addressLine2;
+ 	String city;
+	String state;
+	String country;
+	String zipCode;
+	String latitude=String.valueOf(request.getParameter("latitude"));
+ 	String longitude=String.valueOf(request.getParameter("longitude"));
+    Address address;
+	String phoneNumber;
+	Date dob;
+	String gender;	
+	String areaOfInterest;
+	String disLikes;
+	
+	try
+	{
+		firstName = String.valueOf(request.getAttribute("firstName"));
+	    System.out.println("Register page:"+firstName);
+	    lastName = request.getParameter("lastName");
+	    System.out.println(lastName);
+	    System.out.println("Register page:"+lastName);
+		email = request.getParameter("email");
+		System.out.println("Register page:"+email);
+		password = request.getParameter("password");
+		addressLine1 = request.getParameter("addrLine1");
+		addressLine2 = request.getParameter("addrLine2");
+		city = request.getParameter("city");
+		country = "US";
+		state = request.getParameter("state");
+		zipCode = request.getParameter("zipCode");
+		//latitude = String.valueOf(session.getAttribute("latitude"));
+		System.out.println();
+		//longitude = String.valueOf(session.getAttribute("longitude"));
+	}
+	catch(Exception e)
+	{
+		System.out.println("Could not create a user");
+	}
+	
+    %>
+    
 	<script>
 		$(function() {
 			$( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' }).val();
@@ -24,7 +73,7 @@
 	</script>
 </head>
 </head>
-<body ng-app="validationApp" ng-controller="mainController">
+<body ng-app="validationApp" ng-controller="mainController" >
 	<div class="container">
 
 <div class="row">
@@ -32,7 +81,7 @@
     <!-- PAGE HEADER -->
     <div class="page-header"><h1>User Registration</h1></div>
    
-    <form name="userForm"  ng-submit="submitForm(userForm.$valid)" novalidate>
+    <form name="userForm"  ng-submit="submitForm(userForm.$valid)" action="/jerks/register"  method="post">
 
         
         <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$invalid && !userForm.firstName.$pristine }">
@@ -49,7 +98,7 @@
         
         <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
             <label>Email*</label>
-            <input type="email" name="email" class="form-control" ng-model="user.email" required>
+            <input type="text" name="email" class="form-control" ng-model="user.email" required>
             <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email.</p>
         </div>
         
@@ -74,7 +123,7 @@
             <input type="text" name="city" class="form-control" ng-model="user.city">
         </div>
 		
-		<div class="form-group" >
+		<div class="form-group" ">
             <label>State</label>
    <select class="form-control" name="state">
 	<option value="AL">Alabama</option>
@@ -180,12 +229,15 @@
             <p ng-show="userForm.phoneNumber.$invalid && !userForm.phoneNumber.$pristine" class="help-block">Enter a valid Phone number.</p>
         </div>
     		 
-        <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-success">Regsiter</button>
+        <input type="submit" ng-disabled="userForm.$invalid" class="btn btn-success">Regsiter</button>
         
+        <input type ="hidden"  name="latitude" value = "<%=latitude%>"> 
+		<input type ="hidden"  name="longitude" value ="<%=longitude %>">  
     </form>
+    
  </div>
 </div> 
-
+		
 </div>
 </body>
 </html>
