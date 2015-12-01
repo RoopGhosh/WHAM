@@ -1,15 +1,20 @@
 package edu.neu.cs5500.Jerks.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import edu.neu.cs5500.Jerks.apiCall.GoogleAddressToLatLong;
 import edu.neu.cs5500.Jerks.definitions.User;
 
 @Controller
@@ -56,8 +61,58 @@ public class HelloController {
 		return "geolocator";
 	}
 	
+	@RequestMapping(value = "/createEvents", method = RequestMethod.GET)
+	public String createUserEvents(ModelMap model)
+	{
+		return "createEvents";
+	}
+	
+	
+	@RequestMapping(value = "/createEvents", method = RequestMethod.POST)
+	public String createUserEventsPOST(
+			@RequestParam("eventName") String eventName,
+			@RequestParam("datepicker") String datepicker,
+			@RequestParam("addressLine1") String addressLine1,
+			@RequestParam("addressLine2") String addressLine2,
+			@RequestParam("city") String city,
+			@RequestParam("state") String state,
+			@RequestParam("zipCode") String zipCode,
+			@RequestParam("description") String description,
+			@RequestParam("ticketPrice") String ticketPrice,
+			@RequestParam("minAgeLimit") String minAgeLimit,
+			@RequestParam("remainingTickets") String remainingTickets,
+			ModelMap model) throws IOException, JSONException
+	{
+		GoogleAddressToLatLong addr2Latlong = new GoogleAddressToLatLong();
+		double[] latlong = addr2Latlong.getLatLong(addressLine1, addressLine2, city, state, zipCode);
+		return "createEvents";
+	}
+		
+
+	@RequestMapping(value = "/dislike/{email}/{eventName}/{latitude}/{longitude}", method = RequestMethod.GET)
+	public String dislike (@PathVariable("email") String email, @PathVariable("eventName") String eventName, 
+			@PathVariable("latitude") String lat,@PathVariable("longitude") String longi, ModelMap model)
+	{
+		try{
+			System.out.println("in dislike try block Start");
+			model.put("email", email);
+			model.put("eventName", eventName);
+			model.put("latitude", lat);
+			model.put("longitude", longi);
+			System.out.println("in dislike try block end");
+			return "dislike";
+		}
+		catch(Exception e) {
+			System.out.println("From dislike controller catch block");
+			return "geolocator";
+		}
+	}
+	
+
+	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(@RequestParam("firstName") String firstName,
+	public String register(
+			@RequestParam("firstName") String firstName,
 			@RequestParam("lastName") String lastName,
 			@RequestParam("email") String email,
 			@RequestParam("latitude") String latitude,
@@ -69,7 +124,7 @@ public class HelloController {
 		    @RequestParam("state") String state,
 		    @RequestParam("zipCode") String zipCode,
 		    @RequestParam("category") List<String> category,
-		   // @RequestParam("datepicker") Date date,
+		    @RequestParam("datepicker") String date,
 		    @RequestParam("optradio") String gender,
 		    @RequestParam("phoneNumber") String phoneNumber,
 		    ModelMap model)
@@ -84,7 +139,7 @@ public class HelloController {
 		model.put("state", state);
 		model.put("zipCode", zipCode);
 		model.put("category", category);
-		//model.put("date", date);
+		model.put("date", date);
 		model.put("gender", gender);
 		model.put("gender", gender);
 		model.put("latitude", latitude);

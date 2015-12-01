@@ -23,7 +23,7 @@ import edu.neu.cs5500.Jerks.definitions.*;
 public class EventbriteAPICall {
 	
 	
-	private String getJsontext(String url) throws IOException
+	public String getJsontext(String url) throws IOException
 	{
 		URL neturl = new URL(url);
 		BufferedReader br = new BufferedReader(new InputStreamReader(neturl.openStream()));
@@ -37,6 +37,7 @@ public class EventbriteAPICall {
 	
 	public ArrayList<Event> getListofEventsFromJSON(String url) throws IOException, JarException, ParseException, NumberFormatException, JSONException
 	{
+		System.out.println(url);
 		ArrayList<Event> events = new ArrayList<Event>();
 		url = updateURL(url);		
 		int currentPage = 1;
@@ -67,8 +68,11 @@ public class EventbriteAPICall {
 					ticket_price = (double) arr.getJSONObject(0).getJSONObject("cost").getDouble("value")/100;
 				events.add(makeEventObj(name,startDate,description,id,capacity,address,ticket_price,EventSource.EventBrite));
 			}			
-			if(events.size() > 50)
-				break;
+			if(events.size() > 49)
+				{
+					System.out.println("pitbull");
+					return events;
+				}
 			currentPage++;
 		}
 

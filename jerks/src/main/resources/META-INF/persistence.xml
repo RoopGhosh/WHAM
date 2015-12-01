@@ -11,9 +11,8 @@
 		<class>edu.neu.cs5500.Jerks.definitions.Event</class>
       <exclude-unlisted-classes>false</exclude-unlisted-classes>
      <properties>       
-     
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>       
-            <property name="javax.persistence.jdbc.url"  value="jdbc:mysql://127.0.0.1:3306/jerks?autoReconnect=true"/>       
+            <property name="javax.persistence.jdbc.url"  value="jdbc:mysql://127.0.0.1/jerks?autoReconnect=true"/>       
             <property name="javax.persistence.jdbc.user" value="admin6IViBwq"/>       
             <property name="javax.persistence.jdbc.password" value="RKzjAiKiCd9N"/>       
         </properties>

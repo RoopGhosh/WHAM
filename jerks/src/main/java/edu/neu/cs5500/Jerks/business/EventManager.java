@@ -20,7 +20,7 @@ public class EventManager {
 	 * using the supplied parameters.
 	 */
 	private String buildEventbriteURL(double latitude, double longitude, String searchAddress,
-			String searchEvent, String price, Date date, String[] categories)
+			String searchEvent, String price, Date givenDate, String[] categories)
 	{
 		String eventbriteURL= "https://www.eventbriteapi.com/v3/events/search/?popular=true&sort_by=distance";
 		eventbriteURL = eventbriteURL.concat("&q="+searchEvent);
@@ -34,12 +34,24 @@ public class EventManager {
 			eventbriteURL = eventbriteURL.concat("&location.latitude="+String.valueOf(latitude));
 			eventbriteURL = eventbriteURL.concat("&location.longitude="+String.valueOf(longitude));
 		}
-		Date currdate = new Date();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String strDate = dateFormat.format(currdate);
-		String givenDate = dateFormat.format(date);
-		eventbriteURL = eventbriteURL.concat("&start_date.range_start="+strDate+"T00:00:00Z");
-		eventbriteURL = eventbriteURL.concat("&start_date.range_end="+givenDate+"T23:59:59Z");
+		// sample eventbrite 2010-01-31
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		Calendar calDate = Calendar.getInstance();
+		calDate.setTime(givenDate);
+		cal.setTime(new Date()); // Now use today date.
+		String futureDate;
+		if(cal.DAY_OF_MONTH-calDate.DAY_OF_MONTH <2)
+		{
+			 // Adding 2 days
+			cal.add(Calendar.DATE,5);
+			futureDate = sdf.format(calDate.getTime());
+		}
+		else
+			futureDate = sdf.format(calDate.getTime());
+		String strDate = sdf.format(cal.getTime());
+		eventbriteURL = eventbriteURL.concat("&start_date.range_start="+futureDate+"T00:00:00Z");
+		eventbriteURL = eventbriteURL.concat("&start_date.range_end="+strDate+"T23:59:59Z");
 		
 		String categoryParam ="&categories=";
 		for (String c : categories)
@@ -69,6 +81,7 @@ public class EventManager {
 		Date currdate = new Date();
 		String currStrDate= dateFormat.format(currdate);
 		String givenStrDate = dateFormat.format(date);
+		eventfulURL = eventfulURL.concat("&price="+price);
 		eventfulURL = eventfulURL.concat("&date="+currStrDate+"-"+givenStrDate);
 		eventfulURL = eventfulURL.concat("&category="+StringUtils.arrayToCommaDelimitedString(categories));
 		eventfulURL = eventfulURL.concat("&within="+Integer.toString(searchRadius));
@@ -111,6 +124,28 @@ public class EventManager {
 			e.printStackTrace();
 		}
 		return events;
+	}
+	
+	
+	public static void main(String args[])
+	{
+		double latitude = 0.0f;
+		double longitude = 0.0f;
+		String searchAddress = "";
+		String searchEvent = ""; 
+		String price = "";
+		//taken care in event manager
+		//Calendar c = Calendar.getInstance(); // starts with today's date and time
+		//c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
+		// return the date pushed by user or return the curr date.
+		Date date = new Date();// gets modified time
+		String loginMessage = "HowdyUser!";
+		// Remove hardcoded categories & dislikes
+		String[] categories = {"food", "science"};
+		String[] dislikes = {"music", "boston", "cheese"};
+		String emailFordetails = "Howdy User!";
+		EventManager em = new EventManager();
+		em.fetchEvents(latitude, longitude, searchAddress, searchEvent , price, date, categories, dislikes);
 	}
 	
 }
