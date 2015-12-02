@@ -15,7 +15,9 @@
 	
 <%	
 	String username = String.valueOf(session.getAttribute("username"));
+	System.out.println("Username from create events: "+username);
 	String password = String.valueOf(session.getAttribute("password"));
+	System.out.println("password from create events: "+password);
 	String latitude = String.valueOf(session.getAttribute("latitude"));
 	String longitude = String.valueOf(session.getAttribute("longitude"));
 %>
@@ -29,81 +31,7 @@
 <script type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <title>WHAM - Home</title>
-<!-- <script>
-		
-		function formResults (form) {
-			
-			var eventName = form.eventName.value;
-			var eventDate = form.datepicker.value;
-			var addressLine1 = form.addressLine1.value;
-			var addressLine2 = form.addressLine2.value;
-			var city = form.city.value;
-			var state = form.state.value;
-			var zipCode = form.zipCode.value;
-			var address = addressLine1+addressLine2+city+state+zipCode;
-			var description = form.description.value;
-			var ticketPrice = form.ticketPrice.value;
-			var minAgeLimit = form.minAgeLimit.value;
-			var remainingTickets = form.remainingTickets.value;
-			var latitude = '';
-			var longitude = '';
-			
-			var geocoder = new google.maps.Geocoder();
-			  geocoder.geocode( { 'address': address}, function(results, status) {
-							console.log('Trying to find lat long');
-			    		if (status == google.maps.GeocoderStatus.OK) {
-							console.log('Status OK');
-			    		    latitude = results[0].geometry.location.lat();
-							console.log('Latitude: '+latitude);
-			    		    longitude = results[0].geometry.location.lng();
-							console.log('Longitude '+longitude);
-			    		    }
-						else
-							{
-								alert('could not find address');
-							}
-			    		}); 				
-			 		location.href = "/jerks/index" +"/"+ eventName.value  +"/"+ eventDate.value; 
-			  
-		}
-		
-		
-		
-		/*
-		$(document).ready(function() {
-			showEventForms();
-		});
-		
-		
-		function showEventForms() {
-			var form = '<form action="/jerks/eventCreation/latitude/longitude" method="POST">';
-			form += '<div class="form-group">';
-			form += '<label>Event Name*</label>';
-			form += '<input type="text" name="eventName" class="form-control" required>'
-			form += '</div>';
-			
-			form += '<div class="form-group">';
-			form += '<label>Event Date*</label>';
-			form += '<input type="text" name="datepicker" id="datepicker" class="form-control">';
-			form += '</div>';
-			
-			form += '<div class="form-group">';
-			form += '<label>Event Date*</label>';
-			form += '<input type="text" name="datepicker" id="datepicker" class="form-control">';
-			form += '</div>';
-			
-			form += '<div class="form-group">';
-			form += '<label>Event Address Line 1*</label>';
-			form += '<input type="text" name="addressLine1" id="datepicker" class="form-control">';
-			form += '</div>';
-			
-			form += '</form>';
-			eventForm.innerHTML = form;
-		}
-		
-		*/
-		
-</script> -->
+
 </head>
 <body>
 	<div class="container-fluid">
@@ -149,7 +77,7 @@
 	<!-- Header End -->
 	<div>
 		<div id="eventForm" class="eventDetails">	
-			<form  METHOD="GET">
+			<form action="/jerks/createEvents" METHOD="post">
 				<div class="form-group">
 					<label>Event Name*</label>
 						<input type="text" name="eventName" class="form-control" required>
@@ -259,6 +187,12 @@
 			<div class="form-group">
 				<button type="submit" class="btn btn-success navbar-btn" >Create Event & New Search</button>
 			</div>
+			
+			<input type ="hidden"  name="latitude" value = "<%=latitude%>"> 
+			<input type ="hidden"  name="longitude" value ="<%=longitude %>">  
+			<input type ="hidden"  name="username" value = "<%=username%>"> 
+			<input type ="hidden"  name="password" value ="<%=password %>">  
+			
 			</form>
 		</div>
 	</div>

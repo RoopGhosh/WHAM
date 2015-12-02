@@ -117,7 +117,7 @@
 	username = (String)request.getAttribute("username");
 	String password = (String)request.getAttribute("password");
 	
-	
+	System.out.println("username from url: "+username);
 	System.out.println("Password from url: "+password);
 	user = userDao.findByEmail(username);
 	if(user != null)
@@ -192,7 +192,7 @@
 		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
 				categories, dislikes);
 		jsonEvents = new Gson().toJson(events);
-		//System.out.println("Json events"+jsonEvents);
+		
 	} catch (Exception e) {
 		System.out.println(e);
 		response.sendRedirect("geolocator");
@@ -255,6 +255,7 @@
 		form +='<input type="hidden" name="name" value='+jsonEvent.name+'>';
 		form +='<input type="hidden" name="rating" value='+jsonEvent.rating+'>';
 		form +='<input type="hidden" name="remainingTickets" value='+jsonEvent.remainingTickets+'>';
+		form +='<input type="hidden" name="source" value='+jsonEvent.source+'>';
 		form +='<input type="hidden" name="ticketPrice" value='+jsonEvent.ticketPrice+'>';
 		form +='<input type="hidden" name="username" value="<%=emailFordetails%>" >';
 		form +='<input type="submit" value="More Details">';

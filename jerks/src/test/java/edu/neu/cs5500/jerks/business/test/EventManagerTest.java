@@ -1,11 +1,13 @@
 package edu.neu.cs5500.jerks.business.test;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.junit.Test;
 
 import edu.neu.cs5500.Jerks.business.*;
+import edu.neu.cs5500.Jerks.definitions.Event;
 import junit.framework.Assert;
 
 public class EventManagerTest {
@@ -124,4 +126,142 @@ public class EventManagerTest {
 		String prepURL = em.buildEventfulURL(latitude, longitude, searchAddress, searchEvent, price, date, categories);
 		Assert.assertTrue("eventBriteURL builder failed", prepURL.equals(expectedRESULT));
 	}
+	
+	@Test
+	public void antarcticaEvents() {
+		double latitude = 90.0000;
+		double longitude = 0.000000;
+		Calendar c = Calendar.getInstance(); // starts with today's date and time
+		c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
+		Date date = c.getTime();
+		EventManager em = new EventManager();
+		List<Event> result = em.fetchEvents(latitude, longitude, "", "", "", date, new String[0], new String[0]);
+		Assert.assertTrue("Tests Failed: Apparently there are events in antartica?", result.size()  ==0);
+	}
+	@Test
+	public void randomPlaceEvents() {
+		double latitude = 0.0000;
+		double longitude = 0.000000;
+		String address = "blahLong";
+		Calendar c = Calendar.getInstance(); // starts with today's date and time
+		c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
+		Date date = c.getTime();
+		EventManager em = new EventManager();
+		List<Event> result = new ArrayList<>();
+		String errormsg = "";
+		try{
+			result = em.fetchEvents(latitude, longitude, address, "", "", date, new String[0], new String[0]);
+		}
+		catch (Exception IOException){
+			 errormsg = IOException.getMessage();
+		}
+		Assert.assertTrue("Tests Failed: Apparently there are events in blahblahLand?", result.size()  ==0);
+	}
+	@Test
+	public void TestComnination_ValidAddress_InvalidLatLong() {
+		double latitude = -82.862752;
+		double longitude = 135.000000;
+		String address = "boston";
+		Calendar c = Calendar.getInstance(); // starts with today's date and time
+		c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
+		Date date = c.getTime();
+		EventManager em = new EventManager();
+		List<Event> result = new ArrayList<>();
+		String errormsg = "";
+		try{
+			result = em.fetchEvents(latitude, longitude, address, "", "", date, new String[0], new String[0]);
+		}
+		catch (Exception IOException){
+			 errormsg = IOException.getMessage();
+		}
+		Assert.assertTrue("Tests Failed: Address and Latlong both?", result.size()  >0);
+	}
+	@Test
+	public void TestComnination_InValidAddress_InvalidLatLong() {
+		double latitude = 2999.99;
+		double longitude = 135.000000;
+		String address = "wertyuiopsdfghjkl";
+		Calendar c = Calendar.getInstance(); // starts with today's date and time
+		c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
+		Date date = c.getTime();
+		EventManager em = new EventManager();
+		List<Event> result = new ArrayList<>();
+		String errormsg = "";
+		try{
+			result = em.fetchEvents(latitude, longitude, address, "", "", date, new String[0], new String[0]);
+		}
+		catch (Exception IOException){
+			 errormsg = IOException.getMessage();
+		}
+		Assert.assertTrue("Tests Failed: Address and Latlong both?", result.size()  ==0);
+	}
+	@Test
+	public void TestCombination_paidonly() {
+		double latitude = 0.0f;
+		double longitude = 0.0f;
+		String searchAddress = "boston";
+		String price = "free";
+		Date date = new Date();// gets modified time
+		// Remove hardcoded categories & dislikes
+		
+		String errormsg = "";
+		EventManager em = new EventManager();
+		List<Event> result= new ArrayList<>();
+		try{
+			result = em.fetchEvents(latitude, longitude, searchAddress, "", price, date, new String[0], new String[0]);
+		}
+		catch (Exception IOException){
+			 errormsg = IOException.getMessage();
+		}
+		Assert.assertTrue("Tests Failed: No free events in boston", result.size() >0);
+	}
+	
+	// to be corrected!
+	//@Test
+	public void TestCombination_sameLike_dislike() {
+		double latitude = 0.0f;
+		double longitude = 0.0f;
+		String searchAddress = "boston";
+		String searchEvent = ""; 
+		String price = "";
+		Date date = new Date();// gets modified time
+		// Remove hardcoded categories & dislikes
+		String[] categories = {"food"};
+		String[] dislikes = {"food"};
+		String errormsg = "";
+		EventManager em = new EventManager();
+		List<Event> result= new ArrayList<>();
+		try{
+			result = em.fetchEvents(latitude, longitude, searchAddress, "", price, date, categories,dislikes);
+		}
+		catch (Exception IOException){
+			 errormsg = IOException.getMessage();
+		}
+		System.out.println(result.size());
+		Assert.assertTrue("Tests Failed: same like and dislikes should return 0 results.", result.size() ==0);
+	}
+	
+	//-------------------------------------------------------------------------------//
+	//                      		PERFORMANCE TESTS
+	//-------------------------------------------------------------------------------//
+	
+	
+	@Test
+	public void performanceAPICalls()
+	{
+		long start = System.currentTimeMillis();
+		double latitude = 42.3132882;
+		double longitude = -71.1972408;
+		Calendar c = Calendar.getInstance(); // starts with today's date and time
+		c.add(Calendar.DAY_OF_YEAR, 2);  // advances day by 2
+		Date date = c.getTime();
+		EventManager em = new EventManager();
+		em.fetchEvents(latitude, longitude, "", "", "", date, new String[0], new String[0]);
+		long stop = System.currentTimeMillis();
+		boolean threshold= false;
+		if(stop-start<20001)
+			threshold = true;
+		Assert.assertTrue("fetchEvents Runs longer than 20 secs",threshold);
+	}
 }
+

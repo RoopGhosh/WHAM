@@ -3,9 +3,12 @@ package edu.neu.cs5500.Jerks.business;
 
 import java.text.*;
 import java.util.*;
+
+import edu.neu.cs5500.Jerks.dbProviders.EventProvider;
 import edu.neu.cs5500.Jerks.definitions.*;
 import edu.neu.cs5500.Jerks.apiCall.EventbriteAPICall;
 import edu.neu.cs5500.Jerks.apiCall.EventfulAPICall;
+
 import org.springframework.util.StringUtils;
 /* Author: Sandeep Ramamoorthy
  * Creation Date: 11/02/2015 6:00 AM EST
@@ -19,7 +22,7 @@ public class EventManager {
 	 * Description: Returns the URL string for Eventbrite API formed 
 	 * using the supplied parameters.
 	 */
-	private String buildEventbriteURL(double latitude, double longitude, String searchAddress,
+	public String buildEventbriteURL(double latitude, double longitude, String searchAddress,
 			String searchEvent, String price, Date givenDate, String[] categories)
 	{
 		String eventbriteURL= "https://www.eventbriteapi.com/v3/events/search/?popular=true&sort_by=distance";
@@ -68,7 +71,7 @@ public class EventManager {
 	 * Description: Returns the URL string for Eventful API formed 
 	 * using the supplied parameters.
 	 */
-	private String buildEventfulURL(double latitude, double longitude, String searchAddress, String searchEvent, String price,
+	public String buildEventfulURL(double latitude, double longitude, String searchAddress, String searchEvent, String price,
 			Date date, String[] categories)
 	{
 		String eventfulURL= "http://api.eventful.com/json/events/search?app_key=4fgZC93XQz2fgKpV&sort_order=distance&units=miles&include=price&page_size=50";
@@ -107,6 +110,10 @@ public class EventManager {
 			events.addAll(eventful.getListofEventsFromJSON(eventfulURL));
 			System.out.println("Total Count:"+ events.size());
 			
+			EventProvider eventDao = new EventProvider();
+			List<Event> whamEvents = eventDao.findAllEvents();
+			events.addAll(whamEvents);
+
 			// Remove events if the user has disliked it
 			List<Event> toRemove = new ArrayList<Event>();
 			for(Event event : events)

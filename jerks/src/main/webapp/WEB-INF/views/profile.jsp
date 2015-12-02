@@ -90,10 +90,10 @@
 							</label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left">&nbsp;</span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Create Event<span
+							<li><a href="/jerks/createEvents/">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/profile/<%=username %>">Profile<span
+							<li><a href="/jerks/profile/<%=username %>">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
 							<li><a href="#">History<span

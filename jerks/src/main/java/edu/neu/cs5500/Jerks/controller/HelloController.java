@@ -1,6 +1,8 @@
 package edu.neu.cs5500.Jerks.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.neu.cs5500.Jerks.apiCall.GoogleAddressToLatLong;
+import edu.neu.cs5500.Jerks.dbProviders.EventProvider;
+import edu.neu.cs5500.Jerks.definitions.Address;
+import edu.neu.cs5500.Jerks.definitions.Event;
+import edu.neu.cs5500.Jerks.definitions.EventSource;
 import edu.neu.cs5500.Jerks.definitions.User;
 
 @Controller
@@ -81,11 +87,53 @@ public class HelloController {
 			@RequestParam("ticketPrice") String ticketPrice,
 			@RequestParam("minAgeLimit") String minAgeLimit,
 			@RequestParam("remainingTickets") String remainingTickets,
+			@RequestParam("latitude") String latitude,
+			@RequestParam("longitude") String longitude,
+			@RequestParam("username") String username,
+			@RequestParam("password") String password,			
 			ModelMap model) throws IOException, JSONException
 	{
 		GoogleAddressToLatLong addr2Latlong = new GoogleAddressToLatLong();
-		double[] latlong = addr2Latlong.getLatLong(addressLine1, addressLine2, city, state, zipCode);
-		return "createEvents";
+		float[] latlong = addr2Latlong.getLatLong(addressLine1, addressLine2, city, state, zipCode);
+		System.out.println("Latitude from create event controller: "+latitude);
+		System.out.println("Longitude from create event controller: "+longitude);
+		System.out.println("username from create event controller: "+username);
+		System.out.println("paswword from create event controller: "+password);
+		model.put("username", username);
+		model.put("password", password);
+		model.put("latitude", latitude);
+		model.put("longitude", longitude);
+		
+		try
+		{
+			String dob = datepicker;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date parsed = sdf.parse(dob);
+			java.sql.Date sql = new java.sql.Date(parsed.getTime());
+		
+			double ticketPrice1 = Double.parseDouble(ticketPrice);
+			int minAgeLimit1 = Integer.parseInt(minAgeLimit);
+			int remainingTickets1 = Integer.parseInt(remainingTickets);
+        
+        
+			Address addr = new Address(addressLine1, addressLine2,city,state,"US", zipCode,latlong[0],latlong[1]);
+			EventProvider eventDao = new EventProvider();
+			EventSource source = EventSource.WHAM;
+			Event event = new Event(eventName, sql, addr, description, ticketPrice1, minAgeLimit1,
+				0.0, remainingTickets1, source);
+			if(event != null)
+			eventDao.createEvent(event);
+			else
+				System.out.println("Null event");
+			
+			System.out.println("Event Created");
+		}
+		catch(Exception e)
+		{
+			System.out.println("Could not create event");
+		}
+		
+		return "index";
 	}
 		
 
