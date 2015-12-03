@@ -36,4 +36,3 @@ function initialize(jsonEvents, latitude, longitude) {
 	}
 	
 }
-
