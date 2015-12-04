@@ -26,12 +26,12 @@ import edu.neu.cs5500.Jerks.definitions.User;
 @Controller
 public class HelloController {
 
-	@RequestMapping(value = "/index/{latitude}/{longitude}", method = RequestMethod.GET)
-	public String index (@PathVariable("latitude") String a,@PathVariable("longitude") String b, ModelMap model)
+	@RequestMapping(value = "/index/{latitude:.+}/{longitude:.+}", method = RequestMethod.GET)
+	public String index (@PathVariable("latitude") String a,@PathVariable("longitude") double b, ModelMap model)
 	{
 		try{
 			Double latitude = (double) Double.parseDouble(a);
-			Double longitude = (double) Double.parseDouble(b);
+			Double longitude = b;
 			model.put("latitude", latitude);
 			model.put("longitude", longitude);
 			return "index";
