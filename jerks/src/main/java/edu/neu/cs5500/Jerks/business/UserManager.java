@@ -23,8 +23,8 @@ public class UserManager {
 		List<String> dislikes = user.getDislikes();
 		dislikes.add(eventName);
 		user.setDislikes(dislikes);
-		
 		// Save changes to DB
 		userDao.updateUser(username, user);		
+		System.out.println("updated user dislike successfully");
 	}
 }

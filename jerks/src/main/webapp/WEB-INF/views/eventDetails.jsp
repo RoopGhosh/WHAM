@@ -187,7 +187,7 @@
 		display += "<tr><td>"+"<td>US</td></td></tr>";
 		display +="</table>";
 		display += "<p>Date:"+"<%=date%>"+"</p>";
-		display += "<p>Description:"+"<%=description%>"+"</p>";
+		display += "<p>Description: "+unescape("<%=description%>")+"</p>";
 		display += "<p>Minumum Age Limit:"+"<%=minAgeLimit%>"+"</p>";
 		display += "<p>Remaining Tickets:"+"<%=remainingTickets%>"+"</p>";
 		display += "<p>Price:"+"<%=ticketPrice%>"+"</p>";

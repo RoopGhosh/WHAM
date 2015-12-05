@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
 
-/* Author: Karthik Chandranna
+ Author: Karthik Chandranna
  * Creation Date: 11/25/2015 6:04 PM EST
  * Description: UserProvider tests
- * */
+ * 
 public class UserProviderTest {
 
 	TestRandom rand = new TestRandom();

@@ -7,12 +7,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<spring:url value="/resources/js/GeoLocation.js" var="GeoLocator" />
-	<spring:url value="/resources/js/GoogleMaps.js" var="GoogleMaps" />
-	<spring:url value="/resources/css/main.css" var="MainCSS" />
-	<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
-	<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
-	<spring:url value="/resources/js/Login.js" var="Login" />
+<spring:url value="/resources/js/GeoLocation.js" var="GeoLocator" />
+<spring:url value="/resources/js/GoogleMaps.js" var="GoogleMaps" />
+<spring:url value="/resources/css/main.css" var="MainCSS" />
+<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
+<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
+<spring:url value="/resources/js/Login.js" var="Login" />
 <%	
 	String jsonEvents = "";
 	double latitude = 0.0f;
@@ -21,17 +21,15 @@
 	String searchEvent = ""; 
 	String price = "";
 	String username = "";
-			
+	List<String> dislikes = new ArrayList<String>();
+	List<String> categories1 = new ArrayList<String>();
 	Date date = new Date();// gets modified time
 	String loginMessage = "HowdyUser!";
 	
 	// Remove hardcoded categories & dislikes
-	String[] categories = new String[0];
-	String[] dislikes =  new String[0];
-	
+
 	UserProvider userDao = new UserProvider();
 	User user = null;
-	
 	String emailFordetails = "Howdy User";
 	try
 	{
@@ -54,7 +52,7 @@
 		String zipCode = request.getParameter("zipCode");
 		System.out.println("Index zipCode: "+zipCode);
 		String[] category = request.getParameterValues("category");
-		List<String> categories1 = Arrays.asList(category); 
+		categories1 = Arrays.asList(category); 
 		System.out.println("Index categories1: "+categories1.toArray().toString());
 		String dob = request.getParameter("datepicker");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -66,17 +64,13 @@
 		String gender = request.getParameter("gender");
 		float lat = Float.parseFloat(String.valueOf(session.getAttribute("latitude")));
 		float longi = Float.parseFloat(String.valueOf(session.getAttribute("longitude")));
-		System.out.println(lat + " " + longi);
+		System.out.println("neyo: " + lat + " " + longi);
 		Address addr = new Address(addrLine1, addrLine2,city,state,"US", zipCode,lat,longi);
-		//Date date1 = new Date();
-		List<String> dislikes1 = Arrays.asList(dislikes);
 		String phoneNumber = request.getParameter("phoneNumber");
 		System.out.println("index phoneNumber : " + phoneNumber);
 		user = new User(email,firstName,lastName,password,addr,phoneNumber,
-				sql,gender,categories1,dislikes1);
-		
+				sql,gender,categories1,dislikes);
 		User registeredUser = userDao.createUser(user);
-		
 	if(registeredUser != null)
 		{
 		System.out.println("User created successfully");
@@ -101,7 +95,7 @@
 		System.out.print("1");
 		System.out.println(strLati);
 		String strLongi = String.valueOf(request.getAttribute("longitude"));
-		System.out.print("2");
+		//System.out.print(request.getAttribute("longitude"));
 		System.out.println(strLongi);
 		session.setAttribute("latitude",strLati);
 		System.out.print("3");
@@ -135,7 +129,7 @@
 	
 	//Add the userdislikes for events
 	List<String> dislikesList = user.getDislikes();
-	dislikes = dislikesList.toArray(new String[dislikesList.size()]);
+	dislikes = dislikesList;
 		}
 		else
 		{
@@ -162,6 +156,10 @@
 			else {
 				searchAddress = (String) request.getParameter("search");
 				searchAddress = searchAddress.replaceAll(" ", "%20");
+				GoogleAddressToLatLong google = new GoogleAddressToLatLong();
+				float[] latlong = google.getLatLong("", "", searchAddress, "", "");
+				latitude = latlong[0];
+				longitude = latlong[1];
 			}
 		}
 
@@ -181,18 +179,17 @@
 
 		// Capture the search catagories
 		if (request.getParameter("catagories") != null) {
-			String searchCategory = (String) request.getParameter("catagories");
+			String searchCategory = (String) request.getParameter("category");
 			if (!searchCategory.equals("all")) {
-				categories = new String[1];
-				categories[0] = searchCategory;
+				/* categories = new String[1];
+				categories[0] = searchCategory; */
+				categories1.add(searchCategory);
 			}
-
 		}
 		EventManager em = new EventManager();
 		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
-				categories, dislikes);
+				categories1.toArray(new String[categories1.size()]), dislikes.toArray(new String[dislikes.size()]));
 		jsonEvents = new Gson().toJson(events);
-		
 	} catch (Exception e) {
 		System.out.println(e);
 		response.sendRedirect("geolocator");
@@ -227,15 +224,21 @@
 	});
 	
 	function showEventDetails(jsonEvent, latitude, longitude) {
-		console.log(jsonEvent);
-		
 		
 		var nameTag = document.getElementById("name");
 		var descriptionTag = document.getElementById("description");
 		var moreTag = document.getElementById("more");	
 		nameTag.innerHTML = jsonEvent.name;
-		descriptionTag.innerHTML = jsonEvent.description;
-		localStorage.setItem(jsonEvent.id, jsonEvent);
+		console.log("desclength:" +jsonEvent.description.length);
+		if(jsonEvent.description.length > 400)
+			{
+			console.log("Im here");
+			var shortDesc = jsonEvent.description.substring(0,400);
+			console.log(shortDesc);
+			descriptionTag.innerHTML = shortDesc+'....';
+			}
+		else{descriptionTag.innerHTML = jsonEvent.description;}
+		
 		var parentUrl = encodeURIComponent(window.location.href),
 	    eventDetailUrl = window.location.origin+ '/eventDetails.jsp?id='+jsonEvent.id;	
 		var form = '<form action="/jerks/eventDetails" method="POST">';
@@ -249,18 +252,17 @@
 		form +='<input type="hidden" name="state" value='+jsonEvent.address.state +'>';
 		form +='<input type="hidden" name="zipCode" value='+jsonEvent.address.zipCode +'>';
 		form +='<input type="hidden" name="date" value='+jsonEvent.date+'>';
-		form +='<input type="hidden" name="description" value='+jsonEvent.description+'>';
+		form +='<input type="hidden" name="description" value='+escape(jsonEvent.description)+'>';
 		form +='<input type="hidden" name="eventId" value='+jsonEvent.eventId+'>';
 		form +='<input type="hidden" name="minAgeLimit" value='+jsonEvent.minAgeLimit+'>';
 		form +='<input type="hidden" name="name" value='+jsonEvent.name+'>';
 		form +='<input type="hidden" name="rating" value='+jsonEvent.rating+'>';
 		form +='<input type="hidden" name="remainingTickets" value='+jsonEvent.remainingTickets+'>';
-		form +='<input type="hidden" name="source" value='+jsonEvent.source+'>';
 		form +='<input type="hidden" name="ticketPrice" value='+jsonEvent.ticketPrice+'>';
 		form +='<input type="hidden" name="username" value="<%=emailFordetails%>" >';
-		form +='<input type="submit" value="More Details">';
+		form +='<input type="submit" class="btn btn-primary" value="More Details" style="float:left;">';
 		form += '</form>';
-		form += '<a href="/dislike/<%=emailFordetails%>/'+ jsonEvent.name+'/'+latitude +'/'+longitude+'">Dislike this event</a>';
+		form += '<a href="/jerks/dislike/<%=username%>/' + jsonEvent.name + '/' + latitude + '/' + longitude + '" class="btn btn-primary" style="float:right;"><span class="glyphicon glyphicon-thumbs-down icon-large white pull-left"></span>&nbsp;&nbsp;Dislike</a>';
 		moreTag.innerHTML = form;
 	}
 </script>
@@ -273,15 +275,14 @@
 				<a class="navbar-brand" rel="home" href="#">WHAM</a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><label><%=loginMessage %>
-							</label><span
-							class="glyphicon glyphicon-user icon-large brown pull-left">&nbsp;</span></a>
-							<%if(username != null){ %>
+						data-toggle="dropdown"><label><%=loginMessage%> </label><span
+							class="glyphicon glyphicon-user icon-large brown pull-left" style="color: #428bca">&nbsp;</span></a>
+						<% if (username != null) {%>
 						<ul class="dropdown-menu">
-							<li><a href="/jerks/createEvents/">Create Event<span
+							<li><a href="/jerks/createEvents">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/profile/<%=username %>">Profile<span
+							<li><a href="/jerks/profile/<%=username%>">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
 							<li><a href="#">History<span
@@ -292,125 +293,143 @@
 							<li class="divider"></li>
 							<li><a href="#">Logout<span
 									class="glyphicon glyphicon-off icon-large brown pull-right"></span></a></li>
-						</ul>
-						<%} %>
-						</li>
+						</ul> <%
+ 	}
+ %></li>
 				</ul>
-				
- 
+
+
 			</div>
 
 			<div class="collapse navbar-collapse">
-
-				<div class="col-sm-6 col-md-6">
+				<div class="<%if (username != null){ %>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 <%} %>" >
 					<form class="navbar-form" role="search" id="searchForm">
-
 						<div class="row">
-						<div class="col-sm-2" style="padding:0">
+							<div class="input-group my-group">
+							<% if (username != null) {%>
 								<select form="searchForm" id="searchTypeSelector" name="type"
-									class="form-control">
+									class="selectpicker form-control" style="width: 15%; background:#428bca; border-color:#357ebd; color:white; font-weight:bold">
 									<option value="event">Events</option>
 									<option value="address">Address</option>
-								</select>
-							</div>
-							<div class="col-sm-7" style="padding:0">
+								</select> 
+								<%}%>
 								<input type="text" class="form-control" placeholder="Search..."
-									name="search" id="srch-term">
-							</div>
-
-
-
-						</div>
-
-						<div class="row">
-							<div class="col-sm-2" style="padding:0">
-								<select form="searchForm" id="daysSelector" name="daysWithin"
-									class="form-control" style="padding:0">
+									name="search" id="srch-term" style="width: <%if (username != null){%>30%<%}else{%>100%<%}%>"> 
+									
+									<% if (username != null) {%>
+									<select form="searchForm" id="daysSelector" name="daysWithin"class="form-control" style="width:20%">
 									<option value="2">Next 2 days</option>
-									<option value="1">in 1 day</option>
-									<option value="3">in 3 days</option>
-									<option value="4">in 4 days</option>
-								</select>
-							</div>
-
-							<div class="col-sm-3" style="padding:0">
-								<select form="searchForm" id="catagorySelector"
-									name="catagories" class="form-control">
-									<option value="all">All Catagories</option>
+									<option value="1">Next 1 day</option>
+									<option value="3">Next 3 days</option>
+									<option value="4">Next 4 days</option>
+								</select>								
+								<select form="searchForm" id="catagorySelector"	name="catagories" class="form-control" style="width:20%"> 
+									<option value="all">All Categories</option>
 									<option value="music">Music</option>
 									<option value="food">Food</option>
 									<option value="support">Support</option>
 									<option value="movies_film">Movies</option>
 									<option value="performing_arts">Performing Arts</option>
 									<option value="family_fun_kids">Family,Fun,Kids</option>
-									<option value="learning_education">Learning & Education</option>
-									<option value="religion_spirituality">Religion & Spirituality</option>
+									<option value="learning_education">Learning and Education</option>
+									<option value="religion_spirituality">Religion and Spiritual</option>
 									<option value="sports">Sports</option>
 									<option value="holiday">Holiday</option>
 									<option value="business">Business</option>
 									<option value="science">Science</option>
 									<option value="technology">Technology</option>
 									<option value="fundraisers">Fund Raisers</option>
-									<option value="politics_activism">Politics & Activism</option>
-									<option value="outdoors_recreation">Outdoors & Recreation</option>
+									<option value="politics_activism">Politics and Activism</option>
+									<option value="outdoors_recreation">Outdoors and Recreation</option>
 									<option value="community">Community</option>
 									<option value="books">Books</option>
 									<option value="other">Other</option>
 								</select>
-							</div>
-							<div class="col-sm-2" style="padding:0">
-								<select form="searchForm" id="priceSelector" name="price"
-									class="form-control">
-									<option value="-1">All Price Ranges</option>
+								<select form="searchForm" id="priceSelector" name="price" class="form-control" style="width:15%">
+									<option value="-1">All Prices</option>
 									<option value="0">Free</option>
-									<option value="100"> &lt; $100</option>
+									<option value="100">&lt; $100</option>
 									<option value="200">&lt; $200</option>
 									<option value="300">&lt; $300</option>
-								</select>
-							</div>
-							<div class="col-sm-3">
-								<button class="btn btn-default" type="submit">
-									<i class="glyphicon glyphicon-search"></i>&nbsp; Search
-								</button>
+								</select>								
+									<%} %>								
+									<span
+									class="input-group-btn">
+									<button class="btn btn-primary" type="submit">
+										<i class="glyphicon glyphicon-search"></i>
+									</button>
+								</span>
 							</div>
 						</div>
 					</form>
 				</div>
-				<div class="form-group">
-					<form action="/jerks/login">
-						<input type="text" class="col-xs-1" name="username"
-							placeholder="Username"> <input type="text"
-							class="col-xs-1" name="password" placeholder="Password">
-						<input type="hidden" name="latitude" value="${latitude}">
-						<input type="hidden" name="longitude" value="${longitude}">
-						<button type="submit" class="btn btn-success navbar-btn">Sign
-							in</button>
-					</form>
-					<form action="/jerks/register">
-					<button type="submit" class="btn btn-success navbar-btn"  value="">Register</button>
-					<input type ="hidden"  name="latitude" value = "${latitude}"> 
-					<input type ="hidden"  name="longitude" value ="${longitude}"> 
+				<% if (username == null || username == "") { %>
+				<div class="col-sm-4 col-md-4">
+					<form class="navbar-form" action="/jerks/login">
+						<div class="has-feedback input-group">
+							<input type="text" class="form-control" name="username"
+								placeholder="username..." style="width: 50%"> <input
+								type="password" class="form-control" name="password"
+								placeholder="password..." style="width: 50%"> <input
+								type="hidden" name="latitude" value="${latitude}"> <input
+								type="hidden" name="longitude" value="${longitude}"> <span
+								class="input-group-btn">
+								<button type="submit" class="btn btn-primary">Sign&nbsp;in</button>
+							</span>
+						</div>
 					</form>
 				</div>
+				<div class="col-sm-1 col-md-1">
+					<form class="navbar-form" action="/jerks/register">
+						<button type="submit" class="btn btn-primary" value="">Register</button>
+						<input type="hidden" name="latitude" value="${latitude}">
+						<input type="hidden" name="longitude" value="${longitude}">
+					</form>
+				</div>
+				<%}%>
 			</div>
 		</div>
-	</div>
+		</div>
+	
 	<!-- Header End -->
 
 	<div class="main">
 		<div class="sidebar">
 			<div id="eventDetails" class="eventDetails">
+			<%if(username ==null) {%>
+				<script type="text/javascript">
+					//Ad connect widget
+					cpmgo_adhere_opt = 'left:50%';
+					cpmgo_layer_banner = false;
+					cpmgo_mobile_redirect = true;
+					cpmgo_mobile_durl = '';
+					cpmgo_max_dim = "0x0";
+					//default banner house ad url 
+					cpmgo_default_url = '';
+					cpmgo_banner_border = '#ffffff';
+					cpmgo_banner_ad_bg = '#ffffff';
+					cpmgo_banner_link_color = '#0000FF';
+					cpmgo_banner_text_color = '#008000';
+					cpmgo_banner_text_banner = true;
+					cpmgo_banner_image_banner = true;
+					cpmgo_post_click_url = '';
+				</script>
+				<script type="text/javascript"
+					src="http://adserving.cpmgo.com/show.php?nid=1068&amp;pid=11618&amp;adtype=17&amp;sid=14727"></script>
+				<%} else { %>
 				<H3 id="name">Select an event to see its details...</H3>
 				<p id="description"></p>
 				<p id="more"></p>
+				<%} %>
+				
 			</div>
 		</div>
 		<div id="googleMap" class="googleMap"></div>
 	</div>
 
-	<div class="footer">		
-		<p style="float:center">&copy; JeRKS (CS5500)</p>
-		<p style="float:right">CCIS - Northeastern University</p>
+	<div class="footer">
+		<p style="float: center">&copy; JeRKS (CS5500)</p>
+		<p style="float: right">CCIS - Northeastern University</p>
 	</div>
 
 </body>

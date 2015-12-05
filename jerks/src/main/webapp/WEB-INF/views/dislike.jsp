@@ -6,24 +6,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>WHAM</title>
-<%
-	try {
-		String eventName = String.valueOf(request.getAttribute("eventName"));
-		String username = String.valueOf(request.getAttribute("email"));
-		String latitude = String.valueOf(request.getAttribute("latitude"));
-		String longitude = String.valueOf(request.getAttribute("longitude"));
-		
-// 		UserManager um = new UserManager();
-// 		um.dislikeEvent(username, eventName);		
-		response.sendRedirect("/jerks/index/"+latitude+"/"+longitude);
-		
-	} catch (Exception e) {
-		response.sendRedirect("geolocator");
-	}
-%>
-</head>
 <body>
 <p>Thank you. Your response have been recored. You will not see this event anymore in the future.</p>
 <p>Redirecting you to homepage... </p>
 </body>
+<%
+	try {
+		String eventName = String.valueOf(request.getAttribute("eventName"));
+		String username = String.valueOf(request.getAttribute("email"));
+		String latitude = String.valueOf(session.getAttribute("latitude"));
+		String longitude = String.valueOf(session.getAttribute("longitude"));
+		UserManager um = new UserManager();
+		um.dislikeEvent(username, eventName);
+		response.sendRedirect("/jerks/index/"+latitude+"/"+longitude);
+	} catch (Exception e) {
+		response.sendRedirect("/jerks/geolocator");
+	}
+%>
+</head>
+
 </html>

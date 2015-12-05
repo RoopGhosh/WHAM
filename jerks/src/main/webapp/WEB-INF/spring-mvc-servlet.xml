@@ -18,7 +18,6 @@
 <context:component-scan base-package="edu.neu.cs5500.Jerks.controller"></context:component-scan>
 <bean class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
 
-
 <property name="prefix">
 <value>/WEB-INF/views/</value></property>
 <property name="suffix">

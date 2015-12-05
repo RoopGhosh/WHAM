@@ -13,7 +13,7 @@ import junit.framework.Assert;
 public class EventManagerTest {
 
 	///Sample Test case
-	/*@Test
+	@Test
 	public void testFetchEvents() {
 		double latitude = 42.3132882;
 		double longitude = -71.1972408;
@@ -23,7 +23,8 @@ public class EventManagerTest {
 		EventManager em = new EventManager();
 		List<Event> result = em.fetchEvents(latitude, longitude, "", "", "", date, new String[0], new String[0]);
 		Assert.assertTrue("returned event list size does not meet requirements", result.size()  > 0 && result.size()<200);
-	}*/
+	}
+	
 	@Test
 	public void buildEventbriteURL_W_O_Address() {
 		String dateStart = "https://www.eventbriteapi.com/v3/events/search/?popular=true&sort_by=distance&q=&location.within=25mi&price=&location.latitude=0.0&location.longitude=0.0&start_date.range_start=";

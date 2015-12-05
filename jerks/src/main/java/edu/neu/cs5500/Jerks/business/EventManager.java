@@ -15,7 +15,6 @@ import org.springframework.util.StringUtils;
  * Description: All business logic related to events goes into this class 
  * */
 public class EventManager {
-	
 	int searchRadius = 25;
 	
 	/* Author: Roop, Sandeep
@@ -116,12 +115,15 @@ public class EventManager {
 
 			// Remove events if the user has disliked it
 			List<Event> toRemove = new ArrayList<Event>();
+			System.out.println("dislikes : "+dislikes.length);
+			if (dislikes.length>0)
+				System.out.println("dislikes list: "+dislikes[0]);
 			for(Event event : events)
 			{
 				String eventName = event.getName().toLowerCase();
 				for(String dislike :dislikes)
 				{
-				 if(eventName.contains(dislike.toLowerCase()))			 
+				 if(eventName.replaceAll("\u0020", "").toLowerCase().contains(dislike.toLowerCase().trim()) && !dislike.isEmpty())
 					 toRemove.add(event);			 
 				}
 			}
@@ -154,5 +156,4 @@ public class EventManager {
 		EventManager em = new EventManager();
 		em.fetchEvents(latitude, longitude, searchAddress, searchEvent , price, date, categories, dislikes);
 	}
-	
 }
