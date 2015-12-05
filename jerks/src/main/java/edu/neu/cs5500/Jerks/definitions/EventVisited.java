@@ -20,15 +20,21 @@ public class EventVisited {
 	private String email;
 	private String eventId;
 	private EventSource source;
+	private String eventName;
+	private String eventAddress;
+	private String eventDate;
 	
 	public EventVisited(){
 		
 	}
 	
-	public EventVisited(String email, String eventId, EventSource source) {
+	public EventVisited(String email, String eventId, String eventName, String eventAddress, String eventDate, EventSource source) {
 		this.email = email;
 		this.eventId = eventId;
 		this.source = source;
+		this.eventName = eventName;
+		this.eventAddress = eventAddress;
+		this.eventDate = eventDate;		
 	}
 	
 	public String getId() {
@@ -63,16 +69,44 @@ public class EventVisited {
 		this.source = source;
 	}
 
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public String getEventAddress() {
+		return eventAddress;
+	}
+
+	public void setEventAddress(String eventAddress) {
+		this.eventAddress = eventAddress;
+	}
+
+	public String getEventDate() {
+		return eventDate;
+	}
+
+	public void setEventDate(String eventDate) {
+		this.eventDate = eventDate;
+	}	
+	
 	@Override
 	public String toString() {
-		return "EventsVisited [id=" + id + ", email=" + email + ", eventId=" + eventId + ", source=" + source + "]";
+		return "EventVisited [id=" + id + ", email=" + email + ", eventId=" + eventId + ", source=" + source
+				+ ", eventName=" + eventName + ", eventAddress=" + eventAddress + ", eventDate=" + eventDate + "]";
 	}
-	
+
 	public EventVisited clone(){
 		EventVisited eventVisited = new EventVisited();
 		eventVisited.id = this.id;
 		eventVisited.email = this.email;
 		eventVisited.eventId = this.eventId;
+		eventVisited.eventAddress = this.eventAddress;
+		eventVisited.eventName = this.eventName;
+		eventVisited.eventDate = this.eventDate;
 		return eventVisited;
 	}
 	

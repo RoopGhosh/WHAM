@@ -40,14 +40,15 @@ public class UserProvider {
 	public User findByEmail(String email)
 	{
 		User user = null;
-		em.getTransaction().begin();
-		user= em.find(User.class, email);
-		if(user!=null && user.getEmail()!=null)
-		{
+		if (email != null) {
+			em.getTransaction().begin();
+			user = em.find(User.class, email);
+			if (user != null && user.getEmail() != null) {
+				em.getTransaction().commit();
+				return user;
+			}
 			em.getTransaction().commit();
-			return user;
 		}
-		em.getTransaction().commit();
 		return null;
 
 	}
@@ -78,7 +79,7 @@ public class UserProvider {
 			em.merge(updateUser);
 		}
 		em.getTransaction().commit();
-		return updateUser;
+		return u;
 	}
 
 	public static void main(String[] args) {

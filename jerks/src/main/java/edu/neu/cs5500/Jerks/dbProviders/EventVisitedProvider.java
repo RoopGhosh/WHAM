@@ -8,6 +8,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import edu.neu.cs5500.Jerks.definitions.*;
+//import edu.neu.cs5500.jerks.business.test.TestRandom;
 
 /* Author: Karthik Chandranna
  * Creation Date: 12/02/2015 6:04 AM EST
@@ -57,9 +58,9 @@ public class EventVisitedProvider {
 		//TestRandom rand = new TestRandom();
 		EventVisitedProvider dao = new EventVisitedProvider();
 		String email = "test2@test.com";
-		EventVisited eventVisited = new EventVisited(email, "fjaskld3947ashjdhasd92384jk", EventSource.WHAM);
+		EventVisited eventVisited = new EventVisited(email, "jhaskdjh413894ajkd", "event 1", "Street 1, boston, ma", "12/12/2015", EventSource.WHAM);
 		dao.createEventsVisted(eventVisited);
-		eventVisited = new EventVisited(email, "aksdj846asdj238947ryahsr239asdj", EventSource.WHAM);
+		eventVisited = new EventVisited(email, "dkjasdl23794asjhkry2379", "event 2", "Street 2, boston, ma", "12/14/2015", EventSource.WHAM);
 		dao.createEventsVisted(eventVisited);
 		for (EventVisited ev : dao.findAllEventsVisited()) {
 			System.out.println(ev.toString());

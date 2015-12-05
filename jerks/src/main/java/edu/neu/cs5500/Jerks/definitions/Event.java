@@ -20,30 +20,30 @@ import javax.persistence.TemporalType;
 @Entity
 @Table
 public class Event {
-	
+
 	@Id
 	private String eventId;
 	private String name;
 	@Temporal(TemporalType.DATE)
 	private Date date;
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="ADDRESSID")
-	private Address address; 
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ADDRESSID")
+	private Address address;
 	private String description;
 	private double ticketPrice;
 	private int minAgeLimit;
 	private double rating;
 	private int remainingTickets;
 	private EventSource source;
-	
-	public Event(){
-		
+
+	public Event() {
+
 	}
-	
+
 	public Event(String name, Date date, Address address, String description, double ticketPrice, int minAgeLimit,
 			double rating, int remainingTickets, EventSource source) {
-		
-		this.eventId =  (new Date()).toString();
+
+		this.eventId = (new Date()).toString();
 		this.name = name;
 		this.date = date;
 		this.address = address;
@@ -54,92 +54,117 @@ public class Event {
 		this.remainingTickets = remainingTickets;
 		this.source = source;
 	}
-	
-	//Getters and Setters for Id
+
+	// Getters and Setters for Id
 	public String getEventId() {
 		return eventId;
 	}
+
 	public void setEventId(String eventId) {
 		this.eventId = eventId;
 	}
-	
-	//Getters and Setters for Name
+
+	// Getters and Setters for Name
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	//Getters and Setters for Date
+
+	// Getters and Setters for Date
 	public Date getDate() {
 		return date;
 	}
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	//Getters and Setters for Address
+
+	// Getters and Setters for Address
 	public Address getAddress() {
 		return address;
 	}
+
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	//Getters and Setters for Description
+
+	// Getters and Setters for Description
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	//Getters and Setters for minimum age limit
+
+	// Getters and Setters for minimum age limit
 	public int getMinAgeLimit() {
 		return minAgeLimit;
 	}
+
 	public void setMinAgeLimit(int minAgeLimit) {
 		this.minAgeLimit = minAgeLimit;
 	}
-	
-	//Getters and Setters for ticket price in US dollars
+
+	// Getters and Setters for ticket price in US dollars
 	public double getTicketPrice() {
 		return ticketPrice;
 	}
+
 	public void setTicketPrice(double ticketPrice) {
 		this.ticketPrice = ticketPrice;
 	}
-	
-	//Getters and Setters for event rating
+
+	// Getters and Setters for event rating
 	public double getRating() {
 		return rating;
 	}
+
 	public void setRating(double rating) {
 		this.rating = rating;
 	}
-	
-	//Getters and Setters for remaining tickets
+
+	// Getters and Setters for remaining tickets
 	public int getRemainingTickets() {
-		return remainingTickets;	
+		return remainingTickets;
 	}
+
 	public void setRemainingTickets(int remainingTickets) {
 		this.remainingTickets = remainingTickets;
 	}
-	
-	//Getters and Setters for event source
+
+	// Getters and Setters for event source
 	public EventSource getSource() {
 		return source;
 	}
+
 	public void setSource(EventSource source) {
 		this.source = source;
 	}
 
 	@Override
 	public String toString() {
-		return "Event [eventId=" + eventId + ", name=" + name + ", date=" + date + ", address=" + address + ", description="
-				+ description + ", ticketPrice=" + ticketPrice + ", minAgeLimit=" + minAgeLimit + ", rating=" + rating
-				+ ", remainingTickets=" + remainingTickets + ", source=" + source + "]";
-	}	
+		return "Event [eventId=" + eventId + ", name=" + name + ", date=" + date + ", address=" + address
+				+ ", description=" + description + ", ticketPrice=" + ticketPrice + ", minAgeLimit=" + minAgeLimit
+				+ ", rating=" + rating + ", remainingTickets=" + remainingTickets + ", source=" + source + "]";
+	}
 	
+	public Event clone() {
+		Event clone  = new Event();
+		clone.eventId = this.eventId;
+		clone.name = this.name;
+		clone.date = this.date;
+		clone.address = this.address;
+		clone.description = this.description;
+		clone.ticketPrice = this.ticketPrice;
+		clone.minAgeLimit = this.minAgeLimit;
+		clone.rating = this.rating;
+		clone.remainingTickets = this.remainingTickets;
+		clone.source = this.source;
+		return clone;
+	}
+
 }
