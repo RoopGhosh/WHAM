@@ -1,8 +1,6 @@
 /*package edu.neu.cs5500.jerks.dbProviders.test;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import edu.neu.cs5500.Jerks.dbProviders.AddressProvider;
 import edu.neu.cs5500.Jerks.definitions.Address;
@@ -10,15 +8,11 @@ import edu.neu.cs5500.jerks.business.test.TestRandom;
 import java.util.List;
 import junit.framework.Assert;
 
-@SuppressWarnings("deprecation")
 public class AddressProviderTest {
 
 	TestRandom rand = new TestRandom();
 	AddressProvider addrDao = new AddressProvider();
 	
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 	@Test()
 	public void testCreateAddressWithAllFields() {
 		Address addr = new Address(rand.nextAlphaNumStr(10), rand.nextAlphaNumStr(5), rand.nextStr(5), rand.nextStr(2),
@@ -59,12 +53,11 @@ public class AddressProviderTest {
 		Assert.assertEquals("The address line 1 is not the same!!", addr.getAddressLine1(), clone.getAddressLine1());
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateAddressWithInvalidAddressLine1Length() {
 		Address addr = new Address();
 		addr.setAddressLine1(rand.nextAlphaNumStr(256));
 		Address clone = addr.clone();
-		exception.expect(javax.persistence.RollbackException.class);
 		addrDao.createAddress(clone);
 	}
 
@@ -77,12 +70,11 @@ public class AddressProviderTest {
 		Assert.assertEquals("The address line 2 is not the same!!", addr.getAddressLine2(), clone.getAddressLine2());
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateAddressWithInvalidAddressLine2Length() {
 		Address addr = new Address();
 		addr.setAddressLine2(rand.nextAlphaNumStr(256));
 		Address clone = addr.clone();
-		exception.expect(javax.persistence.RollbackException.class);
 		addrDao.createAddress(clone);
 	}
 
@@ -95,39 +87,35 @@ public class AddressProviderTest {
 		Assert.assertEquals("The city name is not the same!!", addr.getCity(), clone.getCity());
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateAddressWithInvalidCityLength() {
 		Address addr = new Address();
 		addr.setCity(rand.nextAlphaNumStr(51));
 		Address clone = addr.clone();
-		exception.expect(javax.persistence.RollbackException.class);
 		addrDao.createAddress(clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateAddressWithInvalidCountryLength() {
 		Address addr = new Address();
 		addr.setCountry(rand.nextAlphaNumStr(3));
 		Address clone = addr.clone();
-		exception.expect(javax.persistence.RollbackException.class);
 		addrDao.createAddress(clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateAddressWithInvalidStateLength() {
 		Address addr = new Address();
 		addr.setState(rand.nextAlphaNumStr(3));
 		Address clone = addr.clone();
-		exception.expect(javax.persistence.RollbackException.class);
 		addrDao.createAddress(clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateAddressWithInvalidZipcodeLength() {
 		Address addr = new Address();
 		addr.setZipCode(rand.nextAlphaNumStr(6));
 		Address clone = addr.clone();
-		exception.expect(javax.persistence.RollbackException.class);
 		addrDao.createAddress(clone);
 	}
 
@@ -138,7 +126,7 @@ public class AddressProviderTest {
 	}
 
 	@Test()
-	public void testFindAllAddressesWithAddressId() {
+	public void testFindAllAddressesFetchAddress() {
 		Address addr = new Address();
 		addrDao.createAddress(addr);
 		List<Address> addresses = addrDao.findAllAddresses();
@@ -158,21 +146,21 @@ public class AddressProviderTest {
 		Address addr = addrDao.updateAddress(-1, new Address());
 		Assert.assertNull("Able to find address with negative address Id", addr);
 	}
-	
+
 	@Test()
 	public void testUpdateAddressWithAddressIdAsZero() {
 
 		Address addr = addrDao.updateAddress(0, new Address());
 		Assert.assertNull("Able to find address with address Id as zero", addr);
 	}
-	
+
 	@Test()
 	public void testUpdateAddressWithInvalidAddressId() {
 
 		Address addr = addrDao.updateAddress(Integer.parseInt(rand.nextNum(5)), new Address());
 		Assert.assertNull("Invalid address found !!!", addr);
 	}
-	
+
 	@Test()
 	public void testUpdateAddress() {
 		Address addr = new Address();
@@ -185,17 +173,23 @@ public class AddressProviderTest {
 		assertAddress(addr, clone);
 	}
 
-	private void assertAddress(Address expected, Address actual) {
+	public static void assertAddress(Address expected, Address actual) {
 
-		Assert.assertEquals("The addressId is incorrect!!!", expected.getAddressId(), actual.getAddressId());
-		Assert.assertEquals("The addressLine1 is incorrect!!!", expected.getAddressLine1(), actual.getAddressLine1());
-		Assert.assertEquals("The addressLine2 is incorrect!!!", expected.getAddressLine2(), actual.getAddressLine2());
-		Assert.assertEquals("The city is incorrect!!!", expected.getCity(), actual.getCity());
-		Assert.assertEquals("The state is incorrect!!!", expected.getState(), actual.getState());
-		Assert.assertEquals("The country is incorrect!!!", expected.getCountry(), actual.getCountry());
-		Assert.assertEquals("The zipCode is incorrect!!!", expected.getZipCode(), actual.getZipCode());
-		Assert.assertEquals("The latitude is incorrect!!!", expected.getLatitude(), actual.getLatitude());
-		Assert.assertEquals("The longitude is incorrect!!!", expected.getLongitude(), actual.getLongitude());
+		if (expected == null) {
+			Assert.assertNull("Expected Address to be null !!", actual);
+		} else {
+			Assert.assertEquals("The addressId is incorrect!!!", expected.getAddressId(), actual.getAddressId());
+			Assert.assertEquals("The addressLine1 is incorrect!!!", expected.getAddressLine1(),
+					actual.getAddressLine1());
+			Assert.assertEquals("The addressLine2 is incorrect!!!", expected.getAddressLine2(),
+					actual.getAddressLine2());
+			Assert.assertEquals("The city is incorrect!!!", expected.getCity(), actual.getCity());
+			Assert.assertEquals("The state is incorrect!!!", expected.getState(), actual.getState());
+			Assert.assertEquals("The country is incorrect!!!", expected.getCountry(), actual.getCountry());
+			Assert.assertEquals("The zipCode is incorrect!!!", expected.getZipCode(), actual.getZipCode());
+			Assert.assertEquals("The latitude is incorrect!!!", expected.getLatitude(), actual.getLatitude());
+			Assert.assertEquals("The longitude is incorrect!!!", expected.getLongitude(), actual.getLongitude());
+		}
 	}
 
 }

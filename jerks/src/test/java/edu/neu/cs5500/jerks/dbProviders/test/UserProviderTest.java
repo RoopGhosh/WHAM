@@ -1,9 +1,7 @@
 /*package edu.neu.cs5500.jerks.dbProviders.test;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import edu.neu.cs5500.Jerks.dbProviders.*;
 import edu.neu.cs5500.Jerks.definitions.*;
 import edu.neu.cs5500.jerks.business.test.TestRandom;
@@ -12,10 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
 
- Author: Karthik Chandranna
- * Creation Date: 11/25/2015 6:04 PM EST
- * Description: UserProvider tests
- * 
 public class UserProviderTest {
 
 	TestRandom rand = new TestRandom();
@@ -24,15 +18,12 @@ public class UserProviderTest {
 	Address address;
 	List<String> areaOfInterest = new ArrayList<>();
 	List<String> disLikes = new ArrayList<>();
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 	@Before
 	public void beforeMethod() {
 		address = new Address(rand.nextAlphaNumStr(10), rand.nextAlphaNumStr(5), rand.nextStr(5), rand.nextStr(2),
 				rand.nextStr(2), rand.nextNum(5), rand.nextFloat(2, 3), rand.nextFloat(2, 3));
 		addrDao.createAddress(address);
-		System.out.println(address.toString());
 		areaOfInterest.add(EventCategory.music.toString());
 		areaOfInterest.add(EventCategory.holiday.toString());
 		disLikes.add(EventCategory.politics_activism.toString());
@@ -50,74 +41,65 @@ public class UserProviderTest {
 		assertUser(user, clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithEmptyFields() {
 		User user = new User();
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithEmailAsNull() {
 		User user = new User(null, rand.nextStr(10), rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidEmail() {
 		User user = new User(rand.nextNum(256), rand.nextStr(10), rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithFNameAsNull() {
 		User user = new User(rand.nextEmail(), null, rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidFName() {
 		User user = new User(rand.nextEmail(), rand.nextStr(51), rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithLNameAsNull() {
 		User user = new User(rand.nextEmail(), rand.nextStr(10), null, rand.nextAlphaNumStr(10), address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidLName() {
 		User user = new User(rand.nextEmail(), rand.nextStr(10), rand.nextStr(51), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithPwdAsNull() {
 		User user = new User(rand.nextEmail(), rand.nextStr(10), rand.nextAlphaNumStr(10), null, address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidPwd() {
 		User user = new User(rand.nextEmail(), rand.nextStr(10), rand.nextStr(10), rand.nextAlphaNumStr(21), address,
 				rand.nextNum(10), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
@@ -141,11 +123,10 @@ public class UserProviderTest {
 		assertUser(user, clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidPhoneNum() {
 		User user = new User(rand.nextEmail(), rand.nextStr(10), rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(11), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
@@ -169,11 +150,10 @@ public class UserProviderTest {
 		assertUser(user, clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidGender() {
 		User user = new User(rand.nextEmail(), rand.nextStr(10), rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(11), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
@@ -187,12 +167,11 @@ public class UserProviderTest {
 		assertUser(user, clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidInterests() {
 		areaOfInterest.add(rand.nextStr(1100));
 		User user = new User(rand.nextEmail(), rand.nextStr(10), rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(11), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
@@ -206,12 +185,11 @@ public class UserProviderTest {
 		assertUser(user, clone);
 	}
 
-	@Test()
+	@Test(expected = Exception.class)
 	public void testCreateUserWithInvalidDislikes() {
 		disLikes.add(rand.nextStr(1100));
 		User user = new User(rand.nextEmail(), rand.nextStr(10), rand.nextStr(10), rand.nextAlphaNumStr(10), address,
 				rand.nextNum(11), rand.nextDate(), "M", areaOfInterest, disLikes);
-		exception.expect(javax.persistence.RollbackException.class);
 		userDao.createUser(user);
 	}
 
@@ -275,21 +253,18 @@ public class UserProviderTest {
 		Assert.assertNull("Found an unexpected user !!", respUser);
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void testDeleteUserWithInvalidEmail() {
-		exception.expect(IllegalArgumentException.class);
 		userDao.deleteUser(rand.nextStr(256));
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void testDeleteUserWithNonExistentEmail() {
-		exception.expect(IllegalArgumentException.class);
 		userDao.deleteUser(rand.nextStr(40));
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void testDeleteUserWithEmailAsNull() {
-		exception.expect(IllegalArgumentException.class);
 		userDao.deleteUser(null);
 	}
 
@@ -304,7 +279,7 @@ public class UserProviderTest {
 		System.out.println("Expected Address:\n" + user.toString() + "\nActual Address:\n" + clone.toString());
 		assertUser(user, clone);
 	}
-
+	
 	@Test
 	public void testUpdateUserWithInvalidEmail() {
 		User updateuser = userDao.updateUser(rand.nextStr(256), new User());
@@ -317,9 +292,8 @@ public class UserProviderTest {
 		Assert.assertNull("Illegal user update !!", updateuser);
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void testUpdateUserWithEmailAsNull() {
-		exception.expect(IllegalArgumentException.class);
 		userDao.updateUser(null, new User());
 	}
 

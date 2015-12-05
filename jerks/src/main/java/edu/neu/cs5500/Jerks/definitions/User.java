@@ -100,29 +100,33 @@ public class User {
 	}
 
 	public List<String> getAreaOfInterest() {
-		return Arrays.asList(areaOfInterest.split("|"));
+		return new LinkedList<String>(Arrays.asList(areaOfInterest.split("[|]")));
 	}
 
 	public void setAreaOfInterest(List<String> areaOfInterest) {
-		Iterator<String> it = areaOfInterest.iterator();
-		String str = "";
-		while (it.hasNext()) {
-			str = str.concat(it.next() + "|");
+		if (areaOfInterest != null) {
+			Iterator<String> it = areaOfInterest.iterator();
+			String str = "";
+			while (it.hasNext()) {
+				str = str.concat(it.next() + "|");
+			}
+			this.areaOfInterest = str.substring(0, str.length() - 1);
 		}
-		this.areaOfInterest = str.substring(0, str.length() - 1);
 	}
 
 	public List<String> getDislikes() {
-		return Arrays.asList(disLikes.split("|"));
+		return new LinkedList<String>(Arrays.asList(disLikes.split("[|]")));
 	}
 
 	public void setDislikes(List<String> dislikes) {
-		Iterator<String> it = dislikes.iterator();
-		String str = "";
-		while (it.hasNext()) {
-			str = str.concat(it.next() + "|");
+		if (dislikes != null) {
+			Iterator<String> it = dislikes.iterator();
+			String str = "";
+			while (it.hasNext()) {
+				str = str.concat(it.next() + "|");
+			}
+			this.disLikes = str.substring(0, str.length() - 1);
 		}
-		this.disLikes = str.substring(0, str.length() - 1);
 	}
 
 	public User() {
