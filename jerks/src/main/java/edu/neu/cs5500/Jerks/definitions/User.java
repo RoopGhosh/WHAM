@@ -172,6 +172,7 @@ public class User {
 				+ ", areaOfInterest=" + areaOfInterest + ", dislikes=" + disLikes + "]";
 	}
 
+	@Override
 	public User clone() {
 		User clone = new User();
 		clone.email = this.email;

@@ -49,9 +49,11 @@ public class AddressProvider {
 		if(a!=null){
 			address.setAddressId(addressId);			
 			em.merge(address);
+			em.getTransaction().commit();
+			return a;
 		}
 		em.getTransaction().commit();
-		return a;
+		return null;
 	}
 
 	

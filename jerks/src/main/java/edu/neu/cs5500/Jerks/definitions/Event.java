@@ -152,6 +152,7 @@ public class Event {
 				+ ", rating=" + rating + ", remainingTickets=" + remainingTickets + ", source=" + source + "]";
 	}
 	
+	@Override
 	public Event clone() {
 		Event clone  = new Event();
 		clone.eventId = this.eventId;
