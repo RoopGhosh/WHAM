@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.neu.cs5500.Jerks.apiCall.GoogleAddressToLatLong;
 import edu.neu.cs5500.Jerks.dbProviders.EventProvider;
+import edu.neu.cs5500.Jerks.dbProviders.EventVisitedProvider;
 import edu.neu.cs5500.Jerks.definitions.Address;
 import edu.neu.cs5500.Jerks.definitions.Event;
 import edu.neu.cs5500.Jerks.definitions.EventSource;
+import edu.neu.cs5500.Jerks.definitions.EventVisited;
 import edu.neu.cs5500.Jerks.definitions.User;
 
 @Controller
@@ -49,15 +51,18 @@ public class HelloController {
 		System.out.println("Hello from geolocator");
 		return "geolocator";
 	}
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String b (@RequestParam("username") String username, @RequestParam("password") String password,
-			@RequestParam("latitude") String latitude,
-			@RequestParam("longitude") String longitude,   ModelMap model)
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(@RequestParam("latitude") String latitude,
+			@RequestParam("longitude") String longitude,
+			@RequestParam("username") String username,
+			@RequestParam("password") String password,			
+			ModelMap model) throws IOException
 	{
-		model.put("username", username);
-		model.put("password", password);
 		model.put("latitude", latitude);
 		model.put("longitude", longitude);
+		model.put("username", username);
+		model.put("password", password);
 		return "index";
 	}
 	
@@ -74,6 +79,11 @@ public class HelloController {
 		return "createEvents";
 	}
 	
+	@RequestMapping(value = "/history", method = RequestMethod.GET)
+	public String historyPage(ModelMap model)
+	{
+		return "history";
+	}
 	
 	@RequestMapping(value = "/createEvents", method = RequestMethod.POST)
 	public String createUserEventsPOST(
@@ -206,6 +216,30 @@ public class HelloController {
 		return "register";
 	}
 	
+	@RequestMapping(value = "/buy", method = RequestMethod.POST)
+	public String buyEvent(@RequestParam("latitude") String latitude, 
+			@RequestParam("longitude") String longitude,
+			@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("eventName") String eventName,
+			@RequestParam("date") String date,
+			@RequestParam("address") String address,
+			@RequestParam("source") String source,
+			@RequestParam("eventId") String eventId,
+			ModelMap model)
+	{	
+		System.out.println("Date: "+date);
+		model.put("username", username);
+		model.put("password", password);
+		model.put("latitude", latitude);
+		model.put("longitude", longitude);
+		
+		EventVisited visited = new EventVisited(username,eventId, eventName, address, date, EventSource.valueOf(source)) ;
+		EventVisitedProvider dao = new EventVisitedProvider();
+		dao.createEventsVisted(visited);
+		return "index";
+	}
+	
 	@RequestMapping(value = "/eventDetails", method = RequestMethod.POST)
 	public String eventDetailsFromIndex(@RequestParam("latitude") String latitude, 
 			@RequestParam("longitude") String longitude,
@@ -225,6 +259,7 @@ public class HelloController {
 			@RequestParam("zipCode") String zipCode,
 			@RequestParam("username") String user,
 			@RequestParam("ticketPrice") String ticketPrice,
+			@RequestParam("source") String source,
 			ModelMap model)
 	{
 		System.out.println("Hello from eventsDetails Controller");
@@ -245,11 +280,13 @@ public class HelloController {
 		model.put("zipCode",zipCode);
 		model.put("username", user);
 		model.put("ticketPrice", ticketPrice);
+		model.put("source", source);
 		System.out.println("From eventsdetailsController lat "+latitude);
 		System.out.println("From eventsdetailsController long "+longitude);
 		System.out.println();
 		return "eventDetails";
 	}
+	
 	
 	/*@RequestMapping(value = "/resources/**")
 	   public String redirect() {

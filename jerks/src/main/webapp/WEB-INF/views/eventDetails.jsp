@@ -14,12 +14,12 @@
 	String latitude = String.valueOf(request.getAttribute("latitude"));
 	String longitude = String.valueOf(request.getAttribute("longitude"));
 	String date = String.valueOf(request.getAttribute("date"));
+	System.out.println("Event Date"+date);
 	String description = String.valueOf(request.getAttribute("description"));
-	System.out.println("Event Description"+description);
 	String eventId = String.valueOf(request.getAttribute("eventId"));
 	String minAgeLimit = String.valueOf(request.getAttribute("minAgeLimit"));
 	String eventName = String.valueOf(request.getAttribute("name"));
-	String remainingTickets = String.valueOf(request.getAttribute("name"));
+	String remainingTickets = String.valueOf(request.getAttribute("remainingTickets"));
 	String addressLine1 = String.valueOf(request.getAttribute("addressLine1"));
 	String addressLine2 = String.valueOf(request.getAttribute("addressLine2"));
 	String city = String.valueOf(request.getAttribute("city"));
@@ -28,8 +28,11 @@
 	String eventLatitude = String.valueOf(request.getAttribute("eventLatitude"));
 	String eventLongitude = String.valueOf(request.getAttribute("eventLongitude"));
 	String username = String.valueOf(request.getAttribute("username"));
+	String source = String.valueOf(request.getAttribute("source"));
+	System.out.println("Event Description source"+source);
 	String password="";
 	String ticketPrice = String.valueOf(request.getAttribute("ticketPrice"));
+	String completeAddress = addressLine1 + " " + addressLine2 + " " + city + " " + state + " " + zipCode;
 	UserProvider userDao = new UserProvider();
 	User user = null;
 	try
@@ -127,11 +130,8 @@
 
 	<div class="main">
 		<div class="sidebar">
-			<div id="eventDetails" class="eventDetails">
-				<H3 id="name">Select an event to see its details...</H3>
-				<p id="description"></p>
-				<p id="more"></p>
-			</div>
+			<div id="eventDetails" class="eventDetails"></div>
+			<div id="buy" class="eventDetails"></div>
 		</div>
 		<div id="googleMap" class="googleMap">
 		</div>
@@ -191,8 +191,22 @@
 		display += "<p>Minumum Age Limit:"+"<%=minAgeLimit%>"+"</p>";
 		display += "<p>Remaining Tickets:"+"<%=remainingTickets%>"+"</p>";
 		display += "<p>Price:"+"<%=ticketPrice%>"+"</p>";
-		display +="</br><input type='submit' value='buy' id='getMap'>Buy</input>";
 		$('#eventDetails').html(display);
+		
+		var form = "";
+		form += '<form action="/jerks/buy" method="post">';
+		form += '<input type="hidden" name="latitude" value="<%=latitude%>">';
+		form += '<input type="hidden" name="longitude" value="<%=longitude%>">';
+		form += '<input type="hidden" name="date" value="<%=date%>">';
+		form += '<input type="hidden" name="username" value="<%=username%>">';
+		form += '<input type="hidden" name="password" value="<%=password%>">';
+		form += '<input type="hidden" name="address" value="<%=completeAddress%>">';
+		form += '<input type="hidden" name="eventId" value="<%=eventId%>">';
+		form += '<input type="hidden" name="eventName" value="<%=eventName%>">';
+		form += '<input type="hidden" name="source" value="<%=source%>">';
+		form +='<input type="submit" class="btn btn-primary" value="Buy">';
+		form += '</form>';
+		$('#buy').html(form);		
 	}
 	
 	

@@ -26,9 +26,9 @@
 	List<String> categories1 = new ArrayList<String>();
 	Date date = new Date();// gets modified time
 	String loginMessage = "HowdyUser!";
-	
-	// Remove hardcoded categories & dislikes
 
+// Remove hardcoded categories & dislikes
+	
 	UserProvider userDao = new UserProvider();
 	User user = null;
 	String emailFordetails = "Howdy User";
@@ -58,8 +58,8 @@
 		String dob = request.getParameter("datepicker");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date parsed = sdf.parse(dob);
-        java.sql.Date sql = new java.sql.Date(parsed.getTime());
-        
+	       java.sql.Date sql = new java.sql.Date(parsed.getTime());
+	       
 		System.out.println("Index date: "+sql.toString());
 		//System.out.println("Index regsiter: "+request.getParameter("gender"));
 		String gender = request.getParameter("gender");
@@ -72,23 +72,23 @@
 		user = new User(email,firstName,lastName,password,addr,phoneNumber,
 				sql,gender,categories1,dislikes);
 		User registeredUser = userDao.createUser(user);
-	if(registeredUser != null)
+		if(registeredUser != null)
 		{
-		System.out.println("User created successfully");
-		emailFordetails = user.getEmail();
+			System.out.println("User created successfully");
+			emailFordetails = user.getEmail();
 			username = user.getEmail();
 		}
 		else
 		{
 			System.out.println("User created unsuccessfully");
 		}
-		
-	}
+	
+	} // try for registering an user
 	catch(Exception e)
 	{
 		System.out.println("Could not register user");
 	}
-	
+
 	try
 	{	
 		System.out.println("From index try block");
@@ -108,53 +108,57 @@
 		System.out.print("6");
 		try
 		{
-	
-	username = (String)request.getAttribute("username");
-	String password = (String)request.getAttribute("password");
-	
-	System.out.println("username from url: "+username);
-	System.out.println("Password from url: "+password);
-	user = userDao.findByEmail(username);
-	if(user != null)
-	{
-		String passCheck = user.getPassword();
-		System.out.println("Passcheck: "+passCheck);
-		System.out.println("Password: "+password);
-		if (passCheck.equals(password))
-		{
-	session.setAttribute("username", user.getEmail());
-	session.setAttribute("password", user.getPassword());
-	emailFordetails = user.getEmail();
-	System.out.println("Valid Password");
-	loginMessage = user.getFirstName();
-	
-	//Add the userdislikes for events
-	List<String> dislikesList = user.getDislikes();
-	dislikes = dislikesList;
-		}
-		else
-		{
-	System.out.println("Invalid password: "+user.getPassword());
-	loginMessage = "Invalid Password";
-		}
-	}
-	else
-	{
-		System.out.println("Invalid email id, no record found");
-		loginMessage = "Please Regsiter";
-	}
-		}
+			username = (String)request.getAttribute("username");
+			String password = (String)request.getAttribute("password");
+			System.out.println("username from url: "+username);
+			System.out.println("Password from url: "+password);
+			user = userDao.findByEmail(username);
+			if(user != null)
+			{
+				String passCheck = user.getPassword();
+				System.out.println("Passcheck: "+passCheck);
+				System.out.println("Password: "+password);
+				if (passCheck.equals(password))
+				{
+					session.setAttribute("username", user.getEmail());
+					session.setAttribute("password", user.getPassword());
+					emailFordetails = user.getEmail();
+					System.out.println("Valid Password");
+					loginMessage = user.getFirstName();
+					
+					//Add the userdislikes for events
+					List<String> dislikesList = user.getDislikes();
+					dislikes = dislikesList;
+				}
+				else
+				{
+					System.out.println("Invalid password: "+user.getPassword());
+					loginMessage = "Invalid Password";
+				} // inner if
+			} // outer if
+			else
+			{
+				System.out.println("Invalid email id, no record found");
+				loginMessage = "Please Regsiter";
+			}
+		} // login try
 		catch(Exception e)
 		{
 			System.out.println("Could not find username or password");
 		}
-		
- 		// Capture the search button click
-		if (request.getParameter("search") != null) {
+	
+		if (request.getParameter("search") != null)
+		{
 			String searchtype = (String) request.getParameter("type");
+			if(searchtype == null)
+				searchtype = "event";
+				
 			if (searchtype.equalsIgnoreCase("event"))
-				searchEvent = (String) request.getParameter("search");
-			else {
+				{
+					searchEvent = (String) request.getParameter("search");
+				}
+			else
+			{
 				searchAddress = (String) request.getParameter("search");
 				searchAddress = searchAddress.replaceAll(" ", "%20");
 				GoogleAddressToLatLong google = new GoogleAddressToLatLong();
@@ -165,39 +169,48 @@
 		}
 
 		// Capture search price range
-		if (request.getParameter("price") != null) {
+		if (request.getParameter("price") != null) 
+		{
 			int priceRange = Integer.parseInt(request.getParameter("price"));
 			if (priceRange > 0)
+			{
 				price = String.valueOf(priceRange);
+			}
 		}
 		// Capture the search dates
-		if (request.getParameter("daysWithin") != null) {
+		if (request.getParameter("daysWithin") != null)
+		{
 			int daysWithin = Integer.parseInt(request.getParameter("daysWithin"));
 			Calendar c = Calendar.getInstance(); // starts with today's date and time
 			c.add(Calendar.DAY_OF_YEAR, daysWithin);
 			date = c.getTime();
 		}
-
+	
 		// Capture the search catagories
-		if (request.getParameter("catagories") != null) {
+		if (request.getParameter("catagories") != null)
+		{
 			String searchCategory = (String) request.getParameter("category");
-			if (!searchCategory.equals("all")) {
+			if (!searchCategory.equals("all"))
+			{
 				/* categories = new String[1];
 				categories[0] = searchCategory; */
 				categories1.add(searchCategory);
 			}
 		}
 		EventManager em = new EventManager();
+		System.out.println("From event manager");
 		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
 				categories1.toArray(new String[categories1.size()]), dislikes.toArray(new String[dislikes.size()]));
 		jsonEvents = new Gson().toJson(events);
-	} catch (Exception e) {
+	}
+	catch (Exception e)
+	{
 		System.out.println(e);
 		response.sendRedirect("geolocator");
 	}
-	
-	
-	
+
+
+
 %>
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
@@ -215,57 +228,65 @@
 <script src="${Login}"></script>
 <title>WHAM - Home</title>
 <script>
-	google.maps.event.addDomListener(window, 'load', function() {
-		initialize(<%=jsonEvents%>, <%=latitude%>, <%=longitude%>);
-	});
-	//Dynamicaly detect the window's size and resize the map
-	$(window).resize(function() {
-		var currentWidth = $('.main').width();
-		$("#googleMap").width(currentWidth - 300); // 300px is the sidebar width
-	});
+google.maps.event.addDomListener(window, 'load', function() {
+	initialize(<%=jsonEvents%>, <%=latitude%>, <%=longitude%>);
+});
+//Dynamicaly detect the window's size and resize the map
+$(window).resize(function() {
+	var currentWidth = $('.main').width();
+	$("#googleMap").width(currentWidth - 300); // 300px is the sidebar width
+});
+
+function showEventDetails(jsonEvent, latitude, longitude) {
+	console.log(jsonEvent);
+	var nameTag = document.getElementById("name");
+	var descriptionTag = document.getElementById("description");
+	var moreTag = document.getElementById("more");	
+	nameTag.innerHTML = jsonEvent.name;
+	console.log("desclength:" +jsonEvent.description.length);
+	if(jsonEvent.description.length > 400)
+		{
+		console.log("Im here");
+		var shortDesc = jsonEvent.description.substring(0,400);
+		console.log(shortDesc);
+		descriptionTag.innerHTML = shortDesc+'....';
+		}
+	else{descriptionTag.innerHTML = jsonEvent.description;}
+	console.log(jsonEvent.source);
+	var parentUrl = encodeURIComponent(window.location.href),
+    eventDetailUrl = window.location.origin+ '/eventDetails.jsp?id='+jsonEvent.id;	
 	
-	function showEventDetails(jsonEvent, latitude, longitude) {
-		
-		var nameTag = document.getElementById("name");
-		var descriptionTag = document.getElementById("description");
-		var moreTag = document.getElementById("more");	
-		nameTag.innerHTML = jsonEvent.name;
-		console.log("desclength:" +jsonEvent.description.length);
-		if(jsonEvent.description.length > 400)
-			{
-			console.log("Im here");
-			var shortDesc = jsonEvent.description.substring(0,400);
-			console.log(shortDesc);
-			descriptionTag.innerHTML = shortDesc+'....';
-			}
-		else{descriptionTag.innerHTML = jsonEvent.description;}
-		
-		var parentUrl = encodeURIComponent(window.location.href),
-	    eventDetailUrl = window.location.origin+ '/eventDetails.jsp?id='+jsonEvent.id;	
-		var form = '<form action="/jerks/eventDetails" method="POST">';
-		form += '<input type="hidden" name="latitude" value='+latitude +'>';
-		form +='<input type="hidden" name="longitude" value='+longitude +'>';
-		form +='<input type="hidden" name="addressLine1" value='+jsonEvent.address.addressLine1 +'>';
-		form +='<input type="hidden" name="addressLine2" value='+jsonEvent.address.addressLine2 +'>';
-		form +='<input type="hidden" name="city" value='+jsonEvent.address.city +'>';
-		form +='<input type="hidden" name="eventLatitude" value='+jsonEvent.address.latitude +'>';
-		form +='<input type="hidden" name="eventLongitude" value='+jsonEvent.address.longitude +'>';
-		form +='<input type="hidden" name="state" value='+jsonEvent.address.state +'>';
-		form +='<input type="hidden" name="zipCode" value='+jsonEvent.address.zipCode +'>';
-		form +='<input type="hidden" name="date" value='+jsonEvent.date+'>';
-		form +='<input type="hidden" name="description" value='+escape(jsonEvent.description)+'>';
-		form +='<input type="hidden" name="eventId" value='+jsonEvent.eventId+'>';
-		form +='<input type="hidden" name="minAgeLimit" value='+jsonEvent.minAgeLimit+'>';
-		form +='<input type="hidden" name="name" value='+jsonEvent.name+'>';
-		form +='<input type="hidden" name="rating" value='+jsonEvent.rating+'>';
-		form +='<input type="hidden" name="remainingTickets" value='+jsonEvent.remainingTickets+'>';
-		form +='<input type="hidden" name="ticketPrice" value='+jsonEvent.ticketPrice+'>';
-		form +='<input type="hidden" name="username" value="<%=emailFordetails%>" >';
-		form +='<input type="submit" class="btn btn-primary" value="More Details" style="float:left;">';
-		form += '</form>';
-		form += '<a href="/jerks/dislike/<%=username%>/' + jsonEvent.name + '/' + latitude + '/' + longitude + '" class="btn btn-primary" style="float:right;"><span class="glyphicon glyphicon-thumbs-down icon-large white pull-left"></span>&nbsp;&nbsp;Dislike</a>';
-		moreTag.innerHTML = form;
-	}
+	var date = new Date(jsonEvent.date);
+	var day = date.getDate();
+	var monthIndex = date.getMonth();
+	var year = date.getFullYear();
+	var newDate = year+'-'+monthIndex+'-'+day;
+	
+	var form = '<form action="/jerks/eventDetails" method="POST">';
+	form += '<input type="hidden" name="latitude" value='+latitude +'>';
+	form +='<input type="hidden" name="longitude" value='+longitude +'>';
+	form +='<input type="hidden" name="addressLine1" value='+jsonEvent.address.addressLine1 +'>';
+	form +='<input type="hidden" name="addressLine2" value='+jsonEvent.address.addressLine2 +'>';
+	form +='<input type="hidden" name="city" value='+jsonEvent.address.city +'>';
+	form +='<input type="hidden" name="eventLatitude" value='+jsonEvent.address.latitude +'>';
+	form +='<input type="hidden" name="eventLongitude" value='+jsonEvent.address.longitude +'>';
+	form +='<input type="hidden" name="state" value='+jsonEvent.address.state +'>';
+	form +='<input type="hidden" name="zipCode" value='+jsonEvent.address.zipCode +'>';
+	form +='<input type="hidden" name="date" value='+newDate+'>';
+	form +='<input type="hidden" name="description" value='+escape(jsonEvent.description)+'>';
+	form +='<input type="hidden" name="eventId" value='+jsonEvent.eventId+'>';
+	form +='<input type="hidden" name="minAgeLimit" value='+jsonEvent.minAgeLimit+'>';
+	form +='<input type="hidden" name="name" value='+jsonEvent.name+'>';
+	form +='<input type="hidden" name="rating" value='+jsonEvent.rating+'>';
+	form +='<input type="hidden" name="remainingTickets" value='+jsonEvent.remainingTickets+'>';
+	form +='<input type="hidden" name="ticketPrice" value='+jsonEvent.ticketPrice+'>';
+	form +='<input type="hidden" name="source" value='+escape(jsonEvent.source)+'>';
+	form +='<input type="hidden" name="username" value="<%=emailFordetails%>" >';
+	form +='<input type="submit" class="btn btn-primary" value="More Details" style="float:left;">';
+	form += '</form>';
+	form += '<a href="/jerks/dislike/<%=username%>/'+ jsonEvent.name + '/' + latitude + '/' + longitude + '" class="btn btn-primary" style="float:right;"><span class="glyphicon glyphicon-thumbs-down icon-large white pull-left"></span>&nbsp;&nbsp;Dislike</a>';
+	moreTag.innerHTML = form;
+}
 </script>
 </head>
 <body>
@@ -273,12 +294,16 @@
 		<!-- Header Start -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
-				<a class="navbar-brand" rel="home" href="/jerks"><img src="${brandIcon}" alt="WHAM" style="width:42px;height:42px;border:0;"></a>
+				<a class="navbar-brand" rel="home" href="/jerks"><img
+					src="${brandIcon}" alt="WHAM"
+					style="width: 42px; height: 42px; border: 0;"></a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"><label><%=loginMessage%> </label><span
-							class="glyphicon glyphicon-user icon-large brown pull-left" style="color: #428bca">&nbsp;</span></a>
-						<% if (username != null) {%>
+							class="glyphicon glyphicon-user icon-large brown pull-left"
+							style="color: #428bca">&nbsp;</span></a> <%
+ 	if (username != null) {
+ %>
 						<ul class="dropdown-menu">
 							<li><a href="/jerks/createEvents">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
@@ -286,13 +311,10 @@
 							<li><a href="/jerks/profile/<%=username%>">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">History<span
+							<li><a href="/jerks/history/">My Events<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">Reports<span
-									class="glyphicon glyphicon-stats icon-large brown pull-right"></span></a></li>
-							<li class="divider"></li>
-							<li><a href="#">Logout<span
+							<li><a href="/jerks/">Logout<span
 									class="glyphicon glyphicon-off icon-large brown pull-right"></span></a></li>
 						</ul> <%
  	}
@@ -303,28 +325,38 @@
 			</div>
 
 			<div class="collapse navbar-collapse">
-				<div class="<%if (username != null){ %>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 <%} %>" >
+				<div
+					class="<%if (username != null){%>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 <%}%>">
 					<form class="navbar-form" role="search" id="searchForm">
 						<div class="row">
 							<div class="input-group my-group">
-							<% if (username != null) {%>
+								<%
+									if (username != null) {
+								%>
 								<select form="searchForm" id="searchTypeSelector" name="type"
-									class="selectpicker form-control" style="width: 15%; background:#428bca; border-color:#357ebd; color:white; font-weight:bold">
+									class="selectpicker form-control"
+									style="width: 15%; background: #428bca; border-color: #357ebd; color: white; font-weight: bold">
 									<option value="event">Events</option>
 									<option value="address">Address</option>
-								</select> 
-								<%}%>
+								</select>
+								<%
+									}
+								%>
 								<input type="text" class="form-control" placeholder="Search..."
-									name="search" id="srch-term" style="width: <%if (username != null){%>30%<%}else{%>100%<%}%>"> 
-									
-									<% if (username != null) {%>
-									<select form="searchForm" id="daysSelector" name="daysWithin"class="form-control" style="width:20%">
+									name="search" id="srch-term"
+									style="width: <%if (username != null){%>30%<%}else{%>100%<%}%>">
+
+								<%
+									if (username != null) {
+								%>
+								<select form="searchForm" id="daysSelector" name="daysWithin"
+									class="form-control" style="width: 20%">
 									<option value="2">Next 2 days</option>
 									<option value="1">Next 1 day</option>
 									<option value="3">Next 3 days</option>
 									<option value="4">Next 4 days</option>
-								</select>								
-								<select form="searchForm" id="catagorySelector"	name="catagories" class="form-control" style="width:20%"> 
+								</select> <select form="searchForm" id="catagorySelector"
+									name="catagories" class="form-control" style="width: 20%">
 									<option value="all">All Categories</option>
 									<option value="music">Music</option>
 									<option value="food">Food</option>
@@ -332,31 +364,36 @@
 									<option value="movies_film">Movies</option>
 									<option value="performing_arts">Performing Arts</option>
 									<option value="family_fun_kids">Family,Fun,Kids</option>
-									<option value="learning_education">Learning and Education</option>
-									<option value="religion_spirituality">Religion and Spiritual</option>
+									<option value="learning_education">Learning and
+										Education</option>
+									<option value="religion_spirituality">Religion and
+										Spiritual</option>
 									<option value="sports">Sports</option>
 									<option value="holiday">Holiday</option>
 									<option value="business">Business</option>
 									<option value="science">Science</option>
 									<option value="technology">Technology</option>
 									<option value="fundraisers">Fund Raisers</option>
-									<option value="politics_activism">Politics and Activism</option>
-									<option value="outdoors_recreation">Outdoors and Recreation</option>
+									<option value="politics_activism">Politics and
+										Activism</option>
+									<option value="outdoors_recreation">Outdoors and
+										Recreation</option>
 									<option value="community">Community</option>
 									<option value="books">Books</option>
 									<option value="other">Other</option>
-								</select>
-								<select form="searchForm" id="priceSelector" name="price" class="form-control" style="width:15%">
+								</select> <select form="searchForm" id="priceSelector" name="price"
+									class="form-control" style="width: 15%">
 									<option value="-1">All Prices</option>
 									<option value="0">Free</option>
 									<option value="100">&lt; $100</option>
 									<option value="200">&lt; $200</option>
 									<option value="300">&lt; $300</option>
-								</select>								
-									<%} %>								
-									<span
-									class="input-group-btn">
-									<button class="btn btn-primary" type="submit">
+								</select>
+								<%
+									}
+								%>
+								<span class="input-group-btn">
+									<button class="btn btn-primary">
 										<i class="glyphicon glyphicon-search"></i>
 									</button>
 								</span>
@@ -364,9 +401,11 @@
 						</div>
 					</form>
 				</div>
-				<% if (username == null || username == "") { %>
+				<%
+					if (username == null || username == "") {
+				%>
 				<div class="col-sm-4 col-md-4">
-					<form class="navbar-form" action="/jerks/login">
+					<form class="navbar-form" action="/jerks/login" method="post">
 						<div class="has-feedback input-group">
 							<input type="text" class="form-control" name="username"
 								placeholder="username..." style="width: 50%"> <input
@@ -387,42 +426,50 @@
 						<input type="hidden" name="longitude" value="${longitude}">
 					</form>
 				</div>
-				<%}%>
+				<%
+					}
+				%>
 			</div>
 		</div>
-		</div>
-	
+	</div>
+
 	<!-- Header End -->
 
 	<div class="main">
 		<div class="sidebar">
 			<div id="eventDetails" class="eventDetails">
-			<%if(username ==null) {%>
+				<%
+					if(username ==null) {
+				%>
 				<script type="text/javascript">
-					//Ad connect widget
-					cpmgo_adhere_opt = 'left:50%';
-					cpmgo_layer_banner = false;
-					cpmgo_mobile_redirect = true;
-					cpmgo_mobile_durl = '';
-					cpmgo_max_dim = "0x0";
-					//default banner house ad url 
-					cpmgo_default_url = '';
-					cpmgo_banner_border = '#ffffff';
-					cpmgo_banner_ad_bg = '#ffffff';
-					cpmgo_banner_link_color = '#0000FF';
-					cpmgo_banner_text_color = '#008000';
-					cpmgo_banner_text_banner = true;
-					cpmgo_banner_image_banner = true;
-					cpmgo_post_click_url = '';
-				</script>
+				//Ad connect widget
+				cpmgo_adhere_opt = 'left:50%';
+				cpmgo_layer_banner = false;
+				cpmgo_mobile_redirect = true;
+				cpmgo_mobile_durl = '';
+				cpmgo_max_dim = "0x0";
+				//default banner house ad url 
+				cpmgo_default_url = '';
+				cpmgo_banner_border = '#ffffff';
+				cpmgo_banner_ad_bg = '#ffffff';
+				cpmgo_banner_link_color = '#0000FF';
+				cpmgo_banner_text_color = '#008000';
+				cpmgo_banner_text_banner = true;
+				cpmgo_banner_image_banner = true;
+				cpmgo_post_click_url = '';
+			</script>
 				<script type="text/javascript"
 					src="http://adserving.cpmgo.com/show.php?nid=1068&amp;pid=11618&amp;adtype=17&amp;sid=14727"></script>
-				<%} else { %>
+				<%
+					} else {
+				%>
 				<H3 id="name">Select an event to see its details...</H3>
 				<p id="description"></p>
 				<p id="more"></p>
-				<%} %>
-				
+				<%
+					}
+				%>
+
 			</div>
 		</div>
 		<div id="googleMap" class="googleMap"></div>
