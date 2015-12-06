@@ -64,7 +64,7 @@
 				
  				</div>
  					<div class="form-group">
-					<form action="/jerks/login">
+					<form action="/jerks/login"  method="post">
 						<input type = "hidden" name="username" value=<%=username %>>
 						<input type = "hidden" name="password" value=<%=password %>>
 						<input type ="hidden"  name="latitude" value = "${latitude}"> 

@@ -79,11 +79,11 @@ public class HelloController {
 	{
 		return "createEvents";
 	}
-	@RequestMapping(value = "/profile/{username}", method = RequestMethod.GET)
-	public String profile (@PathVariable("username") String username, ModelMap model)
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String profile (ModelMap model)
 	{
 		System.out.println("Hello from profile controller");
-		model.put("username", username);
+		
 		return "profile";
 	}
 	
@@ -319,7 +319,7 @@ public class HelloController {
 		model.put("latitude", latitude);
 		model.put("longitude", longitude);
 		
-		EventVisited visited = new EventVisited(username,eventId, eventName, address, date, EventSource.valueOf(source)) ;
+		EventVisited visited = new EventVisited(username,eventId, eventName, address, date, EventSource.WHAM) ;
 		EventVisitedProvider dao = new EventVisitedProvider();
 		dao.createEventsVisted(visited);
 		return "index";

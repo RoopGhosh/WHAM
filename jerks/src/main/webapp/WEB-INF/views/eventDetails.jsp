@@ -27,7 +27,7 @@
 	String zipCode = String.valueOf(request.getAttribute("zipCode"));
 	String eventLatitude = String.valueOf(request.getAttribute("eventLatitude"));
 	String eventLongitude = String.valueOf(request.getAttribute("eventLongitude"));
-	String username = String.valueOf(request.getAttribute("username"));
+	String username = String.valueOf(session.getAttribute("username"));
 	String source = String.valueOf(request.getAttribute("source"));
 	System.out.println("Event Description source"+source);
 	String password="";
@@ -102,7 +102,7 @@
 				<% if(user!=null)
 				{
 					%>
-					<form action="/jerks/login">
+					<form action="/jerks/login"  method="post">
 						<input type = "hidden" name="username" value=<%=username %>>
 						<input type = "hidden" name="password" value=<%=password %>>
 						<input type ="hidden"  name="latitude" value = "${latitude}"> 

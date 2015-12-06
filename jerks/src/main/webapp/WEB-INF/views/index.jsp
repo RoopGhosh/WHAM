@@ -148,11 +148,7 @@
 			else
 			{
 			username = (String)request.getAttribute("username");
-			/* if(username == null)
-				username = String.valueOf(session.getAttribute("username")); */
 			password = (String)request.getAttribute("password");
-			/* if(password==null)
-				password = String.valueOf(session.getAttribute("password")); */
 			System.out.println("username from url: "+username);
 			System.out.println("Password from url: "+password);
 			user = userDao.findByEmail(username);
@@ -176,7 +172,7 @@
 				else
 				{
 					System.out.println("Invalid password: "+user.getPassword());
-					loginMessage = "Invalid Password";
+					loginMessage = "Wrong Password";
 				} // inner if
 			} // outer if
 			else
@@ -342,13 +338,13 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 						data-toggle="dropdown"><label><%=loginMessage%> </label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left"
 							style="color: #428bca">&nbsp;</span></a> <%
- 	if (username != null) {
+ 	if (session.getAttribute("username") != null) {
  %>
 						<ul class="dropdown-menu">
 							<li><a href="/jerks/createEvents">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/profile/<%=username%>">Profile<span
+							<li><a href="/jerks/profile">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
 							<li><a href="/jerks/history/">My Events<span
@@ -366,12 +362,12 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 
 			<div class="collapse navbar-collapse">
 				<div
-					class="<%if (username != null){%>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 <%}%>">
+					class="<%if (session.getAttribute("username") != null){%>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 <%}%>">
 					<form class="navbar-form" action="/jerks/search" role="search" id="searchForm">
 						<div class="row">
 							<div class="input-group my-group">
 								<%
-									if (username != null) {
+									if (session.getAttribute("username") != null) {
 								%>
 								<select form="searchForm" id="searchTypeSelector" name="type"
 									class="selectpicker form-control"
@@ -384,10 +380,10 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 								%>
 								<input type="text" class="form-control" placeholder="Search..."
 									name="search" id="srch-term"
-									style="width: <%if (username != null){%>30%<%}else{%>100%<%}%>">
+									style="width: <%if (session.getAttribute("username") != null){%>30%<%}else{%>100%<%}%>">
 
 								<%
-									if (username != null) {
+									if (session.getAttribute("username") != null) {
 								%>
 								<select form="searchForm" id="daysSelector" name="daysWithin"
 									class="form-control" style="width: 20%">
@@ -442,7 +438,7 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 					</form>
 				</div>
 				<%
-					if (username == null || username == "") {
+					if (session.getAttribute("username") == null) {
 				%>
 				<div class="col-sm-4 col-md-4">
 					<form class="navbar-form" action="/jerks/login" method="POST">
@@ -479,7 +475,7 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 		<div class="sidebar">
 			<div id="eventDetails" class="eventDetails">
 				<%
-					if(username ==null) {
+					if(session.getAttribute("username") == null) {
 				%>
 				<script type="text/javascript">
 				//Ad connect widget

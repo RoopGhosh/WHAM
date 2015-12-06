@@ -47,26 +47,23 @@
 							</label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left">&nbsp;</span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Create Event<span
+							<li><a href="/jerks/createEvents">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">Profile<span
+							<li><a href="/jerks/profile/<%=username%>">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">History<span
+							<li><a href="/jerks/history/">My Events<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">Reports<span
-									class="glyphicon glyphicon-stats icon-large brown pull-right"></span></a></li>
-							<li class="divider"></li>
-							<li><a href="#">Logout<span
+							<li><a href="/jerks/">Logout<span
 									class="glyphicon glyphicon-off icon-large brown pull-right"></span></a></li>
 						</ul></li>
 				</ul>
 			</div>
 				<div class="form-group">
 				
-					<form action="/jerks/login">
+					<form action="/jerks/login"  method="post">
 						<input type = "hidden" name="username" value=<%=username %>>
 						<input type = "hidden" name="password" value=<%=password %>>
 						<input type ="hidden"  name="latitude" value = "${latitude}"> 

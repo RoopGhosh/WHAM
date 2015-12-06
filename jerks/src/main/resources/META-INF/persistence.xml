@@ -16,7 +16,7 @@
             <property name="eclipselink.jdbc.password" value="RKzjAiKiCd9N" />
 			<property name="eclipselink.jdbc.user" value="admin6IViBwq" />
 			<property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="eclipselink.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/jerks" />
+			<property name="eclipselink.jdbc.url" value="jdbc:mysql://127.0.0.1:3307/jerks" />
 			<property name="eclipselink.ddl-generation" value="create-tables" />
 			<property name="eclipselink.logging.level" value="INFO" />
         </properties>

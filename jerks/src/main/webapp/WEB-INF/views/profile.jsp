@@ -36,7 +36,7 @@
 	String phoneNumber = "";
 	try
 	{
-		username = String.valueOf(request.getAttribute("username"));
+		username = String.valueOf(session.getAttribute("username"));
 		System.out.println("Yo from profile page: "+username);
 		user = userDao.findByEmail(username);
 		firstName = user.getFirstName();
@@ -67,8 +67,9 @@
 <script src="${GeoLocator}"></script>
 <script src="http://maps.googleapis.com/maps/api/js?key="></script>
 <script src="${GoogleMaps}"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="${BootStrap}"></script>
 <script src="${Login}"></script>
 <title>WHAM - Home</title>
@@ -109,7 +110,7 @@
 				
  				</div>
  					<div class="form-group">
-					<form action="/jerks/login">
+					<form action="/jerks/login" method="post">
 						<input type = "hidden" name="username" value=<%=username %>>
 						<input type = "hidden" name="password" value=<%=password %>>
 						<input type ="hidden"  name="latitude" value = "${latitude}"> 
