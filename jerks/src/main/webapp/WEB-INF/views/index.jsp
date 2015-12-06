@@ -238,7 +238,7 @@
 		}
 		EventManager em = new EventManager();
 		System.out.println("From event manager");
-		List<Event> events =  /* new  ArrayList<Event>(); */ em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
+		List<Event> events = /*  new  ArrayList<Event>();  */ em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
 				categories1.toArray(new String[categories1.size()]), dislikes.toArray(new String[dislikes.size()]));  
 		jsonEvents = new Gson().toJson(events);
 	}
@@ -375,12 +375,18 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 									<option value="event">Events</option>
 									<option value="address">Address</option>
 								</select>
+								
 								<%
 									}
 								%>
 								<input type="text" class="form-control" placeholder="Search..."
 									name="search" id="srch-term"
 									style="width: <%if (session.getAttribute("username") != null){%>30%<%}else{%>100%<%}%>">
+									<input type="hidden" name="type" value="address">
+									<input type="hidden" name="daysWithin" value="5">
+									<input type="hidden" name="catagories" value="all">
+									<input type="hidden" name="price" value="-1">
+
 
 								<%
 									if (session.getAttribute("username") != null) {
@@ -515,6 +521,5 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 		<p style="float: center">&copy; JeRKS (CS5500)</p>
 		<p style="float: right">CCIS - Northeastern University</p>
 	</div>
-
 </body>
 </html>
