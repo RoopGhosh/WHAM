@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.neu.cs5500.Jerks.apiCall.GoogleAddressToLatLong;
 import edu.neu.cs5500.Jerks.dbProviders.EventProvider;
 import edu.neu.cs5500.Jerks.dbProviders.EventVisitedProvider;
+import edu.neu.cs5500.Jerks.dbProviders.UserProvider;
 import edu.neu.cs5500.Jerks.definitions.Address;
 import edu.neu.cs5500.Jerks.definitions.Event;
 import edu.neu.cs5500.Jerks.definitions.EventSource;
@@ -78,6 +79,91 @@ public class HelloController {
 	{
 		return "createEvents";
 	}
+	@RequestMapping(value = "/profile/{username}", method = RequestMethod.GET)
+	public String profile (@PathVariable("username") String username, ModelMap model)
+	{
+		System.out.println("Hello from profile controller");
+		model.put("username", username);
+		return "profile";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search (
+			@RequestParam("type") String type,
+			@RequestParam("search") String search,
+			@RequestParam("daysWithin") String daysWithin,
+			@RequestParam("catagories") String catagories,
+			@RequestParam("price") String price,
+			ModelMap model)
+	{
+		System.out.println("Hello from SEARCH controller");
+		model.put("type", type);
+		model.put("search", search);
+		model.put("daysWithin", daysWithin);
+		model.put("catagories", catagories);
+		model.put("price", price);
+		return "index";
+	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String update(@RequestParam("firstName") String firstName,
+			@RequestParam("lastName") String lastName,
+			@RequestParam("username") String email,
+			@RequestParam("latitude") String latitude,
+			@RequestParam("longitude") String longitude,
+		    @RequestParam("password") String password, 
+		    @RequestParam("addrLine1") String addrLine1, 
+		    @RequestParam("addrLine2") String addrLine2,
+		    @RequestParam("city") String city,
+		    @RequestParam("state") String state,
+		    @RequestParam("zipCode") String zipCode,
+		    @RequestParam("category") List<String> category,
+		   // @RequestParam("datepicker") Date date,
+		    @RequestParam("optradio") String gender,
+		    @RequestParam("phoneNumber") String phoneNumber,
+		    ModelMap model)
+	{
+		model.put("firstName", firstName);
+		model.put("lastName", lastName);
+		model.put("username", email);
+		model.put("password", password);
+		model.put("addrLine1", addrLine1);
+		model.put("addrLine2", addrLine2);
+		model.put("city", city);
+		model.put("state", state);
+		model.put("zipCode", zipCode);
+		model.put("category", category);
+		//model.put("date", date);
+		model.put("gender", gender);
+		model.put("gender", gender);
+		model.put("latitude", latitude);
+		model.put("longitude", longitude);
+		model.put("phoneNumber", phoneNumber);
+		System.out.println("Hello from update controller firstName: "+firstName);
+		System.out.println("Hello from update controller for category: "+category);
+		System.out.println("Hello from post");
+		UserProvider userDao = new UserProvider();
+		User user = userDao.findByEmail(email);
+		if(user != null)
+		{
+			Address addr = user.getAddress();
+			addr.setAddressLine1(addrLine1);
+			addr.setAddressLine2(addrLine2);
+			addr.setCity(city);
+			addr.setState(state);
+			addr.setZipCode(zipCode);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setPassword(password);
+			user.setPhoneNumber(phoneNumber);
+			user.setGender(gender);
+			user.setAreaOfInterest(category);
+			User updatedUser = userDao.updateUser(email, user);
+		}
+	//	System.out.println("Hello from post date"+date);
+		return "index";
+	}
+	
 	
 	@RequestMapping(value = "/history", method = RequestMethod.GET)
 	public String historyPage(ModelMap model)
@@ -196,7 +282,6 @@ public class HelloController {
 		model.put("zipCode", zipCode);
 		model.put("category", category);
 		model.put("date", date);
-		model.put("gender", gender);
 		model.put("gender", gender);
 		model.put("latitude", latitude);
 		model.put("longitude", longitude);

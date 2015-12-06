@@ -22,6 +22,23 @@
 	String searchEvent = ""; 
 	String price = "";
 	String username = "";
+	String firstName = "";
+	String lastName = "";
+	String email = "";
+	String password ="";
+	String addrLine1 ="";
+	String addrLine2 = "";
+	String city = "";
+	String state ="";
+	String zipCode="";
+	String[] category ;
+	String dob ="";
+	Date parsed = new Date();
+	String gender = "";
+	float lat = 0.0f;
+	float longi = 0.0f;
+	Address addr;
+	User registeredUser;
 	List<String> dislikes = new ArrayList<String>();
 	List<String> categories1 = new ArrayList<String>();
 	Date date = new Date();// gets modified time
@@ -32,46 +49,48 @@
 	UserProvider userDao = new UserProvider();
 	User user = null;
 	String emailFordetails = "Howdy User";
+	//this try is run only when registering a new user.....
 	try
 	{
-		String firstName = request.getParameter("firstName");
+		firstName = request.getParameter("firstName");
 		System.out.println("Index firstName: "+firstName);
-		String lastName = request.getParameter("lastName");
+		lastName = request.getParameter("lastName");
 		System.out.println("Index lastName: "+lastName);
-		String email = request.getParameter("email");
+		email = request.getParameter("email");
 		System.out.println("Index email: "+email);
-		String password = request.getParameter("password");
+		password = request.getParameter("password");
 		System.out.println("Index password:  "+password);
-		String addrLine1 = request.getParameter("addrLine1");
+		addrLine1 = request.getParameter("addrLine1");
 		System.out.println("Index addrLine1: "+addrLine1);
-		String addrLine2 = request.getParameter("addrLine2");
+		addrLine2 = request.getParameter("addrLine2");
 		System.out.println("Index addrLine2: "+addrLine2);
-		String city = request.getParameter("city");
+		city = request.getParameter("city");
 		System.out.println("Index city: "+city);
-		String state = request.getParameter("state");
+		state = request.getParameter("state");
 		System.out.println("Index state: "+state);
-		String zipCode = request.getParameter("zipCode");
+		zipCode = request.getParameter("zipCode");
 		System.out.println("Index zipCode: "+zipCode);
-		String[] category = request.getParameterValues("category");
+		category = request.getParameterValues("category");
+
 		categories1 = Arrays.asList(category); 
 		System.out.println("Index categories1: "+categories1.toArray().toString());
-		String dob = request.getParameter("datepicker");
+		dob = request.getParameter("datepicker");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date parsed = sdf.parse(dob);
+		parsed = sdf.parse(dob);
 	       java.sql.Date sql = new java.sql.Date(parsed.getTime());
 	       
 		System.out.println("Index date: "+sql.toString());
-		//System.out.println("Index regsiter: "+request.getParameter("gender"));
-		String gender = request.getParameter("gender");
-		float lat = Float.parseFloat(String.valueOf(session.getAttribute("latitude")));
-		float longi = Float.parseFloat(String.valueOf(session.getAttribute("longitude")));
+		gender = request.getParameter("optradio"); // where OPTRADIO is GENDER
+		System.out.println("Index regsiter: "+request.getParameter("optradio"));
+		lat = Float.parseFloat(String.valueOf(session.getAttribute("latitude")));
+		longi = Float.parseFloat(String.valueOf(session.getAttribute("longitude")));
 		System.out.println("neyo: " + lat + " " + longi);
-		Address addr = new Address(addrLine1, addrLine2,city,state,"US", zipCode,lat,longi);
+		addr = new Address(addrLine1, addrLine2,city,state,"US", zipCode,lat,longi);
 		String phoneNumber = request.getParameter("phoneNumber");
 		System.out.println("index phoneNumber : " + phoneNumber);
 		user = new User(email,firstName,lastName,password,addr,phoneNumber,
 				sql,gender,categories1,dislikes);
-		User registeredUser = userDao.createUser(user);
+		registeredUser = userDao.createUser(user);
 		if(registeredUser != null)
 		{
 			System.out.println("User created successfully");
@@ -82,34 +101,58 @@
 		{
 			System.out.println("User created unsuccessfully");
 		}
-	
 	} // try for registering an user
 	catch(Exception e)
 	{
 		System.out.println("Could not register user");
 	}
 
+	// the real index try block....
 	try
 	{	
 		System.out.println("From index try block");
-		String strLati = String.valueOf(request.getAttribute("latitude"));
-		System.out.print("1");
-		System.out.println(strLati);
-		String strLongi = String.valueOf(request.getAttribute("longitude"));
-		//System.out.print(request.getAttribute("longitude"));
-		System.out.println(strLongi);
-		session.setAttribute("latitude",strLati);
-		System.out.print("3");
-		session.setAttribute("longitude",strLongi);
-		System.out.print("4");
+		String strLati= "";
+		String strLongi ="";
+			//getting latLong for the first time from geolocator
+			if(session.getAttribute("latitude")==null)
+			{
+				strLati = String.valueOf(request.getAttribute("latitude"));
+				session.setAttribute("latitude",strLati);
+			}
+			else
+				strLati = (String) session.getAttribute("latitude");
+	System.out.print("1"+strLati);
+
+		if(session.getAttribute("longitude")==null)
+		{
+			strLongi = String.valueOf(request.getAttribute("longitude"));
+			session.setAttribute("longitude",strLongi);
+		}
+		else
+			strLongi = (String) session.getAttribute("longitude");
+		
+		System.out.print("2"+strLongi);
 		latitude = Double.parseDouble(strLati);
 		System.out.print("5");
 		longitude = Double.parseDouble(strLongi);
 		System.out.print("6");
 		try
 		{
+			if(session.getAttribute("username")!=null)
+				{
+					username  = String.valueOf(session.getAttribute("username"));
+					password =  String.valueOf(session.getAttribute("password"));
+					user = userDao.findByEmail(username);
+					loginMessage = user.getFirstName();
+				}
+			else
+			{
 			username = (String)request.getAttribute("username");
-			String password = (String)request.getAttribute("password");
+			/* if(username == null)
+				username = String.valueOf(session.getAttribute("username")); */
+			password = (String)request.getAttribute("password");
+			/* if(password==null)
+				password = String.valueOf(session.getAttribute("password")); */
 			System.out.println("username from url: "+username);
 			System.out.println("Password from url: "+password);
 			user = userDao.findByEmail(username);
@@ -141,7 +184,8 @@
 				System.out.println("Invalid email id, no record found");
 				loginMessage = "Please Regsiter";
 			}
-		} // login try
+		}
+		}// login try
 		catch(Exception e)
 		{
 			System.out.println("Could not find username or password");
@@ -152,7 +196,6 @@
 			String searchtype = (String) request.getParameter("type");
 			if(searchtype == null)
 				searchtype = "event";
-				
 			if (searchtype.equalsIgnoreCase("event"))
 				{
 					searchEvent = (String) request.getParameter("search");
@@ -189,7 +232,7 @@
 		// Capture the search catagories
 		if (request.getParameter("catagories") != null)
 		{
-			String searchCategory = (String) request.getParameter("category");
+			String searchCategory = (String) request.getParameter("catagories");
 			if (!searchCategory.equals("all"))
 			{
 				/* categories = new String[1];
@@ -199,8 +242,8 @@
 		}
 		EventManager em = new EventManager();
 		System.out.println("From event manager");
-		List<Event> events = em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
-				categories1.toArray(new String[categories1.size()]), dislikes.toArray(new String[dislikes.size()]));
+		List<Event> events =  /* new  ArrayList<Event>(); */ em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
+				categories1.toArray(new String[categories1.size()]), dislikes.toArray(new String[dislikes.size()]));  
 		jsonEvents = new Gson().toJson(events);
 	}
 	catch (Exception e)
@@ -208,9 +251,6 @@
 		System.out.println(e);
 		response.sendRedirect("geolocator");
 	}
-
-
-
 %>
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
@@ -327,7 +367,7 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 			<div class="collapse navbar-collapse">
 				<div
 					class="<%if (username != null){%>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 <%}%>">
-					<form class="navbar-form" role="search" id="searchForm">
+					<form class="navbar-form" action="/jerks/search" role="search" id="searchForm">
 						<div class="row">
 							<div class="input-group my-group">
 								<%
@@ -405,7 +445,7 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 					if (username == null || username == "") {
 				%>
 				<div class="col-sm-4 col-md-4">
-					<form class="navbar-form" action="/jerks/login" method="post">
+					<form class="navbar-form" action="/jerks/login" method="POST">
 						<div class="has-feedback input-group">
 							<input type="text" class="form-control" name="username"
 								placeholder="username..." style="width: 50%"> <input

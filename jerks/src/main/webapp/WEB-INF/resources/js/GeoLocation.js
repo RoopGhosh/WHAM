@@ -25,7 +25,6 @@ function success(pos) {
 function error(err) {
  var bostonLat = 42.3132882;
  var bostonLong = -71.1972408;
- alert(bostonLong);
  location.href = "index" +"/"+ bostonLat  +"/"+ bostonLong;
 };
 

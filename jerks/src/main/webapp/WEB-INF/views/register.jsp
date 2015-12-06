@@ -1,13 +1,17 @@
+<%@page import="org.springframework.ui.ModelMap"%>
+<%@page import="org.springframework.ui.Model"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"
-    import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*, edu.neu.cs5500.Jerks.dbProviders.*, edu.neu.cs5500.Jerks.business.*, com.google.gson.Gson ,java.util.*"
-    %>
+	pageEncoding="ISO-8859-1"
+	import="edu.neu.cs5500.Jerks.apiCall.*, edu.neu.cs5500.Jerks.definitions.*,java.io.*,java.util.*,java.text.*, edu.neu.cs5500.Jerks.dbProviders.*, edu.neu.cs5500.Jerks.business.*, com.google.gson.Gson ,java.util.*"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <head>
+	<spring:url value="/resources/js/Login.js" var="Login" />
+	<spring:url value="/resources/js/register.js" var="Regsiter" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <style>
         body     { padding-top:30px; }
@@ -18,7 +22,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="register.js"></script>
     <% 
     String email="";
 	String firstName;
@@ -65,7 +68,26 @@
 	}
 	
     %>
-    
+    <script>
+	// create angular app
+	var validationApp = angular.module('validationApp', []);
+
+	// create angular controller
+	validationApp.controller('mainController', function($scope) {
+
+		// function to submit the form after all validation has occurred			
+		$scope.submitForm = function(isValid) {
+
+			// check to make sure the form is completely valid
+			if (isValid) { 
+				
+			}
+
+		};
+
+	});
+	</script>
+	
 	<script>
 		$(function() {
 			$( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' }).val();
@@ -81,8 +103,7 @@
     <!-- PAGE HEADER -->
     <div class="page-header"><h1>User Registration</h1></div>
    
-    <form name="userForm"  ng-submit="submitForm(userForm.$valid)" action="/jerks/register"  method="post">
-
+    <form name="userForm"  ng-submit="submitForm(userForm.$valid)" action="/jerks/register"  method="post" novalidate>
         
         <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$invalid && !userForm.firstName.$pristine }">
             <label>First Name*</label>
@@ -98,7 +119,7 @@
         
         <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
             <label>Email*</label>
-            <input type="text" name="email" class="form-control" ng-model="user.email" required>
+            <input type="email" name="email" class="form-control" ng-model="user.email" required>
             <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email.</p>
         </div>
         
@@ -188,26 +209,27 @@
         </div> 
 		
 		<div class="form-group">
+		<label>Choose Catagories</label>
 			<select name="category" multiple="multiple">
-				<option value="103">music</option>
-					<option value="110">food</option>
-					<option value="107">support</option>
-					<option value="104">movies_film</option>
-					<option value="105">performing_arts</option>
-					<option value="115">family_fun_kids</option>
-					<option value="115">learning_education</option>
-					<option value="114">religion_spirituality</option>
-					<option value="108">sports</option>
-					<option value="116">holiday</option>
-					<option value="101">business</option>
-					<option value="102">science</option>
-					<option value="102">technology</option>
-					<option value="111">fundraisers</option>
-					<option value="112">politics_activism</option>
-					<option value="109">outdoors_recreation</option>
-					<option value="113">community</option>
-					<option value="119">books</option>
-					<option value="199">other</option>
+				<option value="music">Music</option>
+					<option value="food">Food</option>
+					<option value="support">support</option>
+					<option value="movies_film">movies</option>
+					<option value="performing_arts">Performing Arts</option>
+					<option value="family_fun_kids">Family Fun Kids</option>
+					<option value="learning_education">Learning Education</option>
+					<option value="religion_spirituality">Religion Spirituality</option>
+					<option value="sports">Sports</option>
+					<option value="holiday">Holiday</option>
+					<option value="business">Business</option>
+					<option value="science">Science</option>
+					<option value="technology">Technology</option>
+					<option value="fundraisers">Fundraisers</option>
+					<option value="politics_activism">Politics Activism</option>
+					<option value="outdoors_recreation">Outdoors Recreation</option>
+					<option value="community">Community</option>
+					<option value="books">Books</option>
+					<option value="other">Other</option>
 			</select>
 		</div>
 		 
@@ -229,13 +251,15 @@
             <p ng-show="userForm.phoneNumber.$invalid && !userForm.phoneNumber.$pristine" class="help-block">Enter a valid Phone number.</p>
         </div>
     		 
-        <input type="submit" ng-disabled="userForm.$invalid" class="btn btn-success">Register</button>
+        <input type="submit" ng-disabled="userForm.$invalid" class="btn btn-success" value="Regsiter"></button>
         
         <input type ="hidden"  name="latitude" value = "<%=latitude%>"> 
 		<input type ="hidden"  name="longitude" value ="<%=longitude %>">  
     </form>
+    
  </div>
 </div> 
+		
 </div>
 </body>
 </html>

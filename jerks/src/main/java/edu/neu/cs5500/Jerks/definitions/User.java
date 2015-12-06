@@ -160,7 +160,8 @@ public class User {
 			while (it1.hasNext()) {
 				str1 = str1.concat(it1.next() + "|");
 			}
-			this.disLikes = str1.substring(0, str1.length() - 1);
+			if(str1.length()>0)
+				this.disLikes = str1.substring(0, str1.length() - 1);
 		}
 	}
 
