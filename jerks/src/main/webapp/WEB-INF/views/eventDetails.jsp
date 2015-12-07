@@ -102,7 +102,7 @@
 				<% if(user!=null)
 				{
 					%>
-					<form action="/jerks/login"  method="post">
+					<form action="/jerks/login"  method="POST">
 						<input type = "hidden" name="username" value=<%=username %>>
 						<input type = "hidden" name="password" value=<%=password %>>
 						<input type ="hidden"  name="latitude" value = "${latitude}"> 
@@ -178,7 +178,7 @@
 	{
 		var display = "";
 		display += "<h2>Event Details</h2>";
-		display += "<h3>Event Name:"+unescape("<%=eventName%>")+"</h3>";
+		display += "<p>Event Name: "+unescape("<%=eventName%>")+"</p>";
 		display += "<table><tr><td>Event Address:<td>"+"<%=addressLine1%>"+"</td></td></tr>";
 		display += "<tr><td><td>"+"<%=addressLine2%>"+"</td></td></tr>";
 		display += "<tr><td>"+"<td>"+"<%=city%>"+"</td></td></tr>";
@@ -191,22 +191,21 @@
 		display += "<p>Minumum Age Limit:"+"<%=minAgeLimit%>"+"</p>";
 		display += "<p>Remaining Tickets:"+"<%=remainingTickets%>"+"</p>";
 		display += "<p>Price:"+"<%=ticketPrice%>"+"</p>";
-		$('#eventDetails').html(display);
 		
-		var form = "";
-		form += '<form action="/jerks/buy" method="post">';
-		form += '<input type="hidden" name="latitude" value="<%=latitude%>">';
-		form += '<input type="hidden" name="longitude" value="<%=longitude%>">';
-		form += '<input type="hidden" name="date" value="<%=date%>">';
-		form += '<input type="hidden" name="username" value="<%=username%>">';
-		form += '<input type="hidden" name="password" value="<%=password%>">';
-		form += '<input type="hidden" name="address" value="<%=completeAddress%>">';
-		form += '<input type="hidden" name="eventId" value="<%=eventId%>">';
-		form += '<input type="hidden" name="eventName" value="<%=eventName%>">';
-		form += '<input type="hidden" name="source" value="<%=source%>">';
-		form +='<input type="submit" class="btn btn-primary" value="Buy">';
-		form += '</form>';
-		$('#buy').html(form);		
+		display += '<form action="/jerks/buy" method="post">';
+		display += '<input type="hidden" name="latitude" value="<%=latitude%>">';
+		display += '<input type="hidden" name="longitude" value="<%=longitude%>">';
+		display += '<input type="hidden" name="date" value="<%=date%>">';
+		display += '<input type="hidden" name="username" value="<%=username%>">';
+		display += '<input type="hidden" name="password" value="<%=password%>">';
+		display += '<input type="hidden" name="address" value="<%=completeAddress%>">';
+		display += '<input type="hidden" name="eventId" value="<%=eventId%>">';
+		display += '<input type="hidden" name="eventName" value="<%=eventName%>">';
+		display += '<input type="hidden" name="source" value="<%=source%>">';
+		display +='<input type="submit" class="btn btn-primary" value="Buy">';
+		display += '</form>';
+		$('#eventDetails').html(display);
+			
 	}
 	
 	

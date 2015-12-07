@@ -106,7 +106,7 @@
 	{
 		System.out.println("Could not register user");
 	}
-
+	
 	// the real index try block....
 	try
 	{	
@@ -144,6 +144,8 @@
 					password =  String.valueOf(session.getAttribute("password"));
 					user = userDao.findByEmail(username);
 					loginMessage = user.getFirstName();
+					dislikes = user.getDislikes();
+					//categories1.addAll(user.getAreaOfInterest());
 				}
 			else
 			{
@@ -243,9 +245,9 @@
 			}
 		}
 		EventManager em = new EventManager();
-		System.out.println("From event manager");
-		List<Event> events = /*  new  ArrayList<Event>();  */ em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
-				categories1.toArray(new String[categories1.size()]), dislikes.toArray(new String[dislikes.size()]));  
+		System.out.println("From event manager"+categories1.toString());
+		List<Event> events =   /* new  ArrayList<Event>();  */     em.fetchEvents(latitude, longitude, searchAddress, searchEvent, price, date,
+				categories1.toArray(new String[categories1.size()]), dislikes.toArray(new String[dislikes.size()])); 
 		jsonEvents = new Gson().toJson(events);
 	}
 	catch (Exception e)
@@ -368,7 +370,8 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 
 			<div class="collapse navbar-collapse">
 				<div
-					class="<%if (session.getAttribute("username") != null){%>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 <%}%>">
+					class="<%if (session.getAttribute("username") != null){%>col-sm-8 col-md-8<%} else {%>col-sm-5 col-md-5 
+					<%}%>">
 					<form class="navbar-form" action="/jerks/search" role="search" id="searchForm">
 						<div class="row">
 							<div class="input-group my-group">
@@ -384,14 +387,18 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 								
 								<%
 									}
+									else{
 								%>
-								<input type="text" class="form-control" placeholder="Search..."
-									name="search" id="srch-term"
-									style="width: <%if (session.getAttribute("username") != null){%>30%<%}else{%>100%<%}%>">
-									<input type="hidden" name="type" value="address">
+								<input type="hidden" name="type" value="address">
 									<input type="hidden" name="daysWithin" value="5">
 									<input type="hidden" name="catagories" value="all">
 									<input type="hidden" name="price" value="-1">
+									<%
+									}%>
+								<input type="text" class="form-control" placeholder="Search..."
+									name="search" id="srch-term"
+									style="width: <%if (session.getAttribute("username") != null){%>30%<%}else{%>100%<%}%>">
+									
 
 
 								<%
@@ -399,8 +406,9 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 								%>
 								<select form="searchForm" id="daysSelector" name="daysWithin"
 									class="form-control" style="width: 20%">
-									<option value="2">Next 2 days</option>
+									<option value="5">Next 5 days</option>
 									<option value="1">Next 1 day</option>
+									<option value="2">Next 2 days</option>
 									<option value="3">Next 3 days</option>
 									<option value="4">Next 4 days</option>
 								</select> <select form="searchForm" id="catagorySelector"

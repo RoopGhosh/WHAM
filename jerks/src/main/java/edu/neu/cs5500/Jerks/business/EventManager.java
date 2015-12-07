@@ -62,7 +62,8 @@ public class EventManager {
 			categoryParam =categoryParam.concat(category.getEventbriteId()+",");
 		}
 		// remove the last comma before appending to categories to url
-		eventbriteURL = eventbriteURL.concat(categoryParam.substring(0,categoryParam.length()-1));
+		if(categoryParam.length()>0)
+			eventbriteURL = eventbriteURL.concat(categoryParam.substring(0,categoryParam.length()-1));
 		return eventbriteURL;
 	}
 	
@@ -109,9 +110,9 @@ public class EventManager {
 			events.addAll(eventful.getListofEventsFromJSON(eventfulURL));
 			System.out.println("Total Count:"+ events.size());
 			
-			EventProvider eventDao = new EventProvider();
+			/*EventProvider eventDao = new EventProvider();
 			List<Event> whamEvents = eventDao.findAllEvents();
-			events.addAll(whamEvents);
+			events.addAll(whamEvents);*/
 
 			// Remove events if the user has disliked it
 			List<Event> toRemove = new ArrayList<Event>();
@@ -123,7 +124,7 @@ public class EventManager {
 				String eventName = event.getName().toLowerCase();
 				for(String dislike :dislikes)
 				{
-				 if(eventName.replaceAll("\u0020", "").toLowerCase().contains(dislike.toLowerCase().trim()) && !dislike.isEmpty())
+				 if(eventName.replaceAll("\u0020", "").toLowerCase().contains(dislike.replaceAll("\u0020", "").toLowerCase().trim()) && !dislike.isEmpty())
 					 toRemove.add(event);			 
 				}
 			}

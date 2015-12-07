@@ -30,6 +30,8 @@ import edu.neu.cs5500.Jerks.definitions.User;
 @Controller
 public class HelloController {
 
+	
+	
 	@RequestMapping(value = "/index/{latitude:.+}/{longitude:.+}", method = RequestMethod.GET)
 	public String index (@PathVariable("latitude") String a,@PathVariable("longitude") double b, ModelMap model)
 	{
@@ -97,7 +99,8 @@ public class HelloController {
 			ModelMap model)
 	{
 		System.out.println("Hello from SEARCH controller:"+ catagories);
-		model.put("type", type);
+		System.out.println("Hello from SEARCH controller:"+ price);
+		System.out.println("Hello from SEARCH controller:"+ daysWithin);
 		model.put("search", search);
 		model.put("daysWithin", daysWithin);
 		model.put("catagories", catagories);
@@ -117,31 +120,16 @@ public class HelloController {
 		    @RequestParam("city") String city,
 		    @RequestParam("state") String state,
 		    @RequestParam("zipCode") String zipCode,
-		    @RequestParam("category") List<String> category,
-		   // @RequestParam("datepicker") Date date,
+		    @RequestParam("datepicker") String date,
 		    @RequestParam("optradio") String gender,
 		    @RequestParam("phoneNumber") String phoneNumber,
-		    ModelMap model)
+		    ModelMap model) throws ParseException
 	{
-		model.put("firstName", firstName);
-		model.put("lastName", lastName);
-		model.put("username", email);
-		model.put("password", password);
-		model.put("addrLine1", addrLine1);
-		model.put("addrLine2", addrLine2);
-		model.put("city", city);
-		model.put("state", state);
-		model.put("zipCode", zipCode);
-		model.put("category", category);
-		//model.put("date", date);
-		model.put("gender", gender);
-		model.put("gender", gender);
-		model.put("latitude", latitude);
-		model.put("longitude", longitude);
-		model.put("phoneNumber", phoneNumber);
-		System.out.println("Hello from update controller firstName: "+firstName);
-		System.out.println("Hello from update controller for category: "+category);
-		System.out.println("Hello from post");
+		
+		String dob = date;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date parsed = sdf.parse(dob);
+		java.sql.Date sql = new java.sql.Date(parsed.getTime());
 		UserProvider userDao = new UserProvider();
 		User user = userDao.findByEmail(email);
 		if(user != null)
@@ -157,13 +145,20 @@ public class HelloController {
 			user.setPassword(password);
 			user.setPhoneNumber(phoneNumber);
 			user.setGender(gender);
-			user.setAreaOfInterest(category);
+			user.setDOB(sql);
 			User updatedUser = userDao.updateUser(email, user);
 		}
+		
+		model.put("username", email);
+		model.put("password", password);
+		model.put("latitude", latitude);
+		model.put("longitude", longitude);
+		System.out.println("Hello from update controller firstName: "+firstName);
+		System.out.println("Hello from post");
+		
 	//	System.out.println("Hello from post date"+date);
 		return "index";
 	}
-	
 	
 	@RequestMapping(value = "/history", method = RequestMethod.GET)
 	public String historyPage(ModelMap model)
@@ -319,12 +314,13 @@ public class HelloController {
 		model.put("latitude", latitude);
 		model.put("longitude", longitude);
 		
+		System.out.println("Event Name: "+eventName);
+		eventName = eventName.replace("%20", " ");
 		EventVisited visited = new EventVisited(username,eventId, eventName, address, date, EventSource.WHAM) ;
 		EventVisitedProvider dao = new EventVisitedProvider();
 		dao.createEventsVisted(visited);
 		return "index";
 	}
-	
 	@RequestMapping(value = "/eventDetails", method = RequestMethod.POST)
 	public String eventDetailsFromIndex(@RequestParam("latitude") String latitude, 
 			@RequestParam("longitude") String longitude,
