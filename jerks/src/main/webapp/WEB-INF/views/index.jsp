@@ -44,8 +44,6 @@
 	Date date = new Date();// gets modified time
 	String loginMessage = "HowdyUser!";
 
-// Remove hardcoded categories & dislikes
-	
 	UserProvider userDao = new UserProvider();
 	User user = null;
 	String emailFordetails = "Howdy User";
@@ -145,7 +143,7 @@
 					user = userDao.findByEmail(username);
 					loginMessage = user.getFirstName();
 					dislikes = user.getDislikes();
-					//categories1.addAll(user.getAreaOfInterest());
+					categories1.addAll(user.getAreaOfInterest());
 				}
 			else
 			{
@@ -170,6 +168,9 @@
 					//Add the userdislikes for events
 					List<String> dislikesList = user.getDislikes();
 					dislikes = dislikesList;
+							
+					//Add the user area of interest for events
+					categories1 =  user.getAreaOfInterest();
 				}
 				else
 				{
