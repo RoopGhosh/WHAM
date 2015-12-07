@@ -21,7 +21,9 @@
 	System.out.println("password from create events: "+password);
 	String latitude = String.valueOf(session.getAttribute("latitude"));
 	String longitude = String.valueOf(session.getAttribute("longitude"));
-	
+	UserProvider dao = new UserProvider();
+	User user = dao.findByEmail(username);
+	String userName = user.getFirstName();
 	// Do not allow guest users to create events
 	if(session.getAttribute("username") == null)
 		response.sendRedirect("geolocator");
@@ -35,8 +37,15 @@
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+   
 <title>WHAM - Home</title>
-
+<script>
+		$(function() {
+			$( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' }).val();
+		});
+	</script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -48,23 +57,20 @@
 					style="width: 42px; height: 42px; border: 0;"></a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><label><%=username %>
+						data-toggle="dropdown"><label><%=userName %>
 							</label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left">&nbsp;</span></a>
 						<ul class="dropdown-menu">
-							<li><a href="/jerks/createEvents/">Create Event<span
+							<li><a href="/jerks/createEvents">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/profile/<%=username %>">Profile<span
+							<li><a href="/jerks/profile">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">History<span
+							<li><a href="/jerks/history/">My Events<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">Reports<span
-									class="glyphicon glyphicon-stats icon-large brown pull-right"></span></a></li>
-							<li class="divider"></li>
-							<li><a href="/jerks/">Logout<span
+							<li><a href="/jerks/logout">Logout<span
 									class="glyphicon glyphicon-off icon-large brown pull-right"></span></a></li>
 						</ul></li>
 				</ul>

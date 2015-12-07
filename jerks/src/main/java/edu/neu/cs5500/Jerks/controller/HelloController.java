@@ -367,7 +367,11 @@ public class HelloController {
 		System.out.println();
 		return "eventDetails";
 	}
-	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(ModelMap model)
+	{
+		return "logout";
+	}
 	
 	/*@RequestMapping(value = "/resources/**")
 	   public String redirect() {

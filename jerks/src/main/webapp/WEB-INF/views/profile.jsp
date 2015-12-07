@@ -95,30 +95,27 @@
 				<a class="navbar-brand" rel="home" href="#">WHAM</a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><label><%=username %>
+						data-toggle="dropdown"><label><%=firstName %>
 							</label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left">&nbsp;</span></a>
 						<ul class="dropdown-menu">
-							<li><a href="/jerks/createEvents/">Create Event<span
+							<li><a href="/jerks/createEvents">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/profile/<%=username %>">Profile<span
+							<li><a href="/jerks/profile">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">History<span
+							<li><a href="/jerks/history">History<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#">Reports<span
-									class="glyphicon glyphicon-stats icon-large brown pull-right"></span></a></li>
-							<li class="divider"></li>
-							<li><a href="/">Logout<span
+							<li><a href="/jerks/logout">Logout<span
 									class="glyphicon glyphicon-off icon-large brown pull-right"></span></a></li>
 						</ul></li>
 				</ul>
 				
  				</div>
  					<div class="form-group">
-					<form action="/jerks/login" method="POST">
+					<form action="/jerks/login" method="post">
 						<input type = "hidden" name="username" value=<%=username %>>
 						<input type = "hidden" name="password" value=<%=password %>>
 						<input type ="hidden"  name="latitude" value = "${latitude}"> 

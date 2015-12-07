@@ -358,7 +358,7 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 							<li><a href="/jerks/history/">My Events<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/">Logout<span
+							<li><a href="/jerks/logout">Logout<span
 									class="glyphicon glyphicon-off icon-large brown pull-right"></span></a></li>
 						</ul> <%
  	}

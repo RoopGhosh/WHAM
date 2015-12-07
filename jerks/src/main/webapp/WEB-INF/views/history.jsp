@@ -18,6 +18,9 @@
 	EventVisitedProvider dao = new EventVisitedProvider();
 	List<EventVisited> listOfEvents = dao.findAllEventsVisitedBy(username);
 	String eventsVisited = new Gson().toJson(listOfEvents);
+	UserProvider userDao = new UserProvider();
+	User user = userDao.findByEmail(username);
+	String userName = user.getFirstName();
 %>
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
@@ -43,20 +46,20 @@
 				<a class="navbar-brand" rel="home" href="#">WHAM</a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><label><%=username %>
+						data-toggle="dropdown"><label><%=userName %>
 							</label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left">&nbsp;</span></a>
 						<ul class="dropdown-menu">
 							<li><a href="/jerks/createEvents">Create Event<span
 									class="glyphicon glyphicon-bullhorn icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/profile/<%=username%>">Profile<span
+							<li><a href="/jerks/profile">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/history/">My Events<span
+							<li><a href="/jerks/history">My Events<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/">Logout<span
+							<li><a href="/jerks/logout">Logout<span
 									class="glyphicon glyphicon-off icon-large brown pull-right"></span></a></li>
 						</ul></li>
 				</ul>

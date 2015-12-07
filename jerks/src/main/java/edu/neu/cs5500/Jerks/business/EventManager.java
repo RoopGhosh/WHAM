@@ -110,9 +110,9 @@ public class EventManager {
 			events.addAll(eventful.getListofEventsFromJSON(eventfulURL));
 			System.out.println("Total Count:"+ events.size());
 			
-			/*EventProvider eventDao = new EventProvider();
+			EventProvider eventDao = new EventProvider();
 			List<Event> whamEvents = eventDao.findAllEvents();
-			events.addAll(whamEvents);*/
+			events.addAll(whamEvents);
 
 			// Remove events if the user has disliked it
 			List<Event> toRemove = new ArrayList<Event>();
