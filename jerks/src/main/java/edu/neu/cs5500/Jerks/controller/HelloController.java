@@ -96,7 +96,7 @@ public class HelloController {
 			@RequestParam("price") String price,
 			ModelMap model)
 	{
-		System.out.println("Hello from SEARCH controller");
+		System.out.println("Hello from SEARCH controller:"+ catagories);
 		model.put("type", type);
 		model.put("search", search);
 		model.put("daysWithin", daysWithin);

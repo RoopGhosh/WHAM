@@ -178,7 +178,7 @@
 	{
 		var display = "";
 		display += "<h2>Event Details</h2>";
-		display += "<h3>Event Name:"+"<%=eventName%>"+"</h3>";
+		display += "<h3>Event Name:"+unescape("<%=eventName%>")+"</h3>";
 		display += "<table><tr><td>Event Address:<td>"+"<%=addressLine1%>"+"</td></td></tr>";
 		display += "<tr><td><td>"+"<%=addressLine2%>"+"</td></td></tr>";
 		display += "<tr><td>"+"<td>"+"<%=city%>"+"</td></td></tr>";

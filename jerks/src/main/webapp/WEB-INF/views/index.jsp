@@ -195,6 +195,7 @@
 			if (searchtype.equalsIgnoreCase("event"))
 				{
 					searchEvent = (String) request.getParameter("search");
+					searchEvent = searchEvent.replaceAll(" ", "%20");
 				}
 			else
 			{
@@ -211,6 +212,7 @@
 		if (request.getParameter("price") != null) 
 		{
 			int priceRange = Integer.parseInt(request.getParameter("price"));
+			System.out.println(priceRange);
 			if (priceRange > 0)
 			{
 				price = String.valueOf(priceRange);
@@ -224,7 +226,11 @@
 			c.add(Calendar.DAY_OF_YEAR, daysWithin);
 			date = c.getTime();
 		}
-	
+		else{
+			Calendar c = Calendar.getInstance(); // starts with today's date and time
+			c.add(Calendar.DAY_OF_YEAR, 5);
+			date = c.getTime();
+		}
 		// Capture the search catagories
 		if (request.getParameter("catagories") != null)
 		{
@@ -312,7 +318,7 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 	form +='<input type="hidden" name="description" value='+escape(jsonEvent.description)+'>';
 	form +='<input type="hidden" name="eventId" value='+jsonEvent.eventId+'>';
 	form +='<input type="hidden" name="minAgeLimit" value='+jsonEvent.minAgeLimit+'>';
-	form +='<input type="hidden" name="name" value='+jsonEvent.name+'>';
+	form +='<input type="hidden" name="name" value='+escape(jsonEvent.name)+'>';
 	form +='<input type="hidden" name="rating" value='+jsonEvent.rating+'>';
 	form +='<input type="hidden" name="remainingTickets" value='+jsonEvent.remainingTickets+'>';
 	form +='<input type="hidden" name="ticketPrice" value='+jsonEvent.ticketPrice+'>';

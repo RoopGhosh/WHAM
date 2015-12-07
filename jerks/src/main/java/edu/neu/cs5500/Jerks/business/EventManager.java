@@ -42,7 +42,7 @@ public class EventManager {
 		Calendar calDate = Calendar.getInstance();
 		calDate.setTime(givenDate);
 		cal.setTime(new Date()); // Now use today date.
-		String futureDate;
+		/*String futureDate;
 		if(cal.DAY_OF_MONTH-calDate.DAY_OF_MONTH <2)
 		{
 			 // Adding 2 days
@@ -50,11 +50,11 @@ public class EventManager {
 			futureDate = sdf.format(calDate.getTime());
 		}
 		else
-			futureDate = sdf.format(calDate.getTime());
-		String strDate = sdf.format(cal.getTime());
-		eventbriteURL = eventbriteURL.concat("&start_date.range_start="+futureDate+"T00:00:00Z");
-		eventbriteURL = eventbriteURL.concat("&start_date.range_end="+strDate+"T23:59:59Z");
-		
+			futureDate = sdf.format(calDate.getTime());*/
+		String strCal = sdf.format(cal.getTime());
+		String strCalDate = sdf.format(calDate.getTime());
+		eventbriteURL = eventbriteURL.concat("&start_date.range_start="+strCal+"T00:00:00Z");
+		eventbriteURL = eventbriteURL.concat("&start_date.range_end="+strCalDate+"T23:59:59Z");
 		String categoryParam ="&categories=";
 		for (String c : categories)
 		{

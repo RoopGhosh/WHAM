@@ -12,6 +12,7 @@
 	<spring:url value="/resources/css/main.css" var="MainCSS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
 	<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
+	<spring:url value="/resources/img/brandImage.JPG" var="brandIcon" />
 	
 <%	
 	String username = String.valueOf(session.getAttribute("username"));
@@ -20,6 +21,10 @@
 	System.out.println("password from create events: "+password);
 	String latitude = String.valueOf(session.getAttribute("latitude"));
 	String longitude = String.valueOf(session.getAttribute("longitude"));
+	
+	// Do not allow guest users to create events
+	if(session.getAttribute("username") == null)
+		response.sendRedirect("geolocator");
 %>
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
@@ -38,7 +43,9 @@
 		<!-- Header Start -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
-				<a class="navbar-brand" rel="home" href="#">WHAM</a>
+				<a class="navbar-brand" rel="home" href="/jerks"><img
+					src="${brandIcon}" alt="WHAM"
+					style="width: 42px; height: 42px; border: 0;"></a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"><label><%=username %>
@@ -76,7 +83,8 @@
 		</div>
 	<!-- Header End -->
 	<div>
-		<div id="eventForm" class="eventDetails">	
+		<div id="eventForm" class="eventDetails">
+		<div class = "wrapper" style="width:30%; margin:50px auto;">	
 			<form action="/jerks/createEvents" METHOD="post">
 				<div class="form-group">
 					<label>Event Name*</label>
@@ -101,7 +109,7 @@
             <input type="text" name="city" class="form-control">
         	</div>
         	
-        		<div class="form-group" ">
+        		<div class="form-group">
             <label>State</label>
    <select class="form-control" name="state">
 	<option value="AL">Alabama</option>
@@ -194,6 +202,7 @@
 			<input type ="hidden"  name="password" value ="<%=password %>">  
 			
 			</form>
+		</div>
 		</div>
 	</div>
 	<div class="footer">		
