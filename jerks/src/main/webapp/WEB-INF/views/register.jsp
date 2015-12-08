@@ -8,17 +8,39 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>WHAM - Register</title>
 <head>
-	<spring:url value="/resources/js/Login.js" var="Login" />
+
+<spring:url value="/resources/js/Login.js" var="Login" />
 	<spring:url value="/resources/js/register.js" var="Regsiter" />
-	<spring:url value="/resources/css/main.css" var="MainCSS" />
+	<spring:url value="/resources/js/GeoLocation.js" var="GeoLocator" />
+<spring:url value="/resources/js/GoogleMaps.js" var="GoogleMaps" />
+<spring:url value="/resources/css/main.css" var="MainCSS" />
+<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
+<spring:url value="/resources/img/brandImage.JPG" var="brandIcon" />
+<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <style>
-        body     { padding-top:30px; }
-    </style>
-    
-    <!-- JS -->
+<style>
+body {
+	padding-top: 30px;
+}
+
+.footer {
+	line-height: 30px;
+	width: 100%;
+	position: absolute;
+	background: #101010;
+	padding: 0px 5px 0px 5px;
+	margin: 0;
+}
+
+.footer p {
+	display: inline;
+	color: #F0F0F0;
+}
+</style>
+
+<!-- JS -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -98,14 +120,17 @@
 </head>
 <body ng-app="validationApp" ng-controller="mainController" >
 <div class="container">
-<div class="container-fluid">
+	<div class="container-fluid">
+
 		<!-- Header Start -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand" rel="home" href="#">WHAM</a>
+			<div class="navbar-header navbar-form">
+				<a rel="home" href="/jerks"><img
+					src="${brandIcon}" alt="WHAM"
+					style="width: 42px; height: 42px; border: 0;"></a>
  				</div>
  					<div class="form-group">
-					<form action="/jerks/login" method="post">
+					<form action="/jerks/login" method="post" class="navbar-form">
 						<input type = "hidden" name="username" value="${username}">
 						<input type = "hidden" name="password" value="${password}">
 						<input type ="hidden"  name="latitude" value = "${latitude}"> 
@@ -119,7 +144,7 @@
 <div class="row">
 	<div class="col-md-4">    
     <!-- PAGE HEADER -->
-    <div class="page-header"><h1>User Registration</h1></div>
+    <div class="page-header"><h1>Register!</h1></div>
    
     <form name="userForm"  ng-submit="submitForm(userForm.$valid)" action="/jerks/register"  method="post" novalidate>
         
@@ -230,7 +255,7 @@
 			<label>Choose Categories</label>
 		</div>
 		<div class="form-group">
-			<select name="category" multiple="multiple">
+			<select name="category" multiple="multiple" class="selectpicker form-control">
 				<option value="music">Music</option>
 					<option value="food">Food</option>
 					<option value="support">support</option>
@@ -238,13 +263,13 @@
 					<option value="performing_arts">Performing Arts</option>
 					<option value="family_fun_kids">Family Fun Kids</option>
 					<option value="learning_education">Learning Education</option>
-					<option value="religion_spirituality">Religion Spirituality</option>
+					<option value="religion_spirituality">Religion and Spiritual</option>
 					<option value="sports">Sports</option>
 					<option value="holiday">Holiday</option>
 					<option value="business">Business</option>
 					<option value="science">Science</option>
 					<option value="technology">Technology</option>
-					<option value="fundraisers">Fundraisers</option>
+					<option value="fundraisers">Fund Raisers</option>
 					<option value="politics_activism">Politics Activism</option>
 					<option value="outdoors_recreation">Outdoors Recreation</option>
 					<option value="community">Community</option>
@@ -280,6 +305,9 @@
  </div>
 </div> 	
 </div>
-
+<div class="footer" >
+		<p style="float: center;">&copy; JeRKS (CS5500)</p>
+		<p style="float: right;">CCIS - Northeastern University</p>
+	</div>
 </body>
 </html>
