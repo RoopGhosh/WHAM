@@ -127,13 +127,12 @@
 				</div>
 			</div>
 		</div>
-	</div>
 	<!-- Header End -->
 
 	<div class="main">
 		<div class="sidebar">
 			<div id="eventDetails" class="eventDetails"></div>
-			<div id="buy" class="eventDetails"></div>
+			<div id="buy"></div>
 		</div>
 		<div id="googleMap" class="googleMap">
 		</div>
