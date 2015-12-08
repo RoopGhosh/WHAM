@@ -38,6 +38,7 @@ public class EventfulAPICall {
 	
 	public ArrayList<Event> getListofEventsFromJSON(String url) throws IOException, JSONException, ParseException
 	{
+		System.out.println(url);
 		ArrayList<Event> LoEvents = new ArrayList<Event>();		
 		String jsontext = getJsontext(url);
 		//creating jsonobject from text
@@ -67,8 +68,12 @@ public class EventfulAPICall {
 				address.setState(iterateObj.get("region_name").toString());
 				address.setCountry(iterateObj.get("country_name").toString());
 				address.setZipCode(iterateObj.get("postal_code").toString());
-				address.setLatitude(Float.parseFloat(iterateObj.get("latitude").toString()));
-				address.setLongitude(Float.parseFloat(iterateObj.get("longitude").toString()));
+				if(iterateObj.get("latitude").toString() != null && iterateObj.get("latitude").toString() !=""){
+					address.setLatitude(Float.parseFloat(iterateObj.get("latitude").toString()));
+				}
+				if(iterateObj.get("longitude").toString() != null && iterateObj.get("longitude").toString() !=""){
+					address.setLongitude(Float.parseFloat(iterateObj.get("longitude").toString()));
+				}
 				event.setAddress(address);
 				LoEvents.add(event);				
 			}
