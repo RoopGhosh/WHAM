@@ -105,7 +105,7 @@
 							<li><a href="/jerks/profile">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/history">History<span
+							<li><a href="/jerks/history">My Events<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
 							<li><a href="/jerks/logout">Logout<span
@@ -132,7 +132,7 @@
 				<form action="/jerks/update" method="post">
 					<div class="form-group">
 					<label>First Name</label>
-					 <input type="text" name="firstName" value="<%=firstName %>" class="form-control">
+					 <input type="text" name="firstName" value="<%=firstName %>" class="form-control ">
 					</div>
 					<div class="form-group">
 					<label>Last Name</label>
@@ -144,7 +144,7 @@
 					</div>
 					<div class="form-group">
 					<label>Password</label>
-					 <input type="password" name="password" value="<%=password %>" class="form-control">
+					 <input type="password" name="password" value="<%=password %>"  pattern=".{8,20}" class="form-control" title="Enter a valid Password. (Minimum length is 8. Password requires Uppercase, lowercase and a Number )">
 					</div>
 					<div class="form-group">
 					<label>Address Line 1</label>
@@ -165,7 +165,7 @@
 					
 		<div class="form-group">
             <label>Zip Code</label>
-            <input type="text" name="zipCode" value="<%=zipCode %>" class="form-control">
+            <input type="text" name="zipCode" value="<%=zipCode %>" pattern=".{5,}" class="form-control" title="Enter valid Zip Code">
         </div> 
 		 
 		<div class="form-group" >
@@ -175,7 +175,7 @@
 				
 		<div class="form-group">
             <label>Phone Number</label>
-            <input type="phoneNumber" name="phoneNumber" value="<%=phoneNumber %>" class="form-control" > 
+            <input type="phoneNumber" name="phoneNumber" value="<%=phoneNumber %>" pattern=".{10,}"  title="Enter a valid 10 digit Phone number (Numbers only)." class="form-control" > 
         </div>
        
         <input type ="hidden"  name="latitude" value = "<%=latitude%>"> 
