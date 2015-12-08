@@ -105,7 +105,7 @@
 							<li><a href="/jerks/profile">Profile<span
 									class="glyphicon glyphicon-cog icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="/jerks/history">History<span
+							<li><a href="/jerks/history">My Events<span
 									class="glyphicon glyphicon-time icon-large brown pull-right"></span></a></li>
 							<li class="divider"></li>
 							<li><a href="/jerks/logout">Logout<span
