@@ -12,6 +12,7 @@
 <head>
 	<spring:url value="/resources/js/Login.js" var="Login" />
 	<spring:url value="/resources/js/register.js" var="Regsiter" />
+	<spring:url value="/resources/css/main.css" var="MainCSS" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <style>
         body     { padding-top:30px; }
@@ -96,8 +97,25 @@
 </head>
 </head>
 <body ng-app="validationApp" ng-controller="mainController" >
-	<div class="container">
-
+<div class="container">
+<div class="container-fluid">
+		<!-- Header Start -->
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand" rel="home" href="#">WHAM</a>
+ 				</div>
+ 					<div class="form-group">
+					<form action="/jerks/login" method="post">
+						<input type = "hidden" name="username" value="${username}">
+						<input type = "hidden" name="password" value="${password}">
+						<input type ="hidden"  name="latitude" value = "${latitude}"> 
+						<input type ="hidden"  name="longitude" value ="${longitude}"> 
+						<button type="submit" class="btn btn-success navbar-btn">New Search</button>
+					</form>
+				</div>
+				</div>
+		</div>
+	<!-- Header End -->
 <div class="row">
 	<div class="col-md-4">    
     <!-- PAGE HEADER -->
@@ -108,13 +126,13 @@
         <div class="form-group" ng-class="{ 'has-error' : userForm.firstName.$invalid && !userForm.firstName.$pristine }">
             <label>First Name*</label>
             <input type="text" name="firstName" class="form-control col-s-1" ng-model="user.firstName" required>
-            <p ng-show="userForm.firstName.$invalid && !userForm.firstName.$pristine" class="help-block">You name is required.</p>
+            <p ng-show="userForm.firstName.$invalid && !userForm.firstName.$pristine" class="help-block">Your name is required.</p>
         </div>
         
         <div class="form-group" ng-class="{ 'has-error' : userForm.lastName.$invalid && !userForm.lastName.$pristine }">
             <label>Last Name*</label>
             <input type="text" name="lastName" class="form-control" ng-model="user.lastName" required>
-            <p ng-show="userForm.lastName.$invalid && !userForm.lastName.$pristine" class="help-block">You name is required.</p>
+            <p ng-show="userForm.lastName.$invalid && !userForm.lastName.$pristine" class="help-block">Your name is required.</p>
         </div>           
         
         <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
@@ -126,7 +144,7 @@
 		<div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
             <label>Password*</label>
             <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required >
-            <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid Password.</p>
+            <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid Password. (Minimum length is 8. Password requires Uppercase, lowercase and a Number )</p>
         </div>
 		
 		<div class="form-group" >
@@ -209,7 +227,9 @@
         </div> 
 		
 		<div class="form-group">
-		<label>Choose Catagories</label>
+			<label>Choose Categories</label>
+		</div>
+		<div class="form-group">
 			<select name="category" multiple="multiple">
 				<option value="music">Music</option>
 					<option value="food">Food</option>
@@ -247,8 +267,8 @@
 		
 		<div class="form-group" ng-class="{ 'has-error' : userForm.phoneNumber.$invalid && !userForm.phoneNumber.$pristine }">
             <label>Phone Number</label>
-            <input type="phoneNumber" name="phoneNumber" class="form-control" ng-model="user.phoneNumber" ng-pattern="/^\d{0,10}(\.\d{1,10})?$/" required >
-            <p ng-show="userForm.phoneNumber.$invalid && !userForm.phoneNumber.$pristine" class="help-block">Enter a valid Phone number.</p>
+            <input type="phoneNumber" name="phoneNumber" class="form-control" ng-model="user.phoneNumber" ng-pattern="/^\d{10}$/" required >
+            <p ng-show="userForm.phoneNumber.$invalid && !userForm.phoneNumber.$pristine" class="help-block">Enter a valid 10 digit Phone number (Numbers only).</p>
         </div>
     		 
         <input type="submit" ng-disabled="userForm.$invalid" class="btn btn-success" value="Regsiter"></button>
@@ -258,8 +278,8 @@
     </form>
     
  </div>
-</div> 
-		
+</div> 	
 </div>
+
 </body>
 </html>
