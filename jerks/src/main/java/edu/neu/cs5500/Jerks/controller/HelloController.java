@@ -135,16 +135,16 @@ public class HelloController {
 		if(user != null)
 		{
 			Address addr = user.getAddress();
-			addr.setAddressLine1(addrLine1);
-			addr.setAddressLine2(addrLine2);
-			addr.setCity(city);
-			addr.setState(state);
-			addr.setZipCode(zipCode);
-			user.setFirstName(firstName);
-			user.setLastName(lastName);
-			user.setPassword(password);
-			user.setPhoneNumber(phoneNumber);
-			user.setGender(gender);
+			addr.setAddressLine1(addrLine1.trim());
+			addr.setAddressLine2(addrLine2.trim());
+			addr.setCity(city.trim());
+			addr.setState(state.trim());
+			addr.setZipCode(zipCode.trim());
+			user.setFirstName(firstName.trim());
+			user.setLastName(lastName.trim());
+			user.setPassword(password.trim());
+			user.setPhoneNumber(phoneNumber.trim());
+			user.setGender(gender.trim());
 			user.setDOB(sql);
 			User updatedUser = userDao.updateUser(email, user);
 		}
