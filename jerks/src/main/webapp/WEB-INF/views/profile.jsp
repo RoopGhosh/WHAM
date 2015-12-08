@@ -13,6 +13,7 @@
 	<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
 	<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
 	<spring:url value="/resources/js/Login.js" var="Login" />
+	<spring:url value="/resources/img/brandImage.JPG" var="brandIcon" />
 <%	
 	UserProvider userDao = new UserProvider();
 	String username = "";

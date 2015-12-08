@@ -15,23 +15,18 @@
 	<spring:url value="/resources/img/brandImage.JPG" var="brandIcon" />
 	
 <%	
-// 	String username = String.valueOf(session.getAttribute("username"));
-// 	System.out.println("Username from create events: "+username);
-// 	String password = String.valueOf(session.getAttribute("password"));
-// 	System.out.println("password from create events: "+password);
-	//String latitude = String.valueOf(session.getAttribute("latitude"));
-	//String longitude = String.valueOf(session.getAttribute("longitude"));
-	//UserProvider dao = new UserProvider();
-	//User user = dao.findByEmail(username);
-	//String userName = user.getFirstName();
-	String username = "dd";
-	String userName = "dd";
-	String password = "xxx";
-	String longitude = "34.32";
-	String latitude = "33.2";
+	String username = String.valueOf(session.getAttribute("username"));
+	System.out.println("Username from create events: "+username);
+	String password = String.valueOf(session.getAttribute("password"));
+	System.out.println("password from create events: "+password);
+	String latitude = String.valueOf(session.getAttribute("latitude"));
+	String longitude = String.valueOf(session.getAttribute("longitude"));
+	UserProvider dao = new UserProvider();
+	User user = dao.findByEmail(username);
+	String userName = user.getFirstName();
 	// Do not allow guest users to create events
-	//if(session.getAttribute("username") == null)
-		//response.sendRedirect("geolocator");
+	if(session.getAttribute("username") == null)
+		response.sendRedirect("geolocator");
 %>
 <link rel="stylesheet"
 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />

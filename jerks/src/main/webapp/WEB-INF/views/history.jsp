@@ -10,6 +10,7 @@
 	<spring:url value="/resources/css/main.css" var="MainCSS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
 	<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
+	<spring:url value="/resources/img/brandImage.JPG" var="brandIcon" />
 <%	
 	String username = String.valueOf(session.getAttribute("username"));
 	String password = String.valueOf(session.getAttribute("password"));
@@ -43,7 +44,9 @@
 		<!-- Header Start -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
-				<a class="navbar-brand" rel="home" href="#">WHAM</a>
+				<a class="navbar-brand" rel="home" href="/jerks"><img
+					src="${brandIcon}" alt="WHAM"
+					style="width: 42px; height: 42px; border: 0;"></a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"><label><%=userName %>
