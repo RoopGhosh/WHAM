@@ -181,7 +181,7 @@
 			else
 			{
 				System.out.println("Invalid email id, no record found");
-				loginMessage = "Please Regsiter";
+				loginMessage = "Please Register";
 			}
 		}
 		}// login try
