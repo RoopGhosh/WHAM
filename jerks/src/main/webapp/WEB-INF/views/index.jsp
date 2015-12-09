@@ -310,8 +310,8 @@ function showEventDetails(jsonEvent, latitude, longitude) {
 	var form = '<form action="/jerks/eventDetails" method="POST">';
 	form += '<input type="hidden" name="latitude" value='+latitude +'>';
 	form +='<input type="hidden" name="longitude" value='+longitude +'>';
-	form +='<input type="hidden" name="addressLine1" value='+jsonEvent.address.addressLine1 +'>';
-	form +='<input type="hidden" name="addressLine2" value='+jsonEvent.address.addressLine2 +'>';
+	form +='<input type="hidden" name="addressLine1" value='+escape(jsonEvent.address.addressLine1)+'>';
+	form +='<input type="hidden" name="addressLine2" value='+escape(jsonEvent.address.addressLine2)+'>';
 	form +='<input type="hidden" name="city" value='+jsonEvent.address.city +'>';
 	form +='<input type="hidden" name="eventLatitude" value='+jsonEvent.address.latitude +'>';
 	form +='<input type="hidden" name="eventLongitude" value='+jsonEvent.address.longitude +'>';
