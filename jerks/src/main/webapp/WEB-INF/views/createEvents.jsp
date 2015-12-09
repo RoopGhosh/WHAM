@@ -116,29 +116,29 @@
 				<div class="form-group" ng-class="{ 'has-error' : eventForm.eventName.$invalid && !eventForm.eventName.$pristine }">
 					<label>Event Name*</label>
 						<input type="text" name="eventName" class="form-control" ng-model="event.eventName" required>
-				<p ng-show="eventForm.eventName.$invalid && !eventForm.eventName.$pristine" class="help-block">Event name is required.</p>
+				<p ng-show="eventForm.eventName.$invalid && !eventForm.eventName.$pristine" class="help-block">Invalid/Empty Event name!</p>
 				</div>
 				<div class="form-group" ng-class="{ 'has-error' : eventForm.datepicker.$invalid && !eventForm.datepicker.$pristine }">
 					<label>Event Date*</label>
 						<input type="text" name="datepicker" id="datepicker" class="form-control" ng-model="event.datepicker" required>
-				<p ng-show="eventForm.datepicker.$invalid && !eventForm.datepicker.$pristine" class="help-block">Event Date is required.</p>
+				<p ng-show="eventForm.datepicker.$invalid && !eventForm.datepicker.$pristine" class="help-block">Invalid/Empty Event Date!</p>
 				</div>
 				<div class="form-group" ng-class="{ 'has-error' : eventForm.addressLine1.$invalid && !eventForm.addressLine1.$pristine }">
 					<label>Event Address Line 1*</label>
 					<input type="text" name="addressLine1" id="addressLine1" class="form-control" ng-model="event.addressLine1" required>
-				<p ng-show="eventForm.addressLine1.$invalid && !eventForm.addressLine1.$pristine" class="help-block">Address Line 1 is required.</p>
+				<p ng-show="eventForm.addressLine1.$invalid && !eventForm.addressLine1.$pristine" class="help-block">Invalid/Empty Address Line 1!</p>
 				</div>
 			
 				<div class="form-group" ng-class="{ 'has-error' : eventForm.addressLine2.$invalid && !eventForm.addressLine2.$pristine }">
            		 <label>Address Line 2</label>
             	 <input type="text" name="addressLine2" class="form-control" ng-model="event.addressLine2" required>
-       		   <p ng-show="eventForm.addressLine2.$invalid && !eventForm.addressLine2.$pristine" class="help-block">Address Line 2 is required.</p>
+       		   <p ng-show="eventForm.addressLine2.$invalid && !eventForm.addressLine2.$pristine" class="help-block">Invalid/Empty Address Line 2!</p>
        		   </div>
 		
 			<div class="form-group" ng-class="{ 'has-error' : eventForm.city.$invalid && !eventForm.city.$pristine }">
             <label>City</label>
             <input type="text" name="city" class="form-control" ng-model="event.city" required>
-        	<p ng-show="eventForm.city.$invalid && !eventForm.city.$pristine" class="help-block">city is required.</p>
+        	<p ng-show="eventForm.city.$invalid && !eventForm.city.$pristine" class="help-block">Invalid/Empty city name!</p>
         	</div>
         	
         		<div class="form-group">
@@ -200,32 +200,33 @@
         
         <div class="form-group"  ng-class="{ 'has-error' : eventForm.zipCode.$invalid && !eventForm.zipCode.$pristine }">
             <label>Zip Code</label>
-            <input type="text" name="zipCode" class="form-control" ng-model="event.zipCode" required>
-            <p ng-show="eventForm.zipCode.$invalid && !eventForm.zipCode.$pristine" class="help-block">Zip Code is required.</p>
+            <input type="text" name="zipCode" class="form-control" ng-model="event.zipCode" ng-pattern="/^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$/" required>
+            <p ng-show="eventForm.zipCode.$invalid && !eventForm.zipCode.$pristine" class="help-block">Invalid/Empty Zip Code!</p>
         </div> 
 		
 		<div class="form-group" ng-class="{ 'has-error' : eventForm.description.$invalid && !eventForm.description.$pristine }">
             <label>Description</label>
             <input type="text" name="description" class="form-control" ng-model="event.description" required >
-        <p ng-show="eventForm.description.$invalid && !eventForm.description.$pristine" class="help-block">Description is required.</p>
+        <p ng-show="eventForm.description.$invalid && !eventForm.description.$pristine" class="help-block">Invalid/Empty Description!</p>
         </div> 
         
         <div class="form-group" ng-class="{ 'has-error' : eventForm.ticketPrice.$invalid && !eventForm.ticketPrice.$pristine }">
             <label>Ticket Price</label>
-            <input type="text" name="ticketPrice" class="form-control"  ng-model="event.ticketPrice" required >
-        <p ng-show="eventForm.ticketPrice.$invalid && !eventForm.ticketPrice.$pristine" class="help-block">Ticket Price is required.</p>
+            <input type="number" name="ticketPrice" min="0" max="50000" class="form-control"  ng-model="event.ticketPrice" required >
+        <p ng-show="eventForm.ticketPrice.$invalid && !eventForm.ticketPrice.$pristine" class="help-block">Invalid/Empty Ticket Price!</p>
         </div> 
 		
 		
 		<div class="form-group" ng-class="{ 'has-error' : eventForm.minAgeLimit.$invalid && !eventForm.minAgeLimit.$pristine }">
             <label>Minimum Age Limit</label>
-            <input type="text" name="minAgeLimit" class="form-control" ng-model="event.minAgeLimit"  required >
+            <input type="number" min="1" max="120" name="minAgeLimit" class="form-control" ng-model="event.minAgeLimit"  required >
+        <p ng-show="eventForm.minAgeLimit.$invalid && !eventForm.minAgeLimit.$pristine" class="help-block">Invalid/Empty min age! Valid age limits are between 1 and 120.</p>
         </div> 
         
         <div class="form-group" ng-class="{ 'has-error' : eventForm.remainingTickets.$invalid && !eventForm.remainingTickets.$pristine }">
             <label>Event Capacity</label>
-            <input type="text" name="remainingTickets" class="form-control"  ng-model="event.remainingTickets" required >
-       <p ng-show="eventForm.remainingTickets.$invalid && !eventForm.remainingTickets.$pristine" class="help-block">Event Capacity is required.</p>
+            <input type="number" min="1" max="50000" name="remainingTickets" class="form-control"  ng-model="event.remainingTickets" required >
+       <p ng-show="eventForm.remainingTickets.$invalid && !eventForm.remainingTickets.$pristine" class="help-block">Invalid/Empty Event Capacity!</p>
         </div> 
         
 			<div class="form-group">
