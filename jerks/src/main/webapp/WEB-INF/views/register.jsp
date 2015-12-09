@@ -296,7 +296,7 @@ body {
             <p ng-show="userForm.phoneNumber.$invalid && !userForm.phoneNumber.$pristine" class="help-block">Enter a valid 10 digit Phone number (Numbers only).</p>
         </div>
     		 
-        <input type="submit" ng-disabled="userForm.$invalid" class="btn btn-success" value="Regsiter"></button>
+        <input type="submit" ng-disabled="userForm.$invalid" class="btn btn-success" value="Register"></button>
         
         <input type ="hidden"  name="latitude" value = "<%=latitude%>"> 
 		<input type ="hidden"  name="longitude" value ="<%=longitude %>">  
