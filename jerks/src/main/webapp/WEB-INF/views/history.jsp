@@ -38,8 +38,9 @@
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
 <title>WHAM - Home</title>
+
 </head>
-<body>
+<body onload="click()">
 	<div class="container-fluid">
 		<!-- Header Start -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -83,31 +84,41 @@
 	<!-- Header End -->
 
 		<div class="main">
-			<div id="eventDetails" class="eventDetails">
-				<h3>My Events</h3>
-				<table class="table">
-					<tr>
-						<th>Event Name</th>
-						<th>Event Date</th>
-						<th>Event Address</th>
-					</tr>
-					<% for(EventVisited event : listOfEvents)
-						{
-							%>
-								<tr>
-									<td><%=event.getEventName() %></td>
-									<td><%=event.getEventDate() %></td>
-									<td><%=event.getEventAddress() %></td>
-								</tr>
-							<%
-						}%>
-						
-				</table>
+			<div id="eventDetails" class="eventDetails" onload="click()">
+			
 			</div>
 	</div>
+	
+	
 	<div class="footer">		
 		<p style="float:center">&copy; JeRKS (CS5500)</p>
 		<p style="float:right">CCIS - Northeastern University</p>
 	</div>
 </body>
+<script>
+	function click()
+	{
+
+		var display = "";
+		display += '<h3>My Events</h3>';
+		display += '<table class="table">';
+		display += '<tr>';
+		display += '<th>Event Name</th>';
+		display += '<th>Event Date</th>';
+		display += '<th>Event Address</th>';
+		display += '</tr>'
+			<% for(EventVisited event : listOfEvents)
+			{
+				%>
+					display += '<tr>';
+					display += '<td>'+unescape("<%=event.getEventName() %>")+'</td>';
+					display += '<td>'+unescape("<%=event.getEventDate() %>")+'</td>';
+					display += '<td>'+unescape("<%=event.getEventAddress() %>")+'</td>';
+				<%
+			}%>
+			
+			$('#eventDetails').html(display); 
+	}
+	</script>
+
 </html>
