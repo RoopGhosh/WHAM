@@ -11,6 +11,7 @@
 	<spring:url value="/resources/js/bootstrap.min.js" var="BootStrap" />
 	<spring:url value="/resources/img/favicon.GIF" var="favIcon" />
 	<spring:url value="/resources/img/brandImage.JPG" var="brandIcon" />
+	<spring:url value="/resources/img/fb_share.jpg" var="facebookIcon" />
 <%	
 	String latitude = String.valueOf(request.getAttribute("latitude"));
 	String longitude = String.valueOf(request.getAttribute("longitude"));
@@ -70,9 +71,11 @@
            src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
-<title>WHAM - Home</title>
+<title>WHAM - Event Details</title>
 </head>
 <body>
+
+<div id="fb-root"></div>
 	<div class="container-fluid">
 		<!-- Header Start -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -132,6 +135,7 @@
 	<div class="main">
 		<div class="sidebar">
 			<div id="eventDetails" class="eventDetails"></div>
+
 			<div id="buy"></div>
 		</div>
 		<div id="googleMap" class="googleMap">
@@ -214,13 +218,12 @@
 		display += '<input type="hidden" name="eventId" value="<%=eventId%>">';
 		display += '<input type="hidden" name="eventName" value="<%=eventName%>">';
 		display += '<input type="hidden" name="source" value="<%=source%>">';
-		display +='<input type="submit" class="btn btn-primary" value="Buy">';
-		display += '</form>';
+		display +='<div class="row"><input type="submit" class="btn btn-primary" value="Buy">';
+		display += '</form>'
+		display += '<a href="https://www.facebook.com/sharer/sharer.php?s=100&p[url]=http://jerks-cs5500.rhcloud.com/index/<%=latitude%>/<%=longitude%>&p[title]=<%=eventName%>"><img alt="Share on Facebook!" style="width: 40%; float: right;" src="${facebookIcon}"></a></div>';
 		$('#eventDetails').html(display);
 			
 	}
-	
-	
 	
 	//Dynamicaly detect the window's size and resize the map
 	$(window).resize(function() {
