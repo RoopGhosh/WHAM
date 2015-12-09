@@ -145,9 +145,11 @@
 	
 	<script>
 	google.maps.event.addDomListener(window, 'load', function() {
+		var distance = 0;
+		var time = 0;
 		initialize();
-		loadEventDetails();
 	});
+	
 	
 	function initialize()
 	{
@@ -155,28 +157,35 @@
 	     var directionsDisplay = new google.maps.DirectionsRenderer();
 	     var map = new google.maps.Map(document.getElementById('googleMap'), {
 	       zoom:7,
-	       mapTypeId: google.maps.MapTypeId.ROADMAP
+	       mapTypeId: google.maps.MapTypeId.ROADMAP,
 	     });
 
 	     directionsDisplay.setMap(map);
 	     directionsDisplay.setPanel(document.getElementById('panel'));
-
+	     
+	     
 	     var request = {
 	       origin: new google.maps.LatLng(<%=latitude%>, <%=longitude%>), 
 	       destination: new google.maps.LatLng(<%=eventLatitude%>, <%=eventLongitude%>), 
-	       travelMode: google.maps.DirectionsTravelMode.DRIVING
+	       travelMode: google.maps.DirectionsTravelMode.DRIVING,
+	       unitSystem: google.maps.UnitSystem.IMPERIAL
 	     };
 
 	     directionsService.route(request, function(response, status) {
 	       if (status == google.maps.DirectionsStatus.OK) {
-	         directionsDisplay.setDirections(response);
+	    	   distance = response.routes[0].legs[0].distance.text;
+		       time = response.routes[0].legs[0].duration.text;
+		       loadEventDetails(distance, time);
+	           directionsDisplay.setDirections(response); 
 	       }
 	     });
 	     
 	}
 	
-	function loadEventDetails()
+	function loadEventDetails(distance, time)
 	{
+		
+		
 		var display = "";
 		display += "<h2>Event Details</h2>";
 		display += "<p>Event Name: "+unescape("<%=eventName%>")+"</p>";
@@ -192,6 +201,8 @@
 		display += "<p>Minumum Age Limit:"+"<%=minAgeLimit%>"+"</p>";
 		display += "<p>Remaining Tickets:"+"<%=remainingTickets%>"+"</p>";
 		display += "<p>Price:"+"<%=ticketPrice%>"+"</p>";
+		display += "<p>Distance:"+distance+"les</p>";
+		display += "<p>Estimated time of Arrival:"+time+"</p>";
 		
 		display += '<form action="/jerks/buy" method="post">';
 		display += '<input type="hidden" name="latitude" value="<%=latitude%>">';
