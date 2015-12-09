@@ -79,7 +79,7 @@
 					style="width: 42px; height: 42px; border: 0;"></a>
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><label><%=username%></label><span
+						data-toggle="dropdown"><label><%=userName%></label><span
 							class="glyphicon glyphicon-user icon-large brown pull-left"
 							style="color: #428bca">&nbsp;</span></a>
 						<ul class="dropdown-menu">
