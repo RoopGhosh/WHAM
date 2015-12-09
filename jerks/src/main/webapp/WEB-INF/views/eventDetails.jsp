@@ -193,11 +193,11 @@
 		var display = "";
 		display += "<h2>Event Details</h2>";
 		display += "<p>Event Name: "+unescape("<%=eventName%>")+"</p>";
-		display += "<table><tr><td>Event Address:<td>"+"<%=addressLine1%>"+"</td></td></tr>";
-		display += "<tr><td><td>"+"<%=addressLine2%>"+"</td></td></tr>";
-		display += "<tr><td>"+"<td>"+"<%=city%>"+"</td></td></tr>";
-		display += "<tr><td>"+"<td>"+"<%=state%>"+"</td></td></tr>";
-		display += "<tr><td>"+"<td>"+"<%=zipCode%>"+"</td></td></tr>";
+		display += "<table><tr><td>Event Address:<td>"+unescape("<%=addressLine1%>")+"</td></td></tr>";
+		display += "<tr><td><td>"+unescape("<%=addressLine2%>")+"</td></td></tr>";
+		display += "<tr><td>"+"<td>"+unescape("<%=city%>")+"</td></td></tr>";
+		display += "<tr><td>"+"<td>"+unescape("<%=state%>")+"</td></td></tr>"
+		display += "<tr><td>"+"<td>"+unescape("<%=zipCode%>")+"</td></td></tr>"
 		display += "<tr><td>"+"<td>US</td></td></tr>";
 		display +="</table>";
 		display += "<p>Date:"+"<%=date%>"+"</p>";

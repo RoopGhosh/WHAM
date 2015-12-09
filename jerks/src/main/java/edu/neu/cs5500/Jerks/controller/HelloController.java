@@ -317,6 +317,8 @@ public class HelloController {
 		System.out.println("Event Name: "+eventName);
 		eventName = eventName.replace("%20", " ");
 		eventName = eventName.replace("%3A", ";");
+		address = address.replace("%20", " ");
+		address = address.replace("%3A", ";");
 		EventVisited visited = new EventVisited(username,eventId, eventName, address, date, EventSource.WHAM) ;
 		EventVisitedProvider dao = new EventVisitedProvider();
 		dao.createEventsVisted(visited);
