@@ -29,7 +29,7 @@
 	String zipCode = "";
 	String latitude = String.valueOf(session.getAttribute("latitude"));
 	System.out.println("Profile update: "+latitude);
-	String longitude =  String.valueOf(session.getAttribute("longitude"));
+	String longitude = String.valueOf(session.getAttribute("longitude"));
 	System.out.println("Profile update: "+longitude);
 	List<String> areaOfInterest = null;
 	List<String> dislikes = null;
@@ -116,7 +116,7 @@
 						</ul></li>
 				</ul>
 				
- 				</div>
+ 				</div> 				
  					<div class="form-group">
 					<form action="/jerks/login" method="post">
 						<input type = "hidden" name="username" value=<%=username %>>
@@ -131,6 +131,7 @@
 	<!-- Header End -->
 	<div>
 		<div id="profileDetails" class="eventDetails">
+		<div class="wrapper" style = "width: 40%; margin:0 auto;">
 				<H3 id="name">Update your Details</H3>
 				<form action="/jerks/update" method="post">
 					<div class="form-group">
@@ -186,6 +187,7 @@
 		<input type ="hidden"  name="optradio" value ="<%=gender %>">  
 		<button type="submit" class="btn btn-success navbar-btn">Update</button>
 				</form>
+				</div>
 			</div>
 	</div>
 	<div class="footer">		
